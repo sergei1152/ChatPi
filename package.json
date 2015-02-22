@@ -1,6 +1,9 @@
 {
   "Name": "Chatpi",
-  "Version": "0ccccd.1",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "Version": "0.1",
   "description": "A cheap portable chat server",
   "dependencies": {
     "express": "^4.11.2",
