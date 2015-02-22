@@ -10,6 +10,7 @@ var mainRoute = require('./routes/main.js');
 //settings the views directory
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs'); //setting ejs as the templating engine
+app.engine('html', require('ejs').renderFile); //tells the server to serve html files through ejs
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname+"/public"));
