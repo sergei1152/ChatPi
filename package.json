@@ -1,12 +1,13 @@
 {
   "Name": "Chatpi",
-  "main" : "app.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "Version": "0.1",
   "description": "A cheap portable chat server",
   "dependencies": {
+    "ejs": "^2.2.4",
     "express": "^4.11.2",
     "socket.io": "^1.3.3"
   }
