@@ -3,18 +3,18 @@ var express=require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 //Initializing custom objects
 var ChatRoom=require('./ChatRoom.js');
+var mainRoute = require('./routes/main.js');
 
-//Setting up router
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/public/index.html');
-});
+//settings the views directory
+app.set('views',__dirname + '/views');
+app.set('view engine', 'ejs'); //setting ejs as the templating engine
 
-//Using the public folder to server static content(images, javacsript, stylesheets)
+//Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname+"/public"));
 
+app.use('/',mainRoute);
 //Creating the chatroom object
 var chat=new ChatRoom(254,"testuser");
 var authorized_user="test";
