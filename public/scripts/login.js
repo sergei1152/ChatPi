@@ -29,7 +29,7 @@ function login(){
 
     socket.on('login_status', function(status){
       //if the login was successful
-      if(false){
+      if(status){
         //redirects to the actual app page
         window.location.replace("app.html");
         return true;
