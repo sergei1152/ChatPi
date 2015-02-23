@@ -16,6 +16,12 @@ app.engine('html', require('ejs').renderFile); //tells the server to serve html 
 app.use(express.static(__dirname+"/public"));
 
 app.use('/',mainRoute);
+
+//404 Error Router
+app.use(function (req, res){
+  res.render("404.html");
+});
+
 //Creating the chatroom object
 var chat=new ChatRoom(254,"testuser");
 var authorized_user="test";
