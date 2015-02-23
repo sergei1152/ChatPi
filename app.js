@@ -7,6 +7,10 @@ var io = require('socket.io')(http);
 var ChatRoom=require('./ChatRoom.js');
 var mainRoute = require('./routes/main.js');
 
+//Setting the port number
+var PORTNUMBER=3000;
+app.set('env', "development");
+app.set('port', process.env.PORT || PORTNUMBER);
 //settings the views directory
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs'); //setting ejs as the templating engine
@@ -79,12 +83,12 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.render('404.html', {
         message: err.message,
         error: {}
     });
 });
 
 http.listen(3000, function(){
-  console.log('ChatPi Server Started. Listening on Port: '+ app.address().port);
+  console.log('ChatPi Server Started. Listening on Port: '+PORTNUMBER);
 });
