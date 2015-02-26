@@ -1,27 +1,61 @@
-//Initializing Required Default Modules
+//=======Initializing Required Modules=======
 var express=require('express');
 var app = express();
 var http = require('http').Server(app);
+var mongoose=require('mongoose');
+var passport=require('passport');
+var flash=require('connect-flash');
+var cookieParser=require('cookie-parser');
+var bodyParser=require('body-parser');
+var session=require('express-session');
 var io = require('socket.io')(http);
-//Initializing custom objects
-var ChatRoom=require('./ChatRoom.js');
-var mainRoute = require('./routes/main.js');
+var randomstring = require("randomstring"); //used for session secret key
 
-//Setting the port number
+//Initializing custom objects
+var configDB=require('./config/database.js'); //contains database settings
+var ChatRoom=require('./models/ChatRoom.js');
+var route = require('./routes/main.js'); //routes will go through this
+
+//======Configuration of the Server=======
+
+mongoose.connect(configDB.url); //have mongoose connect to the MongoDB database
+require('./config/passport')(passport); // pass passport for configuration
+
+
+//setting the port number for the server to use
 var PORTNUMBER=3000;
-app.set('env', "development");
 app.set('port', process.env.PORT || PORTNUMBER);
-//settings the views directory
+
+//settings the views directory for the templating engine
 app.set('views',__dirname + '/views');
-app.set('view engine', 'ejs'); //setting ejs as the templating engine
-app.engine('html', require('ejs').renderFile); //tells the server to serve html files through ejs
+
+//setting ejs as the templating engine
+app.set('view engine', 'ejs');
+
+//tells the server to serve html files through ejs
+app.engine('html', require('ejs').renderFile);
+
+//======Configuration of Middleware===========
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname+"/public"));
 
-//Using the route
-app.use('/',mainRoute);
+app.use(cookieParser());//enable the user of cookies
+app.use(bodyParser()); //get info from html forms
 
+//enables the use of sessions in the app
+app.use(session({
+  secret:randomstring.generate(128),
+  cookie: {
+    maxAge: 2678400000 // 31 days
+  }
+}));
+app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.initialize()); //initializing passport
+app.use(passport.session()); // for persistent login sessions
+
+//=======Routes======
+require('./routes/main.js')(app, passport);
 
 //Creating the chatroom object
 var chat=new ChatRoom(254,"testuser");
