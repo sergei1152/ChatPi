@@ -1,19 +1,11 @@
 module.exports = function(app, passport) {
 
-  app.get('/', function(req, res) {
-    if (isLoggedIn(req, res)) {
-      res.redirect('/app'); //redirect to the app
-    } else {
-      res.redirect('/login'); //redirect to the login page
-    }
+  app.get('/', isLoggedIn, function(req, res) {
+      res.redirect('/app'); //redirect to the app page
   });
 
-  app.get('/app', function(req, res) {
-    if (isLoggedIn(req, res)) {
+  app.get('/app',isLoggedIn, function(req, res) {
       res.render('app'); //renders the app page
-    } else {
-      res.redirect('/login'); //redirect to the login page
-    }
   });
 
   app.get('/login', function(req, res) {
@@ -47,7 +39,7 @@ function isLoggedIn(req, res, next) {
 
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated())
-    return next();
+	  next();
 
   // if they aren't redirect them to the login page
   res.redirect('/login');
