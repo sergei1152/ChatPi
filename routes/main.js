@@ -1,8 +1,48 @@
-var express = require('express');
-var router = express.Router(); //creating an instance of the router object
+module.exports = function(app, passport) {
 
-router.get('/', function(req, res,next) {
-  res.render('login.html'); //renders the login page and sends the outputted html to the client
-});
+  app.get('/', function(req, res) {
+    if (isLoggedIn(req, res)) {
+      res.redirect('/app'); //redirect to the app
+    } else {
+      res.redirect('/login'); //redirect to the login page
+    }
+  });
 
-module.exports = router;
+  app.get('/app', function(req, res) {
+    if (isLoggedIn(req, res)) {
+      res.render('app'); //renders the app page
+    } else {
+      res.redirect('/login'); //redirect to the login page
+    }
+  });
+
+  app.get('/login', function(req, res) {
+    // render the page and pass in any flash data if it exists
+    res.render('login', {
+      message: req.flash('loginMessage')
+    });
+  });
+
+  app.get('/register', function(req, res) {
+    // render the page and pass in any flash data if it exists
+    res.render('signup', {
+      message: req.flash('signupMessage')
+    });
+  });
+
+  app.get('/logout', function(req, res) {
+    req.logout(); //using the passport method for logging out
+    res.redirect('/login');
+  });
+};
+
+//checks if user is authenticated using passports isAuthenticated method
+function isLoggedIn(req, res, next) {
+
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated())
+    return next();
+
+  // if they aren't redirect them to the login page
+  res.redirect('/login');
+}
