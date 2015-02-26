@@ -50,6 +50,7 @@ app.use(session({
     maxAge: 2678400000 // 31 days
   }
 }));
+
 app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
@@ -117,7 +118,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('404.html', {
+    res.render('404', {
         message: err.message,
         error: {}
     });
