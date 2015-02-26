@@ -31,17 +31,5 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compare(password, this.local.password);
 };
 
-// Automattically hash the password if first save
-userSchema.pre('save', function(next) {
-  // if created_at doesn't exist, add to that field
-  if (!this.createdAt) {
-    // get the current date
-    var currentDate = new Date();
-    this.createdAt = currentDate;
-    this.password = this.generateHash(this.password); //hashes the password
-  }
-  next();
-});
-
 // create the model for users and expose it to the app
 module.exports = mongoose.model('User', userSchema);
