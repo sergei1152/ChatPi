@@ -30,6 +30,12 @@ module.exports = function(app, passport) {
     });
   });
 
+  app.post('/register', passport.authenticate('local-signup', {
+    successRedirect: '/app', // redirect to the app page
+    failureRedirect: '/register', // redirect back to the signup page if there is an error
+    failureFlash: true // allow flash messages
+  }));
+
   app.get('/logout', function(req, res) {
     req.logout(); //using the passport method for logging out
     res.redirect('/login');
