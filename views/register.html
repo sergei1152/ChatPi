@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Register | ChatPi</title>
+    <link rel="stylesheet"  href="style/login.css">
+    <script src="scripts/prefixfree.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="scripts/login.js"></script>
+</head>
+<body>
+  <div class="body"></div>
+    <div class="grad"></div>
+    <div class="header">
+      <div>Chat<span>Pi</span></div>
+    </div>
+    <br>
+    <form class="login" onsubmit="return login()">
+        <input id="username-input" type="text" placeholder="username" name="user" ><br>
+        <input id="password-input" type="password" placeholder="password" name="password" ><br>
+        <input type="submit" value="Login">
+        <h1 id="login-message"></h1>
+    </div>
+</body>
+</html>
