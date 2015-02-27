@@ -9,8 +9,12 @@ html {
 }
 body {
 	background-color:transparent;
-  padding-top: 40px;
-  padding-bottom: 40px;
+}
+.container{
+	display:inline-block !important;
+	position: absolute !important;
+	top:50% !important;
+	left:50% !important;
 }
 .form-signin-heading{
 	color:#e5e5e5;
