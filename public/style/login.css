@@ -26,7 +26,7 @@ body {
 .form-signin{
 	text-align:left;
 	display:inline-block;
-	max-height:330px;
+	max-width:330px;
 }
 form .form-control {
   height: auto;
@@ -38,6 +38,11 @@ form .form-control {
 }
 .checkbox {
   color: white;
+}
+.alert{
+	display:none;
+	margin:12px auto 12px auto;
+	max-width:220px;
 }
 #username-input {
   margin: 0 !important;
