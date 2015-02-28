@@ -1,0 +1,44 @@
+/*For the background image*/
+
+html {
+  background: url('../images/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  position: absolute;
+  background-color: transparent;
+  height: 90%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+form {
+  text-align: left;
+  display: inline-block;
+  max-width: 330px;
+  max-width: 400px;
+  text-shadow: 1px 1px #414141;
+}
+.alert {
+  margin: 12px auto 12px auto;
+  max-width: 300px;
+}
+label {
+  color: white;
+}
+input[type="file"] {
+  color: white;
+  text-shadow: 1px 1px #414141;
+}
+.wrapper {
+  margin: 100px auto;
+  max-width: 800px;
+  text-align: center;
+}

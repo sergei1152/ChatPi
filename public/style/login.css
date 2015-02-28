@@ -65,8 +65,7 @@ form .form-control {
   display: block;
   text-align: center;
   margin-top: 12px;
-  text-shadow: 1px 1px #414141;
-}
+  text-shadow: 1px 1px #414141;}
 .new-account:hover {
   color: #309cc7;
 }

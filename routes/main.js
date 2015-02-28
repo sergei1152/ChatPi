@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
 
   app.get('/register', function(req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('signup', {
+    res.render('register', {
       message: req.flash('signupMessage')
     });
   });
