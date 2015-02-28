@@ -11,6 +11,14 @@ html {
   margin: 0;
   padding: 0;
 }
+.form-control {
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
 body {
   position: absolute;
   background-color: transparent;
