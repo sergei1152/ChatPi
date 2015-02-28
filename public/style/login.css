@@ -1,32 +1,34 @@
 /*For the background image*/
+
 html {
   background: url('../images/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-	height: 100%;
-	width: 100%;
-	margin:0;
-	padding:0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 body {
-	position:absolute;
+  position: absolute;
   background-color: transparent;
-	height: 90%;
-	width: 100%;
-	margin:0;
-	padding:0;
+  height: 90%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
-.wrapper{
-	margin:100px auto;
-	max-width:800px;
-	text-align:center;
+.wrapper {
+  margin: 100px auto;
+  max-width: 800px;
+  text-align: center;
 }
-.form-signin{
-	text-align:left;
-	display:inline-block;
-	max-width:330px;
+.form-signin {
+  text-align: left;
+  display: inline-block;
+  max-width: 330px;
+  min-width: 280px;
 }
 form .form-control {
   height: auto;
@@ -37,12 +39,14 @@ form .form-control {
   font-size: 16px;
 }
 .checkbox {
-  color: white;
+  color: #fbfbfb;
+  font-weight: bold;
+  text-shadow: 1px 1px #414141;
 }
-.alert{
-	display:none;
-	margin:12px auto 12px auto;
-	max-width:220px;
+.alert {
+  display: none;
+  margin: 12px auto 12px auto;
+  max-width: 220px;
 }
 #username-input {
   margin: 0 !important;
@@ -56,12 +60,13 @@ form .form-control {
   border-top-right-radius: 0;
 }
 .new-account {
-	text-decoration:underline;
-	color:white;
-	display:block;
-	text-align:center;
-	margin-top:12px;
+  text-decoration: underline;
+  color: #fbfbfb;
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  text-shadow: 1px 1px #414141;
 }
 .new-account:hover {
-	color:#309cc7;
+  color: #309cc7;
 }
