@@ -1,58 +1,62 @@
 /*For the background image*/
 html {
-	position:absolute;
   background: url('../images/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+	height: 100%;
+	width: 100%;
+	margin:0;
+	padding:0;
 }
 body {
-	background-color:transparent;
+	position:absolute;
+  background-color: transparent;
+	height: 90%;
+	width: 100%;
+	margin:0;
+	padding:0;
 }
-.container{
-	display:inline-block !important;
-	position: absolute !important;
-	top:50% !important;
-	left:50% !important;
+.wrapper{
+	margin:100px auto;
+	max-width:800px;
+	text-align:center;
 }
-.form-signin-heading{
-	color:#e5e5e5;
+.form-signin{
+	text-align:left;
+	display:inline-block;
+	max-height:330px;
 }
-.checkbox{
-	color:#e5e5e5;
-}
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
+form .form-control {
   height: auto;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 10px;
   font-size: 16px;
 }
-.form-signin .form-control:focus {
-  z-index: 2;
+.checkbox {
+  color: white;
 }
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
+#username-input {
+  margin: 0 !important;
+  margin-bottom: -16px !important;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
+#password-input {
+  margin-bottom: 16px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+.new-account {
+	text-decoration:underline;
+	color:white;
+	display:block;
+	text-align:center;
+	margin-top:12px;
+}
+.new-account:hover {
+	color:#309cc7;
 }
