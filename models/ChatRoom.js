@@ -1,5 +1,6 @@
 //loading required modules
 var mongoose = require('mongoose');
+var Message=require('./Message.js'); //the Message schema
 
 //Creating the schema for the user
 var ChatRoom = mongoose.Schema({
