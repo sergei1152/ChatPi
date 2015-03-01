@@ -11,9 +11,9 @@
   <title>Register | ChatPi</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="style/bootstrap.min.css" rel="stylesheet">
-  <link href="style/bootstrap-theme.min.css" rel="stylesheet">
-  <link href="style/register.css" rel="stylesheet">
+  <link href="../style/bootstrap.min.css" rel="stylesheet">
+  <link href="../style/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="../style/register.css" rel="stylesheet">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -35,7 +35,7 @@
       <%= message %>
     </div>
     <% } %>
-    <form action="/register" method="post">
+    <form action="/register/" method="post">
       <div class="form-group">
         <label for="username-input">Username</label>
         <input class="form-control" id="username-input" type="text" name="username" placeholder="username" required autofocus>
@@ -55,9 +55,9 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
     </form>
   </div>
-  <script src="../scripts/jquery.min.js"></script>
-  <script src="../scripts/bootstrap.min.js"></script>
-  <script charset="utf-8" src="../scripts/angular.min.js"></script>
+  <script src="../../scripts/jquery.min.js"></script>
+  <script src="../../scripts/bootstrap.min.js"></script>
+  <script charset="utf-8" src="../../scripts/angular.min.js"></script>
 </body>
 
 </html>
