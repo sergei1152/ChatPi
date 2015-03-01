@@ -3,7 +3,7 @@
   <head>
     <title>ChatPiTest</title>
     <script src="User.js"></script>
-    <link rel="stylesheet"  href="main.css">
+    <link rel="stylesheet"  href="../style/app.css">
   </head>
 
   <body>
@@ -17,22 +17,15 @@
       //initializing socket
       var socket = io();
 
-      var username=prompt("Please enter a username");
-      var user=new User (username, "test");
-      var chatroomID=254;
-
-      //sends the server the username to login with
-      socket.emit('login', {username:username, password:password});
-
       $('form').submit(function(){
         //Sends the message contents to the specified chatroom
-        socket.emit('message', {chatroom:254, message:$('#m').val()});
+        socket.emit('message', $('#m').val());
         $('#m').val('');
         return false;
       });
       //Is called when it receives the 'chat message' event from the server,
       //after which is appends it to the html
-      socket.on('chat message', function(msg){
+      socket.on('message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
     </script>
