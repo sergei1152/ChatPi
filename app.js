@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var io = require('socket.io')(http);
 var randomstring = require("randomstring"); //used for session secret key
+var RedisStore = require('connect-redis')(session);
+
 
 //Initializing custom objects
 var configDB = require('./config/database.js'); //contains database settings
@@ -43,8 +45,13 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser()); //enable the user of cookies
 app.use(bodyParser()); //get info from html forms
 
-//enables the use of sessions in the app
 app.use(session({
+  store: new RedisStore({
+    host: 'localhost',
+    port: 6379,
+    db: 2,
+    pass: 'RedisPASS'
+  }),
   secret: randomstring.generate(128),
   cookie: {
     maxAge: 2678400000 // 31 days
