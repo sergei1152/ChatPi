@@ -15,6 +15,12 @@ module.exports = function(app, passport) {
     });
   });
 
+  app.post('/login/', passport.authenticate('login', {
+    successRedirect: '/app/', // redirect to the app page
+    failureRedirect: '/login/', // redirect back to the signup page if there is an error
+    failureFlash: true // allow flash messages
+  }));
+
   app.get('/register/', function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('register', {
@@ -22,7 +28,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/register/', passport.authenticate('local-signup', {
+  app.post('/register/', passport.authenticate('signup', {
     successRedirect: '/app/', // redirect to the app page
     failureRedirect: '/register/', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
