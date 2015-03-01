@@ -49,8 +49,8 @@ app.use(session({
   store: new RedisStore({
     host: 'localhost',
     port: 6379,
-    db: 2,
-    pass: 'RedisPASS'
+    db: 2
+    // pass: 'RedisPASS'
   }),
   secret: randomstring.generate(128),
   cookie: {
