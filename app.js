@@ -11,18 +11,24 @@ var session = require('express-session');
 var io = require('socket.io')(http);
 var randomstring = require("randomstring"); //used for session secret key
 var RedisStore = require('connect-redis')(session);
-
+var redis = require("redis");
+var RedisClient = redis.createClient();
 
 //Initializing custom objects
-var configDB = require('./config/database.js'); //contains database settings
+var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
+var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
 var ChatRoom = require('./models/ChatRoom.js');
 var route = require('./routes/main.js'); //routes will go through this
 
 //======Configuration of the Server=======
 
-mongoose.connect(configDB.url); //have mongoose connect to the MongoDB database
+mongoose.connect(MongoDBConfig.url); //have mongoose connect to the MongoDB database
 require('./config/passport')(passport); // pass passport for configuration
 
+//setting up the redis client
+RedisClient.select(RedisDBConfig.databaseNumber, function() {
+  console.log("Redis Client is using database #"+RedisDBConfig.databaseNumber+" and a port number of "+RedisDBConfig.portNumber);
+});
 
 //setting the port number for the server to use
 var PORTNUMBER = 3000;
@@ -47,10 +53,10 @@ app.use(bodyParser()); //get info from html forms
 
 app.use(session({
   store: new RedisStore({
-    host: 'localhost',
-    port: 6379,
-    db: 2
-    // pass: 'RedisPASS'
+    host: RedisDBConfig.host,
+    port: RedisDBConfig.portNumber,
+    db: RedisDBConfig.databaseNumber
+      // pass: 'RedisPASS'
   }),
   secret: randomstring.generate(128),
   cookie: {
@@ -72,13 +78,31 @@ var onlineUsers = 0;
 // //executes when a user connects
 
 io.on('connection', function(socket) {
-
+  console.log("a connection has been made");
   onlineUsers++;
   console.log('Online Users: ' + onlineUsers);
+  socket.on('session', function(data) {
+    //checking for whether the sessionID is found in the database before letting the user connect
+    RedisClient.get("sess:"+data, function(err, reply) {
+      if (reply) {
+        socket.authorized = true;
+      } else {
+        socket.emit('disconnect',"Sorry, you've been disconnected because of authorization reasons");
+        socket.disconnect();
+        socket.authorized = false;
+      }
+      // reply is null when the key is missing
+      console.log(reply);
+    });
+  });
+
   //When a new chat message has been received
   socket.on('message', function(data) {
-    console.log(data);
-    socket.broadcast.emit('message', data);
+    console.log(socket.authorized);
+    if (socket.authorized) {
+      console.log(data);
+      socket.broadcast.emit('message', data);
+    }
   });
 
   //executes when a user disconnects

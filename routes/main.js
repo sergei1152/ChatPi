@@ -5,8 +5,7 @@ module.exports = function(app, passport) {
   });
 
   app.get('/app/',isLoggedIn, function(req, res) {
-      console.log(req.session.passport.user);
-      res.render('app'); //renders the app page
+      res.render('app',{sessionID:req.sessionID}); //renders the app page
   });
 
   app.get('/login/', function(req, res) {
