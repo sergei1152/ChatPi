@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -73,34 +73,20 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="../scripts/socket.io.client.js"></script>
   <script src="../scripts/jquery.min.js"></script>
   <script src="../scripts/jquery.cookie.js"></script>
   <script src="../scripts/bootstrap.min.js"></script>
-
-  <script>
-    //setting cookie required for authorization needed for the chat service
-    $.cookie("socketID", "<%= sessionID %>", {
-      expires: 7
-    });
-    var socket = io();
-    socket.emit('session', $.cookie("socketID"));
-
-    $('form').submit(function() {
-      //Sends the message contents to the specified chatroom
-      socket.emit('message', $('#message-text-input').val());
-      $('#message-text-input').val('');
-      return false;
-    });
-    //Is called when it receives the 'chat message' event from the server,
-    //after which is appends it to the html
-    socket.on('message', function(msg) {
-      $('#messages-list').append($('<li class="messages">').text(msg));
-      $("#messages-list").animate({
-        "scrollTop": $('#messages-list')[0].scrollHeight
-      }, "slow");
-    });
+  <script charset="utf-8">
+  //setting cookie required for authorization needed for the chat service
+  $.cookie("socketID", "<%= sessionID %>", {
+    expires: 7
+  });
+  var socket = io();
+  socket.emit('session', $.cookie("socketID"));
   </script>
+  <script charset="utf-8" src="../scripts/app.js"></script>
+
 </body>
 
 </html>
