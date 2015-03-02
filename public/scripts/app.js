@@ -1,14 +1,13 @@
-var ChatPiApp = angular.module('ChatPiApp', []);
+var ChatPiApp = angular.module('ChatPiApp',[]);
 
-ChatPiApp.controller('Conversation', function ($scope) {
-  $scope.messages=[String];
-  $scope.test="this is a test message";
-
-  $scope.messages.push("test message");
-  $scope.messages.push("new message");
-  $scope.messages.push("another message");
-  $scope.messages.push("another message");
-  $scope.newMessage;
+ChatPiApp.controller('Conversation',function ($scope) {
+  $scope.chat_history={messageHistory:[String],newMessage:String};
+  $scope.chat_history.newMessage="some defualt text";
+  $scope.send2=function(){
+    console.log("send executed");
+    $scope.chat_history.newMessage="";
+  };
+  $scope.send2();
   // $scope.messages.push("test message");
   //
   // $scope.messages.push("test message");

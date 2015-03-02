@@ -42,20 +42,19 @@
 
   <div class="container-fluid" id="container-middle-pane">
     <div class="row">
-      <div class="col-md-2" id="left-pane">
+      <div class="col-sm-2" id="left-pane">
 
       </div>
 
-      <div class="col-md-8" id="middle-pane">
+      <div class="col-sm-8" id="middle-pane">
         <ul id="conversation" ng-controller="Conversation">
-          <li class="message" ng-repeat="message in messages track by $index">{{message}}</li>
+          <li class="message" ng-repeat="message in chat_history.messageHistory track by $index">{{message}}</li>
         </ul>
-        <form id="input-bar" action="">
+        <form id="input-bar" novalidate>
           <div class="input-group">
-
-            <input ng-model="new-message" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus>
+            <input  ng-model="chat_history.newMessage" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus>
             <div class="input-group-btn">
-              <button type="submit" class="btn btn-default">Send</button>
+              <button ng-click="$scope.send2()" class="btn btn-default">Send</button>
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
@@ -71,7 +70,7 @@
           </div>
         </form>
       </div>
-      <div class="col-md-2" id="right-pane">
+      <div class="col-sm-2" id="right-pane">
 
       </div>
     </div>
