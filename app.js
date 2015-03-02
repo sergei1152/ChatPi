@@ -87,6 +87,7 @@ io.on('connection', function(socket) {
       if (reply) {
         socket.authorized = true;
       } else {
+        //disconnects the user if session handshake failed
         socket.emit('disconnect',"Sorry, you've been disconnected because of authorization reasons");
         socket.disconnect();
         socket.authorized = false;
