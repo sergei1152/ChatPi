@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html ng-app="ChatPiApp">
 
 <head>
   <title>App | ChatPi</title>
@@ -45,12 +45,15 @@
       <div class="col-md-2" id="left-pane">
 
       </div>
+
       <div class="col-md-8" id="middle-pane">
-        <ul id="messages-list"></ul>
+        <ul id="conversation" ng-controller="Conversation">
+          <li class="message" ng-repeat="message in messages track by $index">{{message}}</li>
+        </ul>
         <form id="input-bar" action="">
           <div class="input-group">
 
-            <input type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus>
+            <input ng-model="new-message" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus>
             <div class="input-group-btn">
               <button type="submit" class="btn btn-default">Send</button>
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -74,6 +77,8 @@
     </div>
   </div>
   <script src="../scripts/socket.io.client.js"></script>
+  <script src="../scripts/angular.min.js"></script>
+
   <script src="../scripts/jquery.min.js"></script>
   <script src="../scripts/jquery.cookie.js"></script>
   <script src="../scripts/bootstrap.min.js"></script>
