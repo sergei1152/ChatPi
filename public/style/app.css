@@ -1,5 +1,5 @@
 html {
-  background: url('../images/background2.jpg') no-repeat center center fixed;
+  background: url('../images/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -21,16 +21,33 @@ body {
 }
 .navbar{
   margin-bottom:0;
+  border-radius:0px;
+  opacity:0.5;
+  text-align:center;
+}
+.navbar-brand{
+  display:inline-block;
+  color:white !important;
+  font-weight:bold;
+  font-size:26px;
 }
 #container-middle-pane{
   height: calc( 100% - 55px);
   width: 100%;
+  padding:0;
 }
 .container{
   border:1px solid black;
 
 }
+#input-bar{
+  margin-top:24px;
+  max-width:80%;
+margin:auto;'
+}
+#message-text-input{
 
+}
 .messages{
   background-color:grey;
   display:inline-block;
@@ -46,10 +63,10 @@ body {
 
 }
 #messages-list{
-  margin:0;
+  margin:0 0 24px 0;
   padding:0;
   overflow:auto;
-  min-height:80%;
+  height:90%;
 }
 .row{
   height:100%;

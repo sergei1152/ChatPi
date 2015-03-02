@@ -19,11 +19,12 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand">ChatPi</a>
       </div>
+      <p class="navbar-text">Your Messaging Platform</p>
     </div>
     </div>
   </nav>
@@ -34,9 +35,23 @@
       </div>
       <div class="col-md-8" id="middle-pane">
         <ul id="messages-list"></ul>
-        <form action="">
-          <input id="m" autocomplete="off" />
-          <button>Send</button>
+        <form id="input-bar" action="">
+          <div class="input-group">
+
+            <input type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus>
+            <div class="input-group-btn">
+            <button type="submit" class="btn btn-default">Send</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li><a href="#">Send a File</a></li>
+              <li><a href="#">Send a Text Snippet</a></li>
+            </ul>
+          </div>
+
+          </div>
         </form>
       </div>
       <div class="col-md-2" id="right-pane">
@@ -57,14 +72,15 @@
 
     $('form').submit(function() {
       //Sends the message contents to the specified chatroom
-      socket.emit('message', $('#m').val());
-      $('#m').val('');
+      socket.emit('message', $('#message-text-input').val());
+      $('#message-text-input').val('');
       return false;
     });
     //Is called when it receives the 'chat message' event from the server,
     //after which is appends it to the html
     socket.on('message', function(msg) {
       $('#messages-list').append($('<li class="messages">').text(msg));
+      $("#messages-list").animate({"scrollTop": $('#messages-list')[0].scrollHeight}, "slow");
     });
   </script>
 </body>
