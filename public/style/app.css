@@ -30,8 +30,26 @@ body {
   border:1px solid black;
 
 }
-#messages{
+
+.messages{
+  background-color:grey;
+  display:inline-block;
+  border-radius:10px;
+  width:70%;
+  clear:both;
+  margin:12px;
+  padding:12px;
+  float:right;
+}
+.messages:nth-child(odd){
+  float:left;
+
+}
+#messages-list{
+  margin:0;
+  padding:0;
   overflow:auto;
+  min-height:80%;
 }
 .row{
   height:100%;

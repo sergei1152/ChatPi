@@ -33,7 +33,7 @@
 
       </div>
       <div class="col-md-8" id="middle-pane">
-        <ul id="messages"></ul>
+        <ul id="messages-list"></ul>
         <form action="">
           <input id="m" autocomplete="off" />
           <button>Send</button>
@@ -64,7 +64,7 @@
     //Is called when it receives the 'chat message' event from the server,
     //after which is appends it to the html
     socket.on('message', function(msg) {
-      $('#messages').append($('<li>').text(msg));
+      $('#messages-list').append($('<li class="messages">').text(msg));
     });
   </script>
 </body>
