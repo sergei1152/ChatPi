@@ -102,7 +102,7 @@ io.on('connection', function(socket) {
     console.log(socket.authorized);
     if (socket.authorized) {
       console.log(data);
-      socket.broadcast.emit('message', data);
+      io.emit('message', data);
     }
   });
 

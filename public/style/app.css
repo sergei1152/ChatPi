@@ -1,8 +1,50 @@
-* { margin: 0; padding: 0; box-sizing: border-box; } body {
-font: 13px Helvetica, Arial; } form { background: #000; padding:
-3px; position: fixed; bottom: 0; width: 100%; } form input {
-border: 0; padding: 10px; width: 90%; margin-right: .5%; } form
-button { width: 9%; background: rgb(130, 224, 255); border:
-none; padding: 10px; } #messages { list-style-type: none;
-margin: 0; padding: 0; } #messages li { padding: 5px 10px; }
-#messages li:nth-child(odd) { background: #eee; }
+html {
+  background: url('../images/background2.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  min-height:100%;
+  height:100%;
+  min-width:100%;
+}
+body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  position:absolute;
+  height:100%;
+  min-height:100%;
+  min-width:100%;
+}
+.navbar{
+  margin-bottom:0;
+}
+#container-middle-pane{
+  height: calc( 100% - 55px);
+  width: 100%;
+}
+.container{
+  border:1px solid black;
+
+}
+#messages{
+  overflow:auto;
+}
+.row{
+  height:100%;
+}
+#left-pane{
+  border: 1px solid black;
+  height:100%;
+}
+#right-pane{
+  border: 1px solid black;
+  height:100%;
+}
+#middle-pane{
+  border: 1px solid black;
+  height:100%;
+}
