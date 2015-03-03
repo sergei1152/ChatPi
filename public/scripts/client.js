@@ -1,17 +1,20 @@
 var ChatPiApp = angular.module('ChatPiApp',[]);
 
 ChatPiApp.controller('Conversation',function ($scope) {
-  $scope.chat_history={messageHistory:[String],newMessage:String};
-  $scope.chat_history.newMessage="some defualt text";
-  $scope.send2=function(){
-    console.log("send executed");
-    $scope.chat_history.newMessage="";
-  };
-  $scope.send2();
-  // $scope.messages.push("test message");
-  //
-  // $scope.messages.push("test message");
 
+  $scope.conversation={message_history:[String],new_message:""};
+
+  $scope.send=function(){
+    var cleanMessage=$scope.conversation.new_message.replace(/\s/g, '');
+    if(cleanMessage!==""){  //checking for empty strings
+      socket.emit('message', $scope.conversation.new_message); //sends the message contents to the server
+      $scope.conversation.new_message=""; //clears the input area
+    }
+  };
+
+  socket.on('message', function(msg) {
+    $scope.conversation.message_history.push(msg);
+  });
 
 });
 //
