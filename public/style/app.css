@@ -40,10 +40,16 @@ body {
 #input-bar{
   margin-top:24px;
   max-width:80%;
-margin:auto;'
+	margin:auto;	
 }
 #message-text-input{
+resize: none;
+height:64px;
+}
 
+
+.btn{
+height:64px;
 }
 .message{
   background-color:grey;
@@ -58,6 +64,12 @@ margin:auto;'
 .message:nth-child(odd){
   float:left;
 
+}
+.message-content{
+	background-color:transparent;
+	border:none;
+	padding:0;
+	margin:0;
 }
 #conversation{
   margin:0 0 24px 0;
@@ -79,4 +91,5 @@ margin:auto;'
 #middle-pane{
   border: 1px solid black;
   height:100%;
+  padding-bottom:72px;
 }
