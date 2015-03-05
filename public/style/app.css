@@ -60,17 +60,37 @@ body {
 }
 .message{
   display:flex;
-}
-.avatar {
-  width: 40px;
-}
-.avatar img {
-  width: 100%;
-  display: block;
+  max-width:95%;
+  display:2px solid white;
+  justify-content:flex-end;
+  clear:both;
+  float:left;
 }
 .message:nth-child(odd){
-  float:left;
 
+}
+.self{
+  flex-direction:row-reverse;
+}
+.message-contents{
+  font-family:Roboto, Arial;
+  border-radius:5px;
+  border-top-left-radius:0;
+  padding:12px 12px 0 12px;
+  opacity:0.9;
+}
+.message-date{
+  margin:0;
+  padding:0;
+  color:#c1c1c1;
+}
+.sender-avatar {
+  width: 40px;
+}
+.sender-avatar img {
+  width: 100%;
+  border-top-left-radius:3px;
+  display: inline-block;
 }
 .message-content{
 	background-color:transparent;
