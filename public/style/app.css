@@ -36,50 +36,6 @@ body {
   width: 100%;
   padding:0;
 }
-
-#input-bar{
-  margin-top:24px;
-  max-width:80%;
-	margin:auto;	
-}
-#message-text-input{
-resize: none;
-height:64px;
-}
-
-
-.btn{
-height:64px;
-}
-.message{
-  background-color:grey;
-  display:inline-block;
-  border-radius:10px;
-  width:70%;
-  clear:both;
-  margin:12px;
-  padding:12px;
-  float:right;
-}
-.message:nth-child(odd){
-  float:left;
-
-}
-.message-content{
-	background-color:transparent;
-	border:none;
-	padding:0;
-	margin:0;
-}
-#conversation{
-  margin:0 0 24px 0;
-  padding:0;
-  overflow:auto;
-  height:90%;
-}
-.row{
-  height:100%;
-}
 #left-pane{
   border: 1px solid black;
   height:100%;
@@ -92,4 +48,45 @@ height:64px;
   border: 1px solid black;
   height:100%;
   padding-bottom:72px;
+}
+.row{
+  height:100%;
+}
+#conversation{
+  margin:0 0 24px 0;
+  padding:0;
+  overflow:auto;
+  height:90%;
+}
+.message{
+  display:flex;
+}
+.avatar {
+  width: 40px;
+}
+.avatar img {
+  width: 100%;
+  display: block;
+}
+.message:nth-child(odd){
+  float:left;
+
+}
+.message-content{
+	background-color:transparent;
+	border:none;
+	padding:0;
+	margin:0;
+}
+#send-form{
+  margin-top:24px;
+  max-width:80%;
+	margin:auto;
+}
+#message-text-input{
+resize: none;
+height:64px;
+}
+.btn{
+height:64px;
 }
