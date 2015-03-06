@@ -18,7 +18,15 @@ ChatPiApp.filter('urlParser',function(){
 	return parsedMessage;
   };
 });
-//filter that parses the dates to a human readable format
+//service that returns the current date in minutes to be used in message dates
+ChatPiApp.service("getDate",function(){
+  this.currentDateInMinutes=function(){
+    return Math.ceil(Date.now()/1000/60);//return the current minutes
+  };
+});
+//filter that parses the differnce between dates to a human readable format (eg. 5 minutes ago, less than a minute ago)
+//note that the current date must be passed in from the filter so as for the
+//$digest cycle to recognize a change in the time and refresh the filtered dates
 ChatPiApp.filter('dateParser',function(){
   return function (messageDate, currentDate){
     var differenceInMinutes=(currentDate-Math.ceil(messageDate/1000/60));
@@ -48,12 +56,10 @@ ChatPiApp.filter('dateParser',function(){
     }
   };
 });
-ChatPiApp.controller('Conversation',function ($scope, Message) {
-
+ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
+  $scope.getDateInMinutes=getDate.currentDateInMinutes;
   $scope.conversation={message_history:[],new_message:""};
-  $scope.getCurrentDate=function(){
-    return Math.ceil(Date.now()/1000/60);//return the current minutes
-  };
+
   $scope.send=function(){
     var cleanMessage=$scope.conversation.new_message.replace(/\s/g, '');
     if(cleanMessage!==""){  //checking for empty strings
