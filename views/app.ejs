@@ -94,7 +94,7 @@
   <script charset="utf-8">
     //setting cookie required for authorization needed for the chat service
     $.cookie("socketID", "<%= sessionID %>", {
-      expires: 7
+      expires: 1
     });
     var socket = io();
     socket.emit('session', $.cookie("socketID"));
