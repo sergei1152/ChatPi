@@ -39,17 +39,17 @@ ChatPiApp.filter('dateParser',function(){
     else if (differenceInMinutes<60){
       return differenceInMinutes+" minutes ago";
     }
-    else if (differenceInMinutes==60){
+    else if (differenceInMinutes<60*2){
       return "1 hour ago";
     }
     else if (differenceInMinutes<60*24){
-      return differenceInMinutes/60+" hours ago";
+      return Math.round(differenceInMinutes/60)+" hours ago";
     }
-    else if (differenceInMinutes==60*24){
+    else if (differenceInMinutes<60*24*2){
       return "1 day ago";
     }
     else if (differenceInMinutes<60*24*7){
-      return differenceInMinutes/60/24+"days ago";
+      return Math.round(differenceInMinutes/60/24)+"days ago";
     }
     else{
       return messageDate.toLocaleDateString();
