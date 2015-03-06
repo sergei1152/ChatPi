@@ -18,10 +18,42 @@ ChatPiApp.filter('urlParser',function(){
 	return parsedMessage;
   };
 });
+//filter that parses the dates to a human readable format
+ChatPiApp.filter('dateParser',function(){
+  return function (messageDate, currentDate){
+    var differenceInMinutes=(currentDate-Math.ceil(messageDate/1000/60));
+    if(differenceInMinutes<1){
+      return "less than a minute ago";
+    }
+    else if (differenceInMinutes==1){
+      return "1 minute ago";
+    }
+    else if (differenceInMinutes<60){
+      return differenceInMinutes+" minutes ago";
+    }
+    else if (differenceInMinutes==60){
+      return "1 hour ago";
+    }
+    else if (differenceInMinutes<60*24){
+      return differenceInMinutes/60+" hours ago";
+    }
+    else if (differenceInMinutes==60*24){
+      return "1 day ago";
+    }
+    else if (differenceInMinutes<60*24*7){
+      return differenceInMinutes/60/24+"days ago";
+    }
+    else{
+      return messageDate.toLocaleDateString();
+    }
+  };
+});
 ChatPiApp.controller('Conversation',function ($scope, Message) {
 
   $scope.conversation={message_history:[],new_message:""};
-
+  $scope.getCurrentDate=function(){
+    return Math.ceil(Date.now()/1000/60);//return the current minutes
+  };
   $scope.send=function(){
     var cleanMessage=$scope.conversation.new_message.replace(/\s/g, '');
     if(cleanMessage!==""){  //checking for empty strings
@@ -32,8 +64,8 @@ ChatPiApp.controller('Conversation',function ($scope, Message) {
   };
 
   socket.on('message', function(msg) {
-    console.log("message received");
     $scope.conversation.message_history.push(msg);
+    $scope.$digest();
     $scope.$apply();
   });
 

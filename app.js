@@ -99,9 +99,7 @@ io.on('connection', function(socket) {
 
   //When a new chat message has been received
   socket.on('message', function(data) {
-    console.log(socket.authorized);
     if (socket.authorized) {
-      console.log(data);
       io.emit('message', data);
     }
   });

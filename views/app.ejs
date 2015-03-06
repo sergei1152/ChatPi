@@ -54,8 +54,8 @@
             <div class="sender-avatar">
               <img src="//lh4.googleusercontent.com/-_TiwxWC9EgY/VBD9frjAOSI/AAAAAAAAE5U/JuwptIUcLU8/s929-no/profile%2Bpic.jpg"/>
             </div>
-            <pre class="message-contents">{{message}}
-              <time class="message-date" datetime="2009-11-13T20:00">Serj Babayan • 51 min</time>
+            <pre class="message-contents">{{message.contents}}
+              <time class="message-date" datetime={{message.date}}>Serj Babayan • {{message.date|dateParser:getCurrentDate()}}</time>
             </pre>
 
           </li>
