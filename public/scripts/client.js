@@ -1,8 +1,8 @@
 var ChatPiApp = angular.module('ChatPiApp',[]);
 ChatPiApp.factory("Message", function(){
-  var Message=function(contents){
+  var Message=function(contents,type){
     this.contents=contents;
-    this.date=Date.now();
+    this.type=type;
   };
   return Message;
 });
@@ -29,7 +29,7 @@ ChatPiApp.service("getDate",function(){
 //$digest cycle to recognize a change in the time and refresh the filtered dates
 ChatPiApp.filter('dateParser',function(){
   return function (messageDate, currentDate){
-    var differenceInMinutes=(currentDate-Math.ceil(messageDate/1000/60));
+    var differenceInMinutes=(currentDate-messageDate);
     if(differenceInMinutes<1){
       return "less than a minute ago";
     }
@@ -63,7 +63,7 @@ ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
   $scope.send=function(){
     var cleanMessage=$scope.conversation.new_message.replace(/\s/g, '');
     if(cleanMessage!==""){  //checking for empty strings
-      var message=new Message($scope.conversation.new_message);
+      var message=new Message($scope.conversation.new_message,"text");
       socket.emit('message', message); //sends the message contents to the server
       $scope.conversation.new_message=""; //clears the input area
     }

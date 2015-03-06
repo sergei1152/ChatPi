@@ -18,6 +18,8 @@ var RedisClient = redis.createClient();
 var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
 var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
 var ChatRoom = require('./models/ChatRoom.js');
+var User = require('./models/User.js');
+var Message = require('./models/Message.js');
 var route = require('./routes/main.js'); //routes will go through this
 
 //======Configuration of the Server=======
@@ -84,23 +86,39 @@ io.on('connection', function(socket) {
   socket.on('session', function(data) {
     //checking for whether the sessionID is found in the database before letting the user connect
     RedisClient.get("sess:"+data, function(err, reply) {
+      if(err){
+        return console.err(err);
+      }
       if (reply) {
-        socket.authorized = true;
+        User.findOne({'_id':JSON.parse(reply).passport.user},function(err,result){
+          if(err)
+            console.err(err);
+
+          socket.name=result.name;
+          socket.usename=result.username;
+          socket.authorized = true;
+        });
+
       } else {
         //disconnects the user if session handshake failed
         socket.emit('disconnect',"Sorry, you've been disconnected because of authorization reasons");
         socket.disconnect();
         socket.authorized = false;
       }
-      // reply is null when the key is missing
-      console.log(reply);
     });
   });
 
   //When a new chat message has been received
   socket.on('message', function(data) {
     if (socket.authorized) {
-      io.emit('message', data);
+      var newMessage=new Message();
+      newMessage.senderUsername=socket.username;
+      newMessage.senderName=socket.name;
+      newMessage.contents=data.contents;
+      newMessage.type=data.type;
+      newMessage.dateSent=Date.now();
+      newMessage.dateSentInMinutes=Math.ceil(newMessage.dateSent.getTime()/1000/60);
+      io.emit('message', newMessage);
     }
   });
 
