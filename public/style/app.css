@@ -9,6 +9,8 @@ html {
   min-height:100%;
   height:100%;
   min-width:100%;
+  max-height:100%;
+  max-width:100%;
 }
 body {
   background-color: transparent;
@@ -18,6 +20,8 @@ body {
   height:100%;
   min-height:100%;
   min-width:100%;
+  max-height:100%;
+  max-width:100%;
 }
 .navbar{
   margin-bottom:0;
@@ -54,7 +58,7 @@ body {
 }
 #conversation{
   margin:0 0 24px 0;
-  padding:0;
+  padding:0 12px 0 12px;
   overflow:auto;
   height:90%;
 }
@@ -62,41 +66,68 @@ body {
   display:flex;
   max-width:95%;
   display:2px solid white;
-  justify-content:flex-end;
   clear:both;
   float:left;
-}
-.message:nth-child(odd){
-
-}
-.self{
-  flex-direction:row-reverse;
+  margin-bottom:12px;
 }
 .message-contents{
+  max-width:100%;
+  height:auto;
   font-family:Roboto, Arial;
   border-radius:5px;
+  margin:0;
   border-top-left-radius:0;
   padding:12px 12px 0 12px;
   opacity:0.9;
+  flex-wrap: wrap;
 }
 .message-date{
   margin:0;
+  float:right;
   padding:0;
   color:#c1c1c1;
+  margin-top:12px;
 }
 .sender-avatar {
-  width: 40px;
+  flex-shrink: 0;
+  width: 40px !important;
 }
 .sender-avatar img {
   width: 100%;
   border-top-left-radius:3px;
   display: inline-block;
 }
-.message-content{
-	background-color:transparent;
-	border:none;
-	padding:0;
-	margin:0;
+/*Changes to the message style when the message is from the person him/herself*/
+.message:nth-child(odd){
+  flex-direction:row-reverse;
+  float:right;
+  align-items:flex-end;
+}
+.message:nth-child(odd) .message-contents{
+  border-radius:5px;
+  border-bottom-right-radius:0 !important;
+}
+.message:nth-child(odd) .message-date{
+  float:left;
+}
+.message:nth-child(odd) .sender-avatar img{
+  border-top-left-radius:0px;
+  border-top-right-radius:3px;
+}
+.self{
+  flex-direction:row-reverse;
+  float:right;
+}
+.self .message-contents{
+  border-radius:5px;
+  border-top-right-radius:0 !important;
+}
+.self .message-date{
+  float:left;
+}
+.self .sender-avatar img{
+  border-top-left-radius:0px;
+  border-top-right-radius:3px;
 }
 #send-form{
   margin-top:24px;
