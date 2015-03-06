@@ -64,9 +64,9 @@ ChatPiApp.controller('Conversation',function ($scope, Message) {
   };
 
   socket.on('message', function(msg) {
-    $scope.conversation.message_history.push(msg);
-    $scope.$digest();
-    $scope.$apply();
+    $scope.$apply(
+      $scope.conversation.message_history.push(msg)
+    );
   });
 
 });
