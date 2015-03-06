@@ -6,6 +6,7 @@ var Message = mongoose.Schema({
   senderUsername: String,
   senderName: String,
   dateSent: Date,
+  dateSentInMinutes:Number,
   type: String,
   contents: String
 });
