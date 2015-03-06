@@ -70,6 +70,12 @@ ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
   };
 
   socket.on('message', function(msg) {
+    if(msg.senderUsername==selfUsername){
+      msg.self="self";
+    }
+    else{
+      msg.self="";
+    }
     $scope.$apply(
       $scope.conversation.message_history.push(msg)
     );

@@ -95,8 +95,9 @@ io.on('connection', function(socket) {
             console.err(err);
 
           socket.name=result.name;
-          socket.usename=result.username;
+          socket.username=result.username;
           socket.authorized = true;
+          socket.emit("credentials",{name:result.name, username:result.username}); //sends the user his name and username
         });
 
       } else {

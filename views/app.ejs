@@ -50,7 +50,7 @@
       <div class="col-sm-8" id="middle-pane">
 
         <ul id="conversation">
-          <li class="message" ng-repeat="message in conversation.message_history track by $index">
+          <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
             <div class="sender-avatar">
               <img src="//lh4.googleusercontent.com/-_TiwxWC9EgY/VBD9frjAOSI/AAAAAAAAE5U/JuwptIUcLU8/s929-no/profile%2Bpic.jpg"/>
             </div>
@@ -98,6 +98,13 @@
     });
     var socket = io();
     socket.emit('session', $.cookie("socketID"));
+    var selfName="";
+    var selfUsername="";
+    //Setting up the credentials for proper CSS Styling of messages
+    socket.on("credentials",function(data){
+      selfName=data.name;
+      selfUsername=data.username;
+    });
   </script>
   <script charset="utf-8" src="../scripts/client.js"></script>
 
