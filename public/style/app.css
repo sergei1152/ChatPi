@@ -63,12 +63,12 @@ body {
   height:90%;
 }
 .message{
+  margin-top:12px;
   display:flex;
   max-width:95%;
   display:2px solid white;
   clear:both;
   float:left;
-  margin-bottom:12px;
 }
 .message-contents{
   max-width:100%;
