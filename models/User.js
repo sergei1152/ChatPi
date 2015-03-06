@@ -17,7 +17,7 @@ var userSchema = mongoose.Schema({
   createdAt: Date,
   name: String,
   onlineStatus: String,
-  profilePictureURL: String,
+  profile_picture: String,
   contacts: [String]
 });
 

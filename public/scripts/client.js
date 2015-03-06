@@ -70,11 +70,12 @@ ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
   };
 
   socket.on('message', function(msg) {
+    //checks if the sender is the user, and if so applies appropriate styling to the message
     if(msg.senderUsername==selfUsername){
-      msg.self="self";
+      msg.self="self"; //corresponds to the .self class
     }
     else{
-      msg.self="";
+      msg.self=""; //applies no class (default)
     }
     $scope.$apply(
       $scope.conversation.message_history.push(msg)

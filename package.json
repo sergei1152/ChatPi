@@ -16,6 +16,7 @@
     "express": "4.11.x",
     "express-session": "1.10.x",
     "mongoose": "3.8.x",
+    "multer": "^0.1.8",
     "passport": "0.2.x",
     "passport-local": "1.0.x",
     "randomstring": "1.0.x",

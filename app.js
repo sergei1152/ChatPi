@@ -13,6 +13,7 @@ var randomstring = require("randomstring"); //used for session secret key
 var RedisStore = require('connect-redis')(session);
 var redis = require("redis");
 var RedisClient = redis.createClient();
+var multer  = require('multer');
 
 //Initializing custom objects
 var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
@@ -52,7 +53,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(cookieParser()); //enable the user of cookies
 app.use(bodyParser()); //get info from html forms
-
+app.use(multer({ dest: './tmp/'}));
 app.use(session({
   store: new RedisStore({
     host: RedisDBConfig.host,

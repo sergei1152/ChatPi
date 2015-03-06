@@ -52,7 +52,7 @@
         <ul id="conversation">
           <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
             <div class="sender-avatar">
-              <img src="//lh4.googleusercontent.com/-_TiwxWC9EgY/VBD9frjAOSI/AAAAAAAAE5U/JuwptIUcLU8/s929-no/profile%2Bpic.jpg"/>
+              <img src="../resources/profiles/{{message.senderUsername}}.jpeg">
             </div>
             <pre class="message-contents">{{message.contents}}
               <time class="message-date" datetime={{message.date}}>{{message.senderName}} • {{message.dateSentInMinutes|dateParser:getDateInMinutes()}}</time>
@@ -92,6 +92,7 @@
   <script src="../scripts/jquery.cookie.js"></script>
   <script src="../scripts/bootstrap.min.js"></script>
   <script charset="utf-8">
+  //initialazation of the app
     //setting cookie required for authorization needed for the chat service
     $.cookie("socketID", "<%= sessionID %>", {
       expires: 1

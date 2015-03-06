@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/User');
-
+var fs = require('fs');
+var path=require('path');
 module.exports = function(passport) {
 
   // =========================================================================
@@ -59,17 +60,36 @@ module.exports = function(passport) {
             var newUser = new User();
 
             // set the user's local credentials
-            console.log("username: " + username);
-            console.log("password: " + password);
-            console.log("hashedpassword: " + newUser.generateHash(password));
-            console.log("date: " + Date.now());
-            console.log("name: " + req.body.name);
-
-
             newUser.username = username;
             newUser.password = newUser.generateHash(password);
             newUser.createdAt = Date.now();
             newUser.name = req.body.name;
+            console.log(req.files);
+            //checks if the user uploaded a profile picture
+          
+            var imagePath=req.files.profile_picture.path;
+            if (imagePath){
+              newUser.profile_picture = req.files.profile_picture.path;
+              //saves the profile image (if any) to the resources folder
+              var extension=req.files.profile_picture.mimetype.replace(/(.*)\//,"");//image/jpg ==> jpg
+              console.log(extension);
+              if(extension=="jpg" || extension=="png" || extension == "jpeg"){
+              fs.readFile(imagePath, function(err, data) {
+                var newPath = path.join(__dirname,"../public/resources/profiles/"+username+"."+extension);
+                console.log(newPath);
+                fs.writeFile(newPath, data, function(err) {
+                  if (err)
+                    console.err(err);
+                });
+              });
+            }
+            else{
+              newUser.profile_picture = "default.png";
+            }
+            }
+            else{
+              newUser.profile_picture = "default.png";
+            }
             // newUser.profilePictureURL=req.body.pic;
             console.log("Saving Users Info");
             // save the user to the database
@@ -108,7 +128,7 @@ module.exports = function(passport) {
           return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
         // if the user is found but the password is wrong
-        if (!user.validPassword(password)){
+        if (!user.validPassword(password)) {
           console.log("wrong password");
           return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
         }
