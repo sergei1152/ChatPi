@@ -1,4 +1,11 @@
 var ChatPiApp = angular.module('ChatPiApp',[]);
+ChatPiApp.factory("Message", function(){
+  var Message=function(contents){
+    this.contents=contents;
+    this.date=Date.now();
+  };
+  return Message;
+});
 ChatPiApp.filter('urlParser',function(){
   return function (message){
     var parsedMessage=message || '';
@@ -11,14 +18,15 @@ ChatPiApp.filter('urlParser',function(){
 	return parsedMessage;
   };
 });
-ChatPiApp.controller('Conversation',function ($scope) {
+ChatPiApp.controller('Conversation',function ($scope, Message) {
 
   $scope.conversation={message_history:[],new_message:""};
 
   $scope.send=function(){
     var cleanMessage=$scope.conversation.new_message.replace(/\s/g, '');
     if(cleanMessage!==""){  //checking for empty strings
-      socket.emit('message', $scope.conversation.new_message); //sends the message contents to the server
+      var message=new Message($scope.conversation.new_message);
+      socket.emit('message', message); //sends the message contents to the server
       $scope.conversation.new_message=""; //clears the input area
     }
   };

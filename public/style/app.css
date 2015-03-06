@@ -98,25 +98,10 @@ body {
   display: inline-block;
 }
 /*Changes to the message style when the message is from the person him/herself*/
-.message:nth-child(odd){
-  flex-direction:row-reverse;
-  float:right;
-  align-items:flex-end;
-}
-.message:nth-child(odd) .message-contents{
-  border-radius:5px;
-  border-bottom-right-radius:0 !important;
-}
-.message:nth-child(odd) .message-date{
-  float:left;
-}
-.message:nth-child(odd) .sender-avatar img{
-  border-top-left-radius:0px;
-  border-top-right-radius:3px;
-}
 .self{
   flex-direction:row-reverse;
   float:right;
+  align-items:flex-end;
 }
 .self .message-contents{
   border-radius:5px;
