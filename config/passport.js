@@ -66,7 +66,7 @@ module.exports = function(passport) {
             newUser.name = req.body.name;
             console.log(req.files);
             //checks if the user uploaded a profile picture
-          
+
             var imagePath=req.files.profile_picture.path;
             if (imagePath){
               newUser.profile_picture = req.files.profile_picture.path;
@@ -79,7 +79,7 @@ module.exports = function(passport) {
                 console.log(newPath);
                 fs.writeFile(newPath, data, function(err) {
                   if (err)
-                    console.err(err);
+                    console.error(err);
                 });
               });
             }
