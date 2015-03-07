@@ -13,28 +13,22 @@ var randomstring = require("randomstring"); //used for session secret key
 var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging request details
-var logger=require('./logger.js');
+var logger = require('./logger.js');
 //======Initializing custom required modules======
-var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
+var MongoDBConfig = require('./config/mongo.js')(mongoose); //configures the mongoDB database
 var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
 
 //======Configuring the Server=======
-mongoose.connect(MongoDBConfig.url); //have mongoose connect to the MongoDB database
-require('./config/passport')(passport); //configure the passport module
 
 //setting up the redis client
 RedisClient.select(RedisDBConfig.databaseNumber, function() {
-  logger.warn("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
-  logger.error("this is a error test");
-  logger.debug("this is a debug test");
-  logger.silly("this is a debug test");
-  logger.info("this is an info test");
-
+  logger.info("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
 });
-
 RedisClient.on("error", function(err) {
-  logger.error("Error " + err);
+  logger.error("An error with the redis database.\n " + err);
 });
+
+require('./config/passport')(passport); //configure the passport module
 
 //setting the port number for the server to use
 var PORTNUMBER = 3000;
@@ -50,7 +44,9 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 //======Configuration of Middleware===========
-app.use(require('morgan')('tiny',{ "stream": logger.stream }));
+app.use(require('morgan')('tiny', {
+  "stream": logger.stream
+}));
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
@@ -64,7 +60,6 @@ app.use(session({
     host: RedisDBConfig.host,
     port: RedisDBConfig.portNumber,
     db: RedisDBConfig.databaseNumber
-      // pass: 'RedisPASS'
   }),
   secret: randomstring.generate(128),
   cookie: {
@@ -76,37 +71,16 @@ app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-
 //=======Routes======
 require('./routes/main.js')(app, passport);
 //Everything to do with the socket controller
 require("./socket.js")(http, RedisClient);
 
-/// catch 404 and forwarding to error handler
+// catch 404 and render 404 page
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
-});
-
-/// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
+  res.status(err.status);
   res.render('404', {
     message: err.message,
     error: {}
