@@ -12,7 +12,8 @@ var session = require('express-session');
 var randomstring = require("randomstring"); //used for session secret key
 var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
-
+var morgan = require('morgan'); //for logging request details
+var logger=require('./logger.js');
 //======Initializing custom required modules======
 var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
 var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
@@ -23,11 +24,16 @@ require('./config/passport')(passport); //configure the passport module
 
 //setting up the redis client
 RedisClient.select(RedisDBConfig.databaseNumber, function() {
-  console.log("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
+  logger.warn("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
+  logger.error("this is a error test");
+  logger.debug("this is a debug test");
+  logger.silly("this is a debug test");
+  logger.info("this is an info test");
+
 });
 
 RedisClient.on("error", function(err) {
-  console.err("Error " + err);
+  logger.error("Error " + err);
 });
 
 //setting the port number for the server to use
@@ -44,6 +50,7 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 //======Configuration of Middleware===========
+app.use(require('morgan')('tiny',{ "stream": logger.stream }));
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
@@ -107,5 +114,5 @@ app.use(function(err, req, res, next) {
 });
 
 http.listen(3000, function() {
-  console.log('ChatPi Server Started. Listening on Port: ' + PORTNUMBER);
+  logger.info('ChatPi Server Started. Listening on Port: ' + PORTNUMBER);
 });
