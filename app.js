@@ -16,17 +16,12 @@ var morgan = require('morgan'); //for logging request details
 var logger = require('./logger.js');
 //======Initializing custom required modules======
 var MongoDBConfig = require('./config/mongo.js')(mongoose); //configures the mongoDB database
-var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
-
+var RedisDBConfig = require('./config/redis.js'); //has the database configuration settings
+RedisDBConfig.configure(RedisClient);//configures the Redis Database
 //======Configuring the Server=======
 
 //setting up the redis client
-RedisClient.select(RedisDBConfig.databaseNumber, function() {
-  logger.info("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
-});
-RedisClient.on("error", function(err) {
-  logger.error("An error with the redis database.\n " + err);
-});
+
 
 require('./config/passport')(passport); //configure the passport module
 
