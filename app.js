@@ -22,7 +22,7 @@ var ChatRoom = require('./models/ChatRoom.js');
 var User = require('./models/User.js');
 var Message = require('./models/Message.js');
 var route = require('./routes/main.js'); //routes will go through this
-
+var DEVELOPMENT=true;
 //======Configuration of the Server=======
 
 mongoose.connect(MongoDBConfig.url); //have mongoose connect to the MongoDB database
@@ -50,7 +50,6 @@ app.engine('html', require('ejs').renderFile);
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
-
 app.use(cookieParser()); //enable the user of cookies
 app.use(bodyParser()); //get info from html forms
 app.use(multer({ dest: './tmp/'}));
@@ -70,6 +69,7 @@ app.use(session({
 app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+
 
 //=======Routes======
 require('./routes/main.js')(app, passport);
@@ -94,7 +94,6 @@ io.on('connection', function(socket) {
         User.findOne({'_id':JSON.parse(reply).passport.user},function(err,result){
           if(err)
             console.err(err);
-
           socket.name=result.name;
           socket.username=result.username;
           socket.authorized = true;
