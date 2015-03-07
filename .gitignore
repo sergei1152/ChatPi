@@ -1,10 +1,5 @@
 #redis stuff
 *.rdb
-#profile pictures and tmp data from registration form
-tmp
-public/resources/profiles/*
-#mongodb database
-data
 
 # -*- mode: gitignore; -*-
 *~
@@ -61,7 +56,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Logs
-logs
 *.log
 
 # Runtime data
