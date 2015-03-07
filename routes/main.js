@@ -1,3 +1,8 @@
+var multer=require('../config/multer-config.js'); //for parsing forms with file uploads
+var bodyParser=require('body-parser').urlencoded({ //for parsing forms with no file uploads
+  extended: false
+});
+
 module.exports = function(app, passport) {
 
   app.get('/', isLoggedIn, function(req, res) {
@@ -15,20 +20,20 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/login/', passport.authenticate('login', {
+  app.post('/login/', bodyParser, passport.authenticate('login', {
     successRedirect: '/app/', // redirect to the app page
     failureRedirect: '/login/', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   }));
 
-  app.get('/register/', function(req, res) {
+  app.get('/register/',function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('register', {
       message: req.flash('signupMessage')
     });
   });
 
-  app.post('/register/', passport.authenticate('signup', {
+  app.post('/register/', multer,  passport.authenticate('signup', {
     successRedirect: '/app/', // redirect to the app page
     failureRedirect: '/register/', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages

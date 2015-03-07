@@ -7,14 +7,13 @@ var passport = require('passport'); //for user authentication
 var flash = require('connect-flash'); //for sending flash messages to the user at the login and registration screen
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser'); //for parsing non-multipart/form-data forms
-var multer = require('multer'); //for parsing multipart/form-data forms
 var session = require('express-session');
 var randomstring = require("randomstring"); //used for session secret key
 var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging request details
 var logger = require('./logger.js');
-var fs=require('fs'); //for file system management. Used to manage the tmp directory
+var fs = require('fs'); //for file system management. Used to manage the tmp directory
 
 //======Database Settings and Configuration======
 var MongoDBConfig = require('./config/mongo.js')(mongoose); //configures the mongoDB database
@@ -47,29 +46,6 @@ app.use(require('morgan')('tiny', {
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser()); //enable parsing of cookies
-app.use(bodyParser()); //parse info from non-multipart/form-data
-
-app.use(multer({ //parse multipart/form-data and store them in the /tmp/ directory
-  dest: SERVER_SETTINGS.temporaryFilesLocation,
-  rename: function(fieldname, filename) {
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
-  },
-  limits: {
-    fileSize: SERVER_SETTINGS.maxFileUploadSize,
-    files: SERVER_SETTINGS.maxFileUploadNumber
-  },
-  onError: function(error, next) {
-    logger.error("An error occured while parsing a multipart form \n" + error);
-    next(error);
-  },
-  onFileSizeLimit: function(file) {
-    logger.warn("A file failed to upload because it was too large \n" + file);
-    fs.unlink('./' + file.path); // delete the partially written file
-  },
-  onFilesLimit: function() {
-    logger.warn("File limit crossed. No more files will be uploaded \n" + file);
-  }
-}));
 
 app.use(session({
   store: new RedisStore({
