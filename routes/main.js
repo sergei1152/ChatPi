@@ -40,7 +40,8 @@ module.exports = function(app, passport) {
   }));
 
   app.get('/logout/', function(req, res) {
-    req.logout(); //using the passport method for logging out
+    req.session.destroy(); //using the passport method for logging out
+    // req.logout(); //using the passport method for logging out
     res.redirect('/login/');
   });
 };

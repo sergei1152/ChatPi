@@ -17,7 +17,7 @@ io.on('connection', function(socket) {
   console.log('Online Users: ' + onlineUsers);
   socket.on('session', function(data) {
     //checking for whether the sessionID is found in the database before letting the user connect
-    RedisClient.get("sess:"+data, function(err, reply) {
+    RedisClient.get("sessions:"+data, function(err, reply) {
       if(err){
         return console.err(err);
       }

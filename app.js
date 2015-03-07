@@ -45,18 +45,23 @@ app.use(require('morgan')('tiny', {
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
-app.use(cookieParser()); //enable parsing of cookies
+
 
 app.use(session({
   store: new RedisStore({
     host: RedisDBConfig.host,
     port: RedisDBConfig.portNumber,
-    db: RedisDBConfig.databaseNumber
+    db: RedisDBConfig.databaseNumber,
+    prefix:"sessions:",
+    pass:RedisDBConfig.databasePassword,
+    ttl:86400 //time to live for the session in seconds (1 day)
   }),
   secret: randomstring.generate(128),
   cookie: {
     maxAge: 86400000 //for 1 day
-  }
+  },
+  saveUninitialized:false,
+  resave:false
 }));
 
 app.use(passport.initialize()); //initializing passport

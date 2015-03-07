@@ -3,7 +3,8 @@ var logger = require("../logger.js"); //for pretty console log outputs
 
 //Input your redis database settings here
 var redisDatabase = {
-  databaseNumber: 2,
+  databaseNumber: 1,
+  databasePassword: "", //if the redis db is locked with a password, input it here
   portNumber: 6379,
   host: "localhost"
 };
