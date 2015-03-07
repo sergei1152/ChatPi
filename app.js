@@ -1,36 +1,33 @@
 //=======Initializing Required Modules=======
 var express = require('express');
-var app = express();
+var app = express(); //the instance of express
 var http = require('http').Server(app);
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash = require('connect-flash');
+var mongoose = require('mongoose'); //for interacting with the mongodatabase
+var passport = require('passport'); //for user authentication
+var flash = require('connect-flash'); //for sending flash messages to the user at the login and registration screen
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'); //for parsing non-multipart/form-data forms
+var multer = require('multer'); //for parsing multipart/form-data forms
 var session = require('express-session');
-var io = require('socket.io')(http);
 var randomstring = require("randomstring"); //used for session secret key
-var RedisStore = require('connect-redis')(session);
-var redis = require("redis");
-var RedisClient = redis.createClient();
-var multer  = require('multer');
+var RedisClient = require("redis").createClient(); //the redis client
+var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 
-//Initializing custom objects
+//======Initializing custom required modules======
 var MongoDBConfig = require('./config/mongo.js'); //contains MongoDB database settings
 var RedisDBConfig = require('./config/redis.js'); //contains Redis database settings
-var ChatRoom = require('./models/ChatRoom.js');
-var User = require('./models/User.js');
-var Message = require('./models/Message.js');
-var route = require('./routes/main.js'); //routes will go through this
-var DEVELOPMENT=true;
-//======Configuration of the Server=======
 
+//======Configuring the Server=======
 mongoose.connect(MongoDBConfig.url); //have mongoose connect to the MongoDB database
-require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport); //configure the passport module
 
 //setting up the redis client
 RedisClient.select(RedisDBConfig.databaseNumber, function() {
-  console.log("Redis Client is using database #"+RedisDBConfig.databaseNumber+" and a port number of "+RedisDBConfig.portNumber);
+  console.log("Redis Client is using database #" + RedisDBConfig.databaseNumber + " and a port number of " + RedisDBConfig.portNumber);
+});
+
+RedisClient.on("error", function(err) {
+  console.err("Error " + err);
 });
 
 //setting the port number for the server to use
@@ -52,7 +49,9 @@ app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser()); //enable the user of cookies
 app.use(bodyParser()); //get info from html forms
-app.use(multer({ dest: './tmp/'}));
+app.use(multer({
+  dest: './tmp/'
+}));
 app.use(session({
   store: new RedisStore({
     host: RedisDBConfig.host,
@@ -73,62 +72,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 //=======Routes======
 require('./routes/main.js')(app, passport);
-
-//Creating the chatroom object
-var chat = new ChatRoom();
-chat.authorized_users = ['serge'];
-var onlineUsers = 0;
-// //executes when a user connects
-
-io.on('connection', function(socket) {
-  console.log("a connection has been made");
-  onlineUsers++;
-  console.log('Online Users: ' + onlineUsers);
-  socket.on('session', function(data) {
-    //checking for whether the sessionID is found in the database before letting the user connect
-    RedisClient.get("sess:"+data, function(err, reply) {
-      if(err){
-        return console.err(err);
-      }
-      if (reply) {
-        User.findOne({'_id':JSON.parse(reply).passport.user},function(err,result){
-          if(err)
-            console.err(err);
-          socket.name=result.name;
-          socket.username=result.username;
-          socket.authorized = true;
-          socket.emit("credentials",{name:result.name, username:result.username}); //sends the user his name and username
-        });
-
-      } else {
-        //disconnects the user if session handshake failed
-        socket.emit('disconnect',"Sorry, you've been disconnected because of authorization reasons");
-        socket.disconnect();
-        socket.authorized = false;
-      }
-    });
-  });
-
-  //When a new chat message has been received
-  socket.on('message', function(data) {
-    if (socket.authorized) {
-      var newMessage=new Message();
-      newMessage.senderUsername=socket.username;
-      newMessage.senderName=socket.name;
-      newMessage.contents=data.contents;
-      newMessage.type=data.type;
-      newMessage.dateSent=Date.now();
-      newMessage.dateSentInMinutes=Math.ceil(newMessage.dateSent.getTime()/1000/60);
-      io.emit('message', newMessage);
-    }
-  });
-
-  //executes when a user disconnects
-  socket.on('disconnect', function() {
-    onlineUsers--;
-    console.log('Online Users: ' + onlineUsers);
-  });
-});
+//Everything to do with the socket controller
+require("./socket.js")(http, RedisClient);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
