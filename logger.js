@@ -30,7 +30,7 @@ var logger = new (winston.Logger)({
       name:'file-error',
       level: 'error',
       filename: './logs/errors.log',
-      handleExceptions: true,
+      handleExceptions: false,
       json: true,
       maxsize: 5242880, //5MB
       maxFiles: 5,
@@ -40,7 +40,7 @@ var logger = new (winston.Logger)({
     new winston.transports.Console({
       name:'console-debug',
       level: 'debug',
-      handleExceptions: true,
+      handleExceptions: false,
       json: false,
       colorize: true
     })
