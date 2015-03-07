@@ -14,20 +14,20 @@ var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging request details
 var logger = require('./logger.js');
-//======Initializing custom required modules======
+var fs=require('fs'); //for file system management. Used to manage the tmp directory
+
+//======Database Settings and Configuration======
 var MongoDBConfig = require('./config/mongo.js')(mongoose); //configures the mongoDB database
 var RedisDBConfig = require('./config/redis.js'); //has the database configuration settings
-RedisDBConfig.configure(RedisClient);//configures the Redis Database
+RedisDBConfig.configure(RedisClient); //configures the Redis Database
+
 //======Configuring the Server=======
-
-//setting up the redis client
-
-
-require('./config/passport')(passport); //configure the passport module
+var SERVER_SETTINGS = require("./config/server.js");
+require('./config/passport')(passport); //configures the passport module
 
 //setting the port number for the server to use
-var PORTNUMBER = 3000;
-app.set('port', process.env.PORT || PORTNUMBER);
+var PORTNUMBER = process.env.PORT || 3000; //setting to use the port set in the environment variable, or 3000 if its not defined
+app.set('port', PORTNUMBER);
 
 //settings the views directory for the templating engine
 app.set('views', __dirname + '/views');
@@ -39,17 +39,38 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 //======Configuration of Middleware===========
+//Using morgan middle ware to log all requests and pipe them to winston
 app.use(require('morgan')('tiny', {
   "stream": logger.stream
 }));
 
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
-app.use(cookieParser()); //enable the user of cookies
-app.use(bodyParser()); //get info from html forms
-app.use(multer({
-  dest: './tmp/'
+app.use(cookieParser()); //enable parsing of cookies
+app.use(bodyParser()); //parse info from non-multipart/form-data
+
+app.use(multer({ //parse multipart/form-data and store them in the /tmp/ directory
+  dest: SERVER_SETTINGS.temporaryFilesLocation,
+  rename: function(fieldname, filename) {
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+  },
+  limits: {
+    fileSize: SERVER_SETTINGS.maxFileUploadSize,
+    files: SERVER_SETTINGS.maxFileUploadNumber
+  },
+  onError: function(error, next) {
+    logger.error("An error occured while parsing a multipart form \n" + error);
+    next(error);
+  },
+  onFileSizeLimit: function(file) {
+    logger.warn("A file failed to upload because it was too large \n" + file);
+    fs.unlink('./' + file.path); // delete the partially written file
+  },
+  onFilesLimit: function() {
+    logger.warn("File limit crossed. No more files will be uploaded \n" + file);
+  }
 }));
+
 app.use(session({
   store: new RedisStore({
     host: RedisDBConfig.host,
@@ -58,7 +79,7 @@ app.use(session({
   }),
   secret: randomstring.generate(128),
   cookie: {
-    maxAge: 2678400000 // 31 days
+    maxAge: 86400000 //for 1 day
   }
 }));
 
@@ -66,10 +87,9 @@ app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-//=======Routes======
-require('./routes/main.js')(app, passport);
-//Everything to do with the socket controller
-require("./socket.js")(http, RedisClient);
+
+require('./routes/main.js')(app, passport); //configuring routes
+require("./socket.js")(http, RedisClient); //configuring socket.io
 
 // catch 404 and render 404 page
 app.use(function(req, res, next) {
@@ -82,6 +102,7 @@ app.use(function(req, res, next) {
   });
 });
 
-http.listen(3000, function() {
+//Start the server and listen on the defined port
+http.listen(app.get('port'), function() {
   logger.info('ChatPi Server Started. Listening on Port: ' + PORTNUMBER);
 });
