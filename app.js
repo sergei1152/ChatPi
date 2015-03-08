@@ -1,4 +1,5 @@
 //=======Initializing Required Modules=======
+require('look').start();
 var express = require('express');
 var app = express(); //the instance of express
 var http = require('http').Server(app);
