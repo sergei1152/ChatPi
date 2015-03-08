@@ -84,5 +84,5 @@ ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
 });
 
 socket.on("error",function(msg){
-  console.log("An error occured with the connection to the chat server");
+  console.error("An error occured with the connection to the chat server \n"+msg);
 });
