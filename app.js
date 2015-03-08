@@ -6,9 +6,7 @@ var mongoose = require('mongoose'); //for interacting with the mongodatabase
 var passport = require('passport'); //for user authentication
 var flash = require('connect-flash'); //for sending flash messages to the user at the login and registration screen
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser'); //for parsing non-multipart/form-data forms
 var session = require('express-session');
-var randomstring = require("randomstring"); //used for session secret key
 var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging request details
@@ -16,13 +14,13 @@ var logger = require('./logger.js');
 var fs = require('fs'); //for file system management. Used to manage the tmp directory
 
 //======Database Settings and Configuration======
-var MongoDBConfig = require('./config/mongo.js')(mongoose); //configures the mongoDB database
-var RedisDBConfig = require('./config/redis.js'); //has the database configuration settings
+var MongoDBConfig = require('./config/mongo-config.js')(mongoose); //configures the mongoDB database
+var RedisDBConfig = require('./config/redis-config.js'); //has the database configuration settings
 RedisDBConfig.configure(RedisClient); //configures the Redis Database
 
 //======Configuring the Server=======
-var SERVER_SETTINGS = require("./config/server.js");
-require('./config/passport')(passport); //configures the passport module
+var SERVER_SETTINGS = require("./config/server-config.js");
+require('./config/passport-config.js')(passport); //configures the passport module
 
 //setting the port number for the server to use
 var PORTNUMBER = process.env.PORT || 3000; //setting to use the port set in the environment variable, or 3000 if its not defined
@@ -56,7 +54,8 @@ app.use(session({
     pass:RedisDBConfig.databasePassword,
     ttl:86400 //time to live for the session in seconds (1 day)
   }),
-  secret: randomstring.generate(128),
+  name:SERVER_SETTINGS.sessionIDName,
+  secret: SERVER_SETTINGS.sessionKey,
   cookie: {
     maxAge: 86400000 //for 1 day
   },

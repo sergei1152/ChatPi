@@ -94,12 +94,7 @@
   <script src="../scripts/bootstrap.min.js"></script>
   <script charset="utf-8">
   //initialazation of the app
-    //setting cookie required for authorization needed for the chat service
-    $.cookie("socketID", "<%= sessionID %>", {
-      expires: 1
-    });
     var socket = io();
-    socket.emit('session', $.cookie("socketID"));
     var selfName="";
     var selfUsername="";
     //Setting up the credentials for proper CSS Styling of messages

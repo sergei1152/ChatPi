@@ -1,6 +1,6 @@
 //Configuration for multer, a module that parses multipart form data (forms with file uploads)
 var multer = require('multer');
-var SERVER_SETTINGS=require("./server.js");
+var SERVER_SETTINGS=require("./server-config.js");
 
 module.exports = multer({
   //Destination of where multer will store it's uploaded
