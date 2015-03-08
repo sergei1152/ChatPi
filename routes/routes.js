@@ -2,7 +2,7 @@ var multer=require('../config/multer-config.js'); //for parsing forms with file 
 var bodyParser=require('body-parser').urlencoded({ //for parsing forms with no file uploads
   extended: false
 });
-var logger=require('../logger.js');
+var logger=require('../logger.js'); //for pretty console outputs
 
 module.exports = function(app, passport) {
 
