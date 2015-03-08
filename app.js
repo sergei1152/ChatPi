@@ -85,7 +85,7 @@ app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-require('./routes/main.js')(app, passport); //configuring routes
+require('./routes/routes.js')(app, passport); //configuring routes
 require("./socket.js")(http, RedisClient); //configuring socket.io
 
 // catch 404 and render 404 page
