@@ -40,15 +40,14 @@ module.exports = function(app, passport) {
   }));
 
   app.get('/logout/', function(req, res) {
-    req.session.destroy(); //using the passport method for logging out
-    // req.logout(); //using the passport method for logging out
+    req.session.destroy(); //deleting the session from the database
+    req.logout(); //using the passport method for logging out
     res.redirect('/login/');
   });
 };
 
 //checks if user is authenticated using passports isAuthenticated method
 function isLoggedIn(req, res, next) {
-  console.warn(req.isAuthenticated());
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated())
 	  return next();
