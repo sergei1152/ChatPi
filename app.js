@@ -25,9 +25,7 @@ var SERVER_SETTINGS = require("./config/server-config.js"); //custom server sett
 require('./config/passport-config.js')(passport); //configures the passport module
 
 //for benchmarking the even loop and checking to see whether it's blocked
-if(SERVER_SETTINGS.eventLoopBenchmark){
-  require("./tests/bench_event_loop.js")();
-}
+if(SERVER_SETTINGS.eventLoopBenchmark) require("./tests/bench_event_loop.js")();
 
 //setting the port number for the server to use
 var PORTNUMBER = process.env.PORT || 3000; //setting to use the port set in the environment variable, or 3000 if its not defined
