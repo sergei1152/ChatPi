@@ -48,7 +48,7 @@ module.exports = function(app, passport) {
 
 //checks if user is authenticated using passports isAuthenticated method
 function isLoggedIn(req, res, next) {
-
+  console.warn(req.isAuthenticated());
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated())
 	  return next();

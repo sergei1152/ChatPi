@@ -82,7 +82,9 @@ ChatPiApp.controller('Conversation',function ($scope, Message,getDate) {
     );
   });
 });
-
+socket.on('disconnect', function () {
+        console.log("disconnected");
+});
 socket.on("error",function(msg){
   console.error("An error occured with the connection to the chat server \n"+msg);
 });

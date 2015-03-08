@@ -44,6 +44,9 @@ app.use(require('morgan')('tiny', {
 //Setting the public folder to server static content(images, javacsript, stylesheets)
 app.use(express.static(__dirname + "/public"));
 
+app.use(cookieParser(SERVER_SETTINGS.sessionKey,{
+  httpOnly:true
+}));
 
 app.use(session({
   store: new RedisStore({
@@ -54,6 +57,7 @@ app.use(session({
     pass:RedisDBConfig.databasePassword,
     ttl:86400 //time to live for the session in seconds (1 day)
   }),
+  // unset:"destroy",
   name:SERVER_SETTINGS.sessionIDName,
   secret: SERVER_SETTINGS.sessionKey,
   cookie: {
