@@ -7,5 +7,8 @@ module.exports={
   maxFileUploadSize:25000000, //the maximum size of a file a user can upload to the server
   maxFileUploadNumber:1,//the maxmimum number of files a user can upload from a form
   sessionKey: "secret key", //you can change this to whatever you like, as long as it's a long sentence
-  sessionIDName:"connectSID"
+  sessionIDName:"connectSID",
+  supportedProfileImageTypes:['jpeg','jpg','png'],
+  maxProfileImageSize:500000, //the maximum size of the profile picture a user can register with in bytes (default 500KB)
+
 };

@@ -1,8 +1,12 @@
-var LocalStrategy = require('passport-local').Strategy;
+//Passport configuration that is used for authentication of users
+
+var LocalStrategy = require('passport-local').Strategy; //importing passports local strategy module
 var User = require('../models/User');
-var fs = require('fs');
-var path=require('path');
-var logger=require('../logger.js');
+var fs = require('fs'); //for managing profile picture uploads
+var path = require('path'); //for managing profile picture uploads
+var logger = require('../logger.js'); //for pretty console outputs
+var validator = require('../static/validator.js'); //validates the forms
+
 module.exports = function(passport) {
 
   // =========================================================================
@@ -33,26 +37,25 @@ module.exports = function(passport) {
       // asynchronous
       // User.findOne wont fire unless data is sent back
       process.nextTick(function() {
+        //validating all the fields, including the profile picture (if exists)
+        if (validator(req, "signup")) {
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        console.log("Getting database usernames");
-
-        User.findOne({
-          'username': username
-        }, function(err, user) {
-          // if there are any errors, return the error
-          if (err) {
-            logger.warn("An error occured while retrieving usernames from the mongo database at the register screen\n %j",err,req);
-            return done(err);
-          }
-          // check to see if theres already a user with that email
-          if (user) {
-            return done(null, false, req.flash('signUpMessage', 'That username is already taken'));
-          } else {
-
-            // if there is no user with that email
-            // create the user
+          //searches the mongodb database for the username
+          User.findOne({
+            'username': username
+          }, function(err, user) {
+            // if there are any errors, return the error
+            if (err) {
+              logger.error("An error occured while retrieving usernames from the mongo database at the register screen\n %j", {
+                'error': error
+              }, {});
+              return done(err);
+            }
+            // if there is an existing user with the same username
+            if (user) {
+              return done(null, false, req.flash('signUpMessage', 'That username is already taken'));
+            }
+            //if the username is unique
             var newUser = new User();
 
             // set the user's local credentials
@@ -60,50 +63,40 @@ module.exports = function(passport) {
             newUser.password = newUser.generateHash(password);
             newUser.createdAt = Date.now();
             newUser.name = req.body.name;
-            console.log(req.files);
-            //checks if the user uploaded a profile picture
 
-            var imagePath=req.files.profile_picture.path;
-            if (imagePath){
-              newUser.profile_picture = req.files.profile_picture.path;
-              //saves the profile image (if any) to the resources folder
-              var extension=req.files.profile_picture.mimetype.replace(/(.*)\//,"");//image/jpg ==> jpg
-              console.log(extension);
-              if(extension=="jpg" || extension=="png" || extension == "jpeg"){
-              fs.readFile(imagePath, function(err, data) {
-                var newPath = path.join(__dirname,"../public/resources/profiles/"+username+"."+extension);
-                console.log(newPath);
-                fs.writeFile(newPath, data, function(err) {
-                  if (err)
-                    console.error(err);
-                });
+            //if a profile picture was uploaded
+            if (req.files.profile_picture) {
+              var imagePath = req.files.profile_picture.path;
+              var newPath = path.join(__dirname, "../public/resources/profiles/" + username + "." + req.files.profile_picture.extension);
+
+              //moves the profile picture to a permanent directory
+              fs.rename(imagePath, newPath, function(err) {
+                if (err) {
+                  logger.error('There was an error in reading a profile picture from the /tmp/ folder\n %j', {
+                    'error': err
+                  }, {});
+                  return done(null, false, req.flash('signUpMessage', 'Error saving your profile pic. Please try again.'));
+                }
+                newUser.profile_picture = username + "." + req.files.profile_picture.extension;
               });
-            }
-            else{
+            } else {
               newUser.profile_picture = "default.png";
             }
-            }
-            else{
-              newUser.profile_picture = "default.png";
-            }
-            // newUser.profilePictureURL=req.body.pic;
-            console.log("Saving Users Info");
-            // save the user to the database
-            newUser.save(function(err) {
-              if (err){
-                logger.error("There was an error saving a new users info into the database \n %j",err,req);
-                throw err;
-              }
 
+            newUser.save(function(err) {
+              if (err) {
+                logger.error("There was an error saving a new users info into the database \n %j", err, {});
+                return done(null, false, req.flash('signUpMessage', 'Error saving your stuff. Please try again'));
+              }
               return done(null, newUser);
             });
-          }
-
-        });
-
+          });
+        } else { //if the validation failed
+          return done(null, false, req.flash('signUpMessage', 'Validation failed.'));
+        }
       });
-
     }));
+
 
   passport.use('login', new LocalStrategy({
       // by default, local strategy uses username and password, we will override with email
@@ -133,7 +126,5 @@ module.exports = function(passport) {
         // all is well, return successful user
         return done(null, user);
       });
-
     }));
-
 };

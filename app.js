@@ -71,7 +71,7 @@ app.use(session({
     pass: RedisDBConfig.databasePassword,
     ttl: 86400 //time to live for the session in seconds (1 day)
   }),
-  unset: "destroy",
+  unset: "destroy", //delete the session from the database when it is unset
   name: SERVER_SETTINGS.sessionIDName,
   secret: SERVER_SETTINGS.sessionKey,
   cookie: {
