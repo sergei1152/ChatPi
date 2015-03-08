@@ -2,6 +2,7 @@ var multer=require('../config/multer-config.js'); //for parsing forms with file 
 var bodyParser=require('body-parser').urlencoded({ //for parsing forms with no file uploads
   extended: false
 });
+var logger=require('../logger.js');
 
 module.exports = function(app, passport) {
 
@@ -10,26 +11,26 @@ module.exports = function(app, passport) {
   });
 
   app.get('/app/',isLoggedIn, function(req, res) {
-      res.render('app',{sessionID:req.sessionID}); //renders the app page
+      res.render('app'); //renders the app page
   });
 
   app.get('/login/', function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('login', {
-      message: req.flash('loginMessage')
+      loginMessage: req.flash('loginMessage')
     });
   });
 
   app.post('/login/', bodyParser, passport.authenticate('login', {
     successRedirect: '/app/', // redirect to the app page
     failureRedirect: '/login/', // redirect back to the signup page if there is an error
-    failureFlash: true // allow flash messages
+    failureFlash: true, // allow flash messages
   }));
 
   app.get('/register/',function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('register', {
-      message: req.flash('signupMessage')
+      signUpMessage: req.flash('signUpMessage')
     });
   });
 

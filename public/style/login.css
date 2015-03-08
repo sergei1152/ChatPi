@@ -44,7 +44,6 @@ form .form-control {
   text-shadow: 1px 1px #414141;
 }
 .alert {
-  display: none;
   margin: 12px auto 12px auto;
   max-width: 220px;
 }

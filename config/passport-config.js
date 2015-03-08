@@ -2,6 +2,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/User');
 var fs = require('fs');
 var path=require('path');
+var logger=require('../logger.js');
 module.exports = function(passport) {
 
   // =========================================================================
@@ -29,7 +30,6 @@ module.exports = function(passport) {
       passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     function(req, username, password, done) {
-      console.log("Using passport strategy");
       // asynchronous
       // User.findOne wont fire unless data is sent back
       process.nextTick(function() {
@@ -43,16 +43,12 @@ module.exports = function(passport) {
         }, function(err, user) {
           // if there are any errors, return the error
           if (err) {
-            console.log("An error occured retrieving usernames");
+            logger.warn("An error occured while retrieving usernames from the mongo database at the register screen\n %j",err,req);
             return done(err);
           }
-
-
           // check to see if theres already a user with that email
           if (user) {
-            console.log("A username with the naem has been found");
-
-            return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+            return done(null, false, req.flash('signUpMessage', 'That username is already taken'));
           } else {
 
             // if there is no user with that email
@@ -94,8 +90,11 @@ module.exports = function(passport) {
             console.log("Saving Users Info");
             // save the user to the database
             newUser.save(function(err) {
-              if (err)
+              if (err){
+                logger.error("There was an error saving a new users info into the database \n %j",err,req);
                 throw err;
+              }
+
               return done(null, newUser);
             });
           }
@@ -125,12 +124,11 @@ module.exports = function(passport) {
 
         // if no user is found, return the message
         if (!user)
-          return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+          return done(null, false, req.flash('loginMessage', 'Incorrect Username/Password')); // req.flash is the way to set flashdata using connect-flash
 
         // if the user is found but the password is wrong
         if (!user.validPassword(password)) {
-          console.log("wrong password");
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+          return done(null, false, req.flash('loginMessage', 'Incorrect Username/Password')); // create the loginMessage and save it to session as flashdata
         }
         // all is well, return successful user
         return done(null, user);

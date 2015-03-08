@@ -28,12 +28,12 @@
       <span style="color:#dcdcdc">Register</span>
     </h1>
     <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
+    <% if (signUpMessage.length > 0) { %>
     <div class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <%= message %>
+      <%= signUpMessage %>
     </div>
     <% } %>
     <form action="/register/" method="post" enctype="multipart/form-data">
