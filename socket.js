@@ -1,4 +1,5 @@
 //This file has everything to do with the actual server-side socket.io stuff
+
 var logger = require('./logger.js'); //for pretty console outputs
 
 var SERVER_SETTINGS = require("./config/server-config.js");
@@ -8,7 +9,7 @@ var ChatRoom = require('./models/ChatRoom.js');
 var User = require('./models/User.js');
 var Message = require('./models/Message.js');
 
-var cookie = require('cookie'); //for parsing the cookie value from the received
+var cookie = require('cookie'); //for parsing the cookie value from received cookies
 var cookieParser = require('cookie-parser'); //used for decoding signed cookies
 
 module.exports = function(http, RedisClient) {
@@ -19,12 +20,14 @@ module.exports = function(http, RedisClient) {
 
   //handshake stuff for when a user tries to connect to the socket server
   io.use(function(socket, next) {
-    //getting the sesisonID cookie from the socket
+    //parsing the sessionID cookie value sent by socket
     var sessionID = cookie.parse(socket.request.headers.cookie)[SERVER_SETTINGS.sessionIDName];
-    sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionKey);
 
-    //if the session id cookie was exists
+    //if the session id cookie exists
     if (sessionID) {
+      //decodes the signed sessionID cookie
+      sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionKey);
+
       //check the redis database for the session cookie
       RedisClient.get("sessions:" + sessionID, function(err, reply) {
 
@@ -80,7 +83,7 @@ module.exports = function(http, RedisClient) {
 
     //When a new chat message has been received
     socket.on('message', function(data) {
-      if (socket.authorized) { //makes sure that the socket handshake was successful
+      if (socket.authorized) { //makes sure that the socket handshake was successfull
         //creating the message
         var newMessage = new Message();
         newMessage.senderUsername = socket.username;
