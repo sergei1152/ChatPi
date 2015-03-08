@@ -8,7 +8,7 @@
   "description": "A cheap portable chat server",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "blocked": "^1.1.0",
+    "blocked": "1.1.x",
     "body-parser": "1.12.x",
     "compression": "1.4.x",
     "connect-flash": "0.1.x",
