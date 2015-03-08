@@ -11,7 +11,7 @@ module.exports=function(mongoose){
 
   //if mongoose fails to connect to the database
   mongoose.connection.on('connected', function() {
-    logger.info("A connection to the mongoDB database at "+MongoDBConfig.url+" has been successfully made");
+    logger.info("Successfully connected to the mongoDB database");
   });
   //if mongoose is disconnected from the database
   mongoose.connection.on('disconnected', function() {

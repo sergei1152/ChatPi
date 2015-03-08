@@ -14,8 +14,11 @@ redisDatabase.configure = function(RedisClient) {
   RedisClient.select(this.databaseNumber, function() {
     logger.info("Redis Client is using database #" + redisDatabase.databaseNumber + " and a port number of " + redisDatabase.portNumber);
   });
+  RedisClient.on("connect", function(err) {
+    logger.info("Successfully connected to the redis database");
+  });
   RedisClient.on("error", function(err) {
-    logger.error("An error with the redis database.\n " + err);
+    logger.error("An error with the redis database occured\n " + err);
   });
 };
 
