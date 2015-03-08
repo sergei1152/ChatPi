@@ -12,7 +12,7 @@ var RedisStore = require('connect-redis')(session); //used to store session data
 var morgan = require('morgan'); //for logging request details
 var logger = require('./logger.js');
 var fs = require('fs'); //for file system management. Used to manage the tmp directory
-
+var compression=require('compression'); //for compressing files before serving them
 //======Database Settings and Configuration======
 var MongoDBConfig = require('./config/mongo-config.js')(mongoose); //configures the mongoDB database
 var RedisDBConfig = require('./config/redis-config.js'); //has the database configuration settings
@@ -41,11 +41,16 @@ app.use(require('morgan')('tiny', {
   "stream": logger.stream
 }));
 
-//Setting the public folder to server static content(images, javacsript, stylesheets)
-app.use(express.static(__dirname + "/public"));
+app.use(compression()); //compress all requests
 
-app.use(cookieParser(SERVER_SETTINGS.sessionKey,{
-  httpOnly:true
+//Setting the public folder to server static content(images, javacsript, stylesheets)
+app.use(express.static(__dirname + "/public", {
+  index:false, //disable directory indexing
+  maxAge: 86400000 //caches content for 1 day
+}));
+
+app.use(cookieParser(SERVER_SETTINGS.sessionKey, {
+  httpOnly: true
 }));
 
 app.use(session({
@@ -53,24 +58,23 @@ app.use(session({
     host: RedisDBConfig.host,
     port: RedisDBConfig.portNumber,
     db: RedisDBConfig.databaseNumber,
-    prefix:"sessions:",
-    pass:RedisDBConfig.databasePassword,
-    ttl:86400 //time to live for the session in seconds (1 day)
+    prefix: "sessions:",
+    pass: RedisDBConfig.databasePassword,
+    ttl: 86400 //time to live for the session in seconds (1 day)
   }),
-  unset:"destroy",
-  name:SERVER_SETTINGS.sessionIDName,
+  unset: "destroy",
+  name: SERVER_SETTINGS.sessionIDName,
   secret: SERVER_SETTINGS.sessionKey,
   cookie: {
     maxAge: 86400000 //for 1 day
   },
-  saveUninitialized:false,
-  resave:false
+  saveUninitialized: false,
+  resave: false
 }));
 
 app.use(passport.initialize()); //initializing passport
 app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-
 
 require('./routes/main.js')(app, passport); //configuring routes
 require("./socket.js")(http, RedisClient); //configuring socket.io
