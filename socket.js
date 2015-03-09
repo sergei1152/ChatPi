@@ -43,7 +43,7 @@ module.exports = function(http, RedisClient) {
           }, function(err, result) {
             //if the id was not found in the monggo database
             if (err) {
-              logger.error("A user tried to access the chat with an ID that is no longer in the database");
+              logger.error("A user tried to access the chat with an ID that is no longer in the database \n %j",{"error":err},{});
               next(new Error('Authentication error'));
             }
             //if the user was found in the database
@@ -53,9 +53,14 @@ module.exports = function(http, RedisClient) {
               socket.username = result.username;
               socket.authorized = true;
               //sends the user his name and username for CSS purposes only
-              socket.emit("credentials", {
-                name: result.name,
-                username: result.username
+              socket.emit("metadata", {
+                clientName: result.name,
+                clientUsername: result.username,
+                clientProfilePic:result.profile_picture,
+                clientOnlineStatus:result.onlineStatus,
+                publicChannels:result.subscibed_public_channels,
+                privateGroups:result.private_groups,
+                contacts:result.contacts
               });
               logger.info("User " + result.name + " successfully connected to the chat");
               next();
