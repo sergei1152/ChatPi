@@ -6,7 +6,7 @@ var Message = mongoose.Schema({
   senderUsername: String,
   senderName: String, //should get rid of this as soon will no longer be necessary
   dateSent: Date,
-  dateSentInMinutes:Number,
+  dateSentInMinutes:Number, //for sending back to the client for display purposes only
   type: String,
   contents: String
 });
