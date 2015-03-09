@@ -7,7 +7,7 @@
     selfName=data.name;
     selfUsername=data.username;
   });
-  
+
 var ChatPiApp = angular.module('ChatPiApp',[]);
 ChatPiApp.factory("Message", function(){
   var Message=function(contents,type){
@@ -15,18 +15,6 @@ ChatPiApp.factory("Message", function(){
     this.type=type;
   };
   return Message;
-});
-ChatPiApp.filter('urlParser',function(){
-  return function (message){
-    var parsedMessage=message || '';
-	parsedMessage=parsedMessage.toString();
-	var regURL=/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-
-	parsedMessage=parsedMessage.replace(regURL, function parser(match){
-		return "<a href='"+match+"'>"+match+"</a>";
-	});
-	return parsedMessage;
-  };
 });
 //service that returns the current date in minutes to be used in message dates
 ChatPiApp.service("getDate",function(){
