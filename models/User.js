@@ -15,10 +15,13 @@ var userSchema = mongoose.Schema({
     required: true
   },
   createdAt: Date,
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   onlineStatus: String,
   profile_picture: String,
-  contacts: [String]
+  contacts: [String] //a string of usernames
 });
 
 //generates a salted hashed version of the password
