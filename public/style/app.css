@@ -123,6 +123,6 @@ body {
 resize: none;
 height:64px;
 }
-.btn{
+#message-text-input .btn{
 height:64px;
 }
