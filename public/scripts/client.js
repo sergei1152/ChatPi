@@ -1,3 +1,13 @@
+//initialazation of the app
+  var socket = io();
+  var selfName="";
+  var selfUsername="";
+  //Setting up the credentials for proper CSS Styling of messages
+  socket.on("metadata",function(data){
+    selfName=data.name;
+    selfUsername=data.username;
+  });
+  
 var ChatPiApp = angular.module('ChatPiApp',[]);
 ChatPiApp.factory("Message", function(){
   var Message=function(contents,type){
