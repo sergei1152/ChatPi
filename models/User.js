@@ -21,6 +21,10 @@ var userSchema = mongoose.Schema({
   },
   onlineStatus: String,
   profile_picture: String,
+  subscibed_public_channels: [String], // an array of subscribed public channels
+
+  //an array of all the private groups the user is apart of. Note this is only used for client side, server side verifcation is still done
+  private_groups: [String],
   contacts: [String] //a string of usernames
 });
 

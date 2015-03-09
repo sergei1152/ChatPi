@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 //Creating the schema for the user
 var Message = mongoose.Schema({
   senderUsername: String,
-  senderName: String,
+  senderName: String, //should get rid of this as soon will no longer be necessary
   dateSent: Date,
   dateSentInMinutes:Number,
   type: String,
