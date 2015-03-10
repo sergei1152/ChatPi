@@ -27,17 +27,18 @@
     "winston": "0.9.x"
   },
   "devDependencies": {
-    "look": "0.1.x",
     "blocked": "1.1.x",
     "grunt": "0.4.x",
+    "grunt-contrib-jshint": "0.11.x",
+    "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-watch": "0.6.x",
     "grunt-express": "1.4.x",
     "grunt-express-server": "0.4.x",
     "grunt-open": "0.2.x",
+    "grunt-yui-compressor": "^0.4.0",
+    "jshint-stylish": "1.0.x",
     "load-grunt-tasks": "3.1.x",
-    "grunt-contrib-cssmin": "0.12.x",
-    "grunt-contrib-jshint": "0.11.x",
-    "grunt-contrib-uglify": "0.8.x",
-    "jshint-stylish": "1.0.x"
+    "look": "0.1.x",
+    "uglify": "^0.1.1"
   }
 }
