@@ -6,12 +6,16 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Find a Public Channel</h4>
       </div>
-      <div class="modal-body">
-        Retrieving public channels list...please wait
+      <div class="modal-body" ng-controller="searchChannel">
+      <input class='search-bar' type="text" ng-model='filter' placeholder="   Search for your public channel">
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add +</button>
+        <button type="button" class="btn btn-primary">Subscribe +</button>
       </div>
     </div>
   </div>
