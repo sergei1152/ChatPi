@@ -9,6 +9,8 @@ socket.on("metadata", function(data) {
 });
 
 var ChatPiApp = angular.module('ChatPiApp', ['angularModalService']);
+
+
 ChatPiApp.factory("Message", function() {
     var Message = function(contents, type) {
         this.contents = contents;
