@@ -10,5 +10,5 @@ module.exports={
   sessionIDName:"connectSID",
   supportedProfileImageTypes:['jpeg','jpg','png'],
   maxProfileImageSize:500000, //the maximum size of the profile picture a user can register with in bytes (default 500KB)
-
+  livereload: true //inject the live reload script to all webpages for use with grunt (for development use only)
 };

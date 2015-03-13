@@ -3,7 +3,7 @@ var bodyParser=require('body-parser').urlencoded({ //for parsing forms with no f
   extended: false
 });
 var logger=require('../logger.js'); //for pretty console outputs
-
+var SERVER_SETTINGS=require('../config/server-config.js');
 module.exports = function(app, passport) {
 
   app.get('/', isLoggedIn, function(req, res) {
@@ -11,7 +11,9 @@ module.exports = function(app, passport) {
   });
 
   app.get('/app/',isLoggedIn, function(req, res) {
-      res.render('app'); //renders the app page
+      res.render('app',{
+        livereload: SERVER_SETTINGS.livereload //injects the live reload script (if true)
+      }); //renders the app page
   });
 
   app.get('/login/', function(req, res) {
