@@ -6,87 +6,123 @@ html {
   background-size: cover;
   margin: 0;
   padding: 0;
-  min-height:100%;
-  height:100%;
-  min-width:100%;
-  max-height:100%;
-  max-width:100%;
+  min-height: 100%;
+  height: 100%;
+  min-width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 body {
   background-color: transparent;
   margin: 0;
   padding: 0;
-  position:absolute;
-  height:100%;
-  min-height:100%;
-  min-width:100%;
-  max-height:100%;
-  max-width:100%;
+  position: absolute;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
-.navbar{
-  margin-bottom:0;
-  border-radius:0px;
-  opacity:0.5;
-  text-align:center;
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0px;
+  opacity: 0.5;
+  text-align: center;
 }
-.navbar-brand{
-  display:inline-block;
-  color:white !important;
-  font-weight:bold;
-  font-size:26px;
+.navbar-brand {
+  display: inline-block;
+  color: white !important;
+  font-weight: bold;
+  font-size: 26px;
 }
-#container-middle-pane{
+#container-middle-pane {
   height: calc( 100% - 55px);
   width: 100%;
-  padding:0;
+  padding: 0;
 }
-#left-pane{
+#left-pane {
   border: 1px solid black;
-  height:100%;
+  height: 100%;
+  padding: 0 24px 0 24px;
 }
-#right-pane{
-  border: 1px solid black;
-  height:100%;
+.chat-rooms-container{
+  height:30%;
 }
-#middle-pane{
-  border: 1px solid black;
-  height:100%;
-  padding-bottom:72px;
+.chat-rooms-container h1{
+  color:white !important;
 }
-.row{
-  height:100%;
+.chat-rooms-container .search-bar{
+  opacity:0.5;
 }
-#conversation{
-  margin:0 0 24px 0;
-  padding:0 12px 0 12px;
-  overflow:auto;
-  height:90%;
+.chat-room-list {
+  max-height: 70%;
+  margin: 12px 0 12px 0;
+  padding: 0;
+  overflow: auto;
+  list-style-type: none;
 }
-.message{
-  margin-top:12px;
-  display:flex;
-  max-width:95%;
-  display:2px solid white;
-  clear:both;
-  float:left;
+.chat-room-list-item {
+  display: block;
+  margin: 0;
+  list-style-type: none;
 }
-.message-contents{
-  max-width:100%;
-  height:auto;
-  font-family:Roboto, Arial;
+.chat-room-list-item a {
+  color: #b3b2b2;
+  padding: 6px 0 6px 12px;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
   border-radius:5px;
-  margin:0;
-  border-top-left-radius:0;
-  padding:12px 12px 0 12px;
-  opacity:0.9;
+}
+.chat-room-list-item a:hover {
+  text-decoration: none !important;
+  background-color: #d9d9d9;
+  opacity: 0.8;
+  color:#636363
+}
+#right-pane {
+  border: 1px solid black;
+  height: 100%;
+}
+#middle-pane {
+  border: 1px solid black;
+  height: 100%;
+  padding-bottom: 72px;
+}
+.row {
+  height: 100%;
+}
+#conversation {
+  margin: 0 0 24px 0;
+  padding: 0 12px 0 12px;
+  overflow: auto;
+  height: 90%;
+}
+.message {
+  margin-top: 12px;
+  display: flex;
+  max-width: 95%;
+  display: 2px solid white;
+  clear: both;
+  float: left;
+}
+.message-contents {
+  max-width: 100%;
+  height: auto;
+  font-family: Roboto, Arial;
+  border-radius: 5px;
+  margin: 0;
+  border-top-left-radius: 0;
+  padding: 12px 12px 0 12px;
+  opacity: 0.9;
   flex-wrap: wrap;
 }
-.message-date{
-  margin:0;
-  float:right;
-  padding:0;
-  color:#a8a8a8;
-  margin-top:12px;
+.message-date {
+  margin: 0;
+  float: right;
+  padding: 0;
+  color: #a8a8a8;
+  margin-top: 12px;
 }
 .sender-avatar {
   flex-shrink: 0;
@@ -94,35 +130,36 @@ body {
 }
 .sender-avatar img {
   width: 100%;
-  border-top-left-radius:3px;
+  border-top-left-radius: 3px;
   display: inline-block;
 }
 /*Changes to the message style when the message is from the person him/herself*/
-.self{
-  flex-direction:row-reverse;
-  float:right;
-  align-items:flex-end;
+
+.self {
+  flex-direction: row-reverse;
+  float: right;
+  align-items: flex-end;
 }
-.self .message-contents{
-  border-radius:5px;
-  border-bottom-right-radius:0 !important;
+.self .message-contents {
+  border-radius: 5px;
+  border-bottom-right-radius: 0 !important;
 }
-.self .message-date{
-  float:left;
+.self .message-date {
+  float: left;
 }
-.self .sender-avatar img{
-  border-top-left-radius:0px;
-  border-top-right-radius:3px;
+.self .sender-avatar img {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 3px;
 }
-#send-form{
-  margin-top:24px;
-  max-width:80%;
-	margin:auto;
+#send-form {
+  margin-top: 24px;
+  max-width: 80%;
+  margin: auto;
 }
-#message-text-input{
-resize: none;
-height:64px;
+#message-text-input {
+  resize: none;
+  height: 64px;
 }
-#message-text-input .btn{
-height:64px;
+#message-text-input .btn {
+  height: 64px;
 }
