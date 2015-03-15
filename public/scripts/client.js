@@ -74,6 +74,11 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate) {
             $scope.conversation.message_history.push(msg)
         );
     });
+
+    //automatically updates the date time every minute without the need for user interaction
+    setInterval(function(){
+      $scope.$apply();
+    },60000);
 });
 socket.on('disconnect', function() {
     console.log("disconnected");
