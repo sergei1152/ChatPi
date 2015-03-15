@@ -80,12 +80,12 @@ body {
 }
 .chat-room-list-item a:hover {
   text-shadow: none;
-
-  text-decoration: none !important;
+  text-decoration: none;
   background-color: #d9d9d9;
   opacity: 0.5;
   color: #636363;
 }
+
 #right-pane {
   border: 1px solid black;
   height: 100%;
