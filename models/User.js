@@ -14,14 +14,23 @@ var userSchema = mongoose.Schema({
     min: 8,
     required: true
   },
-  createdAt: Date,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
   name: {
     type: String,
     required: true
   },
-  onlineStatus: String,
-  profile_picture: String,
-  subscibed_public_channels: [String], // an array of subscribed public channels
+  onlineStatus: {
+    type:String,
+    default:'offline'
+  },
+  profile_picture: {
+    type: String,
+    default:"default.png"
+  },
+  subscribed_public_channels: [String], // an array of subscribed public channels
 
   //an array of all the private groups the user is apart of. Note this is only used for client side, server side verifcation is still done
   private_groups: [String],
