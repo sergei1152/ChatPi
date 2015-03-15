@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         }
       },
       static: {
-        files: ['/views/**/*', '/public/scripts/*.js', '/public/style/*.css'], //Files to be watched
+        files: ['./views/*', './public/scripts/*.js', './public/style/*.css'], //Files to be watched
         tasks: ['uglify:build', 'cssmin:build'],
         options: { //Server options
           spawn: false, //Must have for reload
