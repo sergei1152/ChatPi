@@ -47,7 +47,7 @@
             <ul id="conversation">
               <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
                 <div class="sender-avatar">
-                  <img src="../resources/profiles/{{message.senderUsername}}.jpeg">
+                  <img src="../resources/profiles/{{message.senderProfilePicture}}">
                 </div>
                 <pre class="message-contents">{{message.contents}}
                   <time class="message-date" datetime={{message.date}}>{{message.senderName}} • {{message.dateSentInMinutes|dateParser:getDateInMinutes()}}</time>

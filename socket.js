@@ -43,7 +43,9 @@ module.exports = function(http, RedisClient) {
           }, function(err, result) {
             //if the id was not found in the monggo database
             if (err) {
-              logger.error("A user tried to access the chat with an ID that is no longer in the database \n %j",{"error":err},{});
+              logger.error("A user tried to access the chat with an ID that is no longer in the database \n %j", {
+                "error": err
+              }, {});
               next(new Error('Authentication error'));
             }
             //if the user was found in the database
@@ -51,16 +53,17 @@ module.exports = function(http, RedisClient) {
               //setting properties about the socket
               socket.name = result.name;
               socket.username = result.username;
+              socket.profile_picture=result.profile_picture;
               socket.authorized = true;
               //sends the user his name and username for CSS purposes only
               socket.emit("metadata", {
                 clientName: result.name,
                 clientUsername: result.username,
-                clientProfilePic:result.profile_picture,
-                clientOnlineStatus:result.onlineStatus,
-                publicChannels:result.subscibed_public_channels,
-                privateGroups:result.private_groups,
-                contacts:result.contacts
+                clientProfilePic: result.profile_picture,
+                clientOnlineStatus: result.onlineStatus,
+                publicChannels: result.subscibed_public_channels,
+                privateGroups: result.private_groups,
+                contacts: result.contacts
               });
               logger.info("User " + result.name + " successfully connected to the chat");
               next();
@@ -97,7 +100,9 @@ module.exports = function(http, RedisClient) {
         newMessage.type = data.type;
         newMessage.dateSent = Date.now();
         newMessage.dateSentInMinutes = Math.ceil(newMessage.dateSent.getTime() / 1000 / 60);
-        io.emit('message', newMessage); //emiting the message to the rest of the sockets
+        newMessage.senderProfilePicture=socket.profile_picture;
+        //will send to the buffer in this line, before setting the profile picture
+        io.emit('message', newMessage);
       }
     });
     //executes when a user disconnects

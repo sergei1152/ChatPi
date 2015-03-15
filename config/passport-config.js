@@ -78,18 +78,12 @@ module.exports = function(passport) {
                   return done(null, false, req.flash('signUpMessage', 'Error saving your profile pic. Please try again.'));
                 }
                 newUser.profile_picture = username + "." + req.files.profile_picture.extension;
+                return saveUser(newUser, done);
               });
             } else {
               newUser.profile_picture = "default.png";
+              return saveUser(newUser, done);
             }
-            logger.warn(newUser.profile_picture);
-            newUser.save(function(err) {
-              if (err) {
-                logger.error("There was an error saving a new users info into the database \n %j", err, {});
-                return done(null, false, req.flash('signUpMessage', 'Error saving your stuff. Please try again'));
-              }
-              return done(null, newUser);
-            });
           });
         } else { //if the validation failed
           return done(null, false, req.flash('signUpMessage', 'Validation failed.'));
@@ -128,3 +122,13 @@ module.exports = function(passport) {
       });
     }));
 };
+//saves the User schema object ot the database, logging any errors that heppened
+function saveUser(user,done){
+  user.save(function(err) {
+    if (err) {
+      logger.error("There was an error saving a new users info into the database \n %j", err, {});
+      return done(null, false, req.flash('signUpMessage', 'Error saving your stuff. Please try again'));
+    }
+    return done(null, user);
+  });
+}

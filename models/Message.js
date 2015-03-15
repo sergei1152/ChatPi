@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Message = mongoose.Schema({
   senderUsername: String,
   senderName: String, //should get rid of this as soon will no longer be necessary
+  senderProfilePicture: String,
   dateSent: Date,
   dateSentInMinutes:Number, //for sending back to the client for display purposes only
   type: String,

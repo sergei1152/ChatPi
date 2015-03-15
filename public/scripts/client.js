@@ -4,9 +4,9 @@ var selfName = "";
 var selfUsername = "";
 //Setting up the credentials for proper CSS Styling of messages
 socket.on("metadata", function(data) {
-    selfName = data.name;
-    selfUsername = data.username;
-    selfProfilePicture=data.profile_picture;
+    selfName = data.clientName;
+    selfUsername = data.clientUsername;
+    selfProfilePicture=data.clientProfilePic;
 });
 
 var ChatPiApp = angular.module('ChatPiApp', ['angularModalService','ui.bootstrap']);
