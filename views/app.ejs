@@ -14,7 +14,7 @@
                 <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
                 <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
               </ul>
-              <a href="" open-find-channel-modal id='hello'>Find a Public Channel</a>
+              <a href="" id='hello'>Find a Public Channel</a>
               <br>
               <a href="">Create a Public Channel</a>
             </div>
@@ -56,7 +56,7 @@
             </ul>
             <form id="send-form" novalidate>
               <div class="input-group">
-                <textarea ng-model="conversation.new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
+                <textarea  ng-model="conversation.new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
                 <div class="input-group-btn">
                   <button ng-click="send()" class="btn btn-default">Send</button>
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

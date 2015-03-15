@@ -82,7 +82,7 @@ module.exports = function(passport) {
             } else {
               newUser.profile_picture = "default.png";
             }
-
+            logger.warn(newUser.profile_picture);
             newUser.save(function(err) {
               if (err) {
                 logger.error("There was an error saving a new users info into the database \n %j", err, {});

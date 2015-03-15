@@ -6,6 +6,7 @@ var selfUsername = "";
 socket.on("metadata", function(data) {
     selfName = data.name;
     selfUsername = data.username;
+    selfProfilePicture=data.profile_picture;
 });
 
 var ChatPiApp = angular.module('ChatPiApp', ['angularModalService','ui.bootstrap']);
@@ -80,61 +81,61 @@ socket.on('disconnect', function() {
 socket.on("error", function(msg) {
     console.error("An error occured with the connection to the chat server \n" + msg);
 });
-
-ChatPiApp.directive('open-modal',
-   function() {
-      var openFindChannelModal = {
-         link :   function(scope, element, attrs) {
-            function openDialog() {
-              var element = angular.element('hello');
-              element.modal('show');
-            }
-            element.bind('click', openFindChannelModal);
-       }
-   }
-   return openFindChannelModal;
-});
-
-ChatPiApp.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
-
-  $scope.items = ['item1', 'item2', 'item3'];
-
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
-      resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-});
-
-// Please note that $modalInstance represents a modal window (instance) dependency.
-// It is not the same as the $modal service used above.
-
-ChatPiApp.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
-
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
+//
+// ChatPiApp.directive('open-modal',
+//    function() {
+//       var openFindChannelModal = {
+//          link :   function(scope, element, attrs) {
+//             function openDialog() {
+//               var element = angular.element('hello');
+//               element.modal('show');
+//             }
+//             element.bind('click', openFindChannelModal);
+//        }
+//    }
+//    return openFindChannelModal;
+// });
+//
+// ChatPiApp.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+//
+//   $scope.items = ['item1', 'item2', 'item3'];
+//
+//   $scope.open = function (size) {
+//
+//     var modalInstance = $modal.open({
+//       templateUrl: 'myModalContent.html',
+//       controller: 'ModalInstanceCtrl',
+//       size: size,
+//       resolve: {
+//         items: function () {
+//           return $scope.items;
+//         }
+//       }
+//     });
+//
+//     modalInstance.result.then(function (selectedItem) {
+//       $scope.selected = selectedItem;
+//     }, function () {
+//       $log.info('Modal dismissed at: ' + new Date());
+//     });
+//   };
+// });
+//
+// // Please note that $modalInstance represents a modal window (instance) dependency.
+// // It is not the same as the $modal service used above.
+//
+// ChatPiApp.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+//
+//   $scope.items = items;
+//   $scope.selected = {
+//     item: $scope.items[0]
+//   };
+//
+//   $scope.ok = function () {
+//     $modalInstance.close($scope.selected.item);
+//   };
+//
+//   $scope.cancel = function () {
+//     $modalInstance.dismiss('cancel');
+//   };
+// });
