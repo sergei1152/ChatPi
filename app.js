@@ -28,8 +28,7 @@ require('./config/passport-config.js')(passport); //configures the passport modu
 if(SERVER_SETTINGS.eventLoopBenchmark) require("./tests/bench_event_loop.js")();
 
 //setting the port number for the server to use
-var PORTNUMBER = process.env.PORT || 3000; //setting to use the port set in the environment variable, or 3000 if its not defined
-app.set('port', PORTNUMBER);
+app.set('port', SERVER_SETTINGS.serverPort);
 
 //settings the views directory for the templating engine
 app.set('views', __dirname + '/views');
@@ -101,5 +100,5 @@ app.use(function(req, res, next) {
 
 //Start the server and listen on the defined port
 http.listen(app.get('port'), function() {
-  logger.info('ChatPi Server Started. Listening on Port: ' + PORTNUMBER);
+  logger.info('ChatPi Server Started. Listening on Port: ' + SERVER_SETTINGS.serverPort);
 });

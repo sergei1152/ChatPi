@@ -2,6 +2,7 @@
 
 //Input your server configration here
 module.exports={
+  serverPort: 80,
   eventLoopBenchmark:false, //only enable if you're benchmarking
   temporaryFilesLocation:"./tmp/", //where to store the temporary files of the server from form data. Make sure the folder exists first
   maxFileUploadSize:25000000, //the maximum size of a file a user can upload to the server
