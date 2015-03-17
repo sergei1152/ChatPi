@@ -1,0 +1,30 @@
+{
+  "name": "ChatPi",
+  "version": "0.0.1",
+  "authors": [
+    "Serge Babayan <serj.b.babayan@gmail.com>"
+  ],
+  "description": "A cheap and portable chat application server",
+  "main": "app.js",
+  "keywords": [
+    "chat",
+    "express",
+    "socket.io",
+    "server",
+    "portable",
+    "raspberrypi"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "sockjs-client": "~0.3.4",
+    "angular": "~1.3.14"
+  }
+}

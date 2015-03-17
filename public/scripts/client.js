@@ -9,7 +9,7 @@ socket.on("metadata", function(data) {
     selfProfilePicture=data.clientProfilePic;
 });
 
-var ChatPiApp = angular.module('ChatPiApp', ['angularModalService','ui.bootstrap']);
+var ChatPiApp = angular.module('ChatPiApp', []);
 
 ChatPiApp.factory("Message", function() {
     var Message = function(contents, type) {

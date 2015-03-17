@@ -1,3 +1,7 @@
+#the bower folder
+bower_components
+bower_components/
+
 #redis stuff
 *.rdb
 

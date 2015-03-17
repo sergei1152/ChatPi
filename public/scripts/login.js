@@ -11,7 +11,7 @@ function validate(input){
   //regex that only allows alphanumeric characters
   var reg=/^[a-z0-9]+$/i;
 
-  if (input.length>=4 && input!=null && input!="" && reg.test(input)){
+  if (input.length>=4 && input!==null && input!=="" && reg.test(input)){
       return true;
   }
   setMessage("The username/password must be at least 4 characters long");
