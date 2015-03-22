@@ -7,7 +7,7 @@ var logger = new (winston.Logger)({
     new winston.transports.File({
       name:'file-debug',
       level: 'debug',
-      filename: './logs/debug.log',
+      filename: __dirname+'/logs/debug.log',
       handleExceptions: false,
       json: true,
       maxsize: 5242880, //5MB
@@ -18,7 +18,7 @@ var logger = new (winston.Logger)({
     new winston.transports.File({
       name:'all-logs',
       level:'info',
-      filename: './logs/all-logs.log',
+      filename: __dirname+'/logs/all-logs.log',
       handleExceptions: false,
       json: true,
       maxsize: 5242880, //5MB
@@ -29,7 +29,7 @@ var logger = new (winston.Logger)({
     new winston.transports.File({
       name:'file-error',
       level: 'error',
-      filename: './logs/errors.log',
+      filename: __dirname+'/logs/errors.log',
       handleExceptions: false,
       json: true,
       maxsize: 5242880, //5MB
