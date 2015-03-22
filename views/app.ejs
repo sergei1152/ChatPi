@@ -14,7 +14,7 @@
                 <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
                 <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
               </ul>
-              <a href="" id='hello'>Find a Public Channel</a>
+              <a href="" id='hello' >Find a Public Channel</a>
               <br>
               <a href="">Create a Public Channel</a>
             </div>
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="col-sm-8" id="middle-pane">
-            <ul id="conversation">
+            <ul id="conversation" scroll-glue>
               <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
                 <div class="sender-avatar">
                   <img src="../resources/profiles/{{message.senderProfilePicture}}">

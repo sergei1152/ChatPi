@@ -9,7 +9,7 @@ socket.on("metadata", function(data) {
     selfProfilePicture=data.clientProfilePic;
 });
 
-var ChatPiApp = angular.module('ChatPiApp', []);
+var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives']);
 
 ChatPiApp.factory("Message", function() {
     var Message = function(contents, type) {
@@ -93,7 +93,7 @@ ChatPiApp.directive('ngEnter', function () {
             //if only the enter key is pressed (without shift key)
             if(event.which === 13 && !event.shiftKey) {
                 scope.$apply(function (){
-                    scope.$eval(attrs.ngEnter);
+                    scope.$eval(attrs.ngEnter); //will execute the function within the attribute
                 });
                 event.preventDefault();
             }
