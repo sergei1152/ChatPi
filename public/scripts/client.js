@@ -86,6 +86,20 @@ socket.on('disconnect', function() {
 socket.on("error", function(msg) {
     console.error("An error occured with the connection to the chat server \n" + msg);
 });
+//executes the send function when the enter button is pressed within a text area
+ChatPiApp.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            //if only the enter key is pressed (without shift key)
+            if(event.which === 13 && !event.shiftKey) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
 //
 // ChatPiApp.directive('open-modal',
 //    function() {

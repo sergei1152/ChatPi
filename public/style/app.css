@@ -159,13 +159,16 @@ body {
 }
 #send-form {
   margin-top: 24px;
-  max-width: 80%;
+  max-width: 640px;
   margin: auto;
 }
 #message-text-input {
   resize: none;
-  height: 64px;
+  height: 48px;
 }
-#message-text-input .btn {
-  height: 64px;
+#send-button{
+  height: 48px;
+}
+#expand-send-button{
+  height: 48px;
 }
