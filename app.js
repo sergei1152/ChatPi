@@ -41,11 +41,12 @@ app.engine('html', require('ejs').renderFile);
 
 //======Configuration of Middleware===========
 
-//Using morgan middle ware to log all requests and pipe them to winston
-app.use(require('morgan')('tiny', {
-  "stream": logger.stream
-}));
-
+if(SERVER_SETTINGS.logRequests){
+  //Using morgan middle ware to log all requests and pipe them to winston
+  app.use(require('morgan')('tiny', {
+    "stream": logger.stream
+  }));
+}
 //compresses all requests before sending them
 app.use(compression());
 
