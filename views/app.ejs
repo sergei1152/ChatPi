@@ -1,9 +1,9 @@
 <%- include header %>
   <%- include modals %>
     <%- include navbar %>
-      <div class="container-fluid" id="container-middle-pane" ng-controller="Conversation">
+      <div class="container-fluid" id="container-middle-pane" >
         <div class="row">
-          <div class="col-sm-2" id="left-pane">
+          <div class="col-sm-2" id="left-pane" ng-controller='ChatRooms'>
             <div class="chat-rooms-container">
               <h3 class='chat-rooms-container-header'>Public Channels</h3>
               <input class='search-bar' type="text" placeholder="   Filter Public Channels">
@@ -14,9 +14,9 @@
                 <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
                 <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
               </ul>
-              <a href="" id='hello' >Find a Public Channel</a>
+              <a href="" open-modal="openPublicChannel()">Find a Public Channel</a>
               <br>
-              <a href="">Create a Public Channel</a>
+              <a href="" >Create a Public Channel</a>
             </div>
             <div class="chat-rooms-container">
               <h3 class='chat-rooms-container-header'>Private Groups</h3>
@@ -43,7 +43,7 @@
               <a href="">+ Add a New Contact</a>
             </div>
           </div>
-          <div class="col-sm-8" id="middle-pane">
+          <div class="col-sm-8" id="middle-pane" ng-controller="Conversation">
             <ul id="conversation" scroll-glue>
               <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
                 <div class="sender-avatar">
