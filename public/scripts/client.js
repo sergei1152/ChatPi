@@ -86,7 +86,6 @@ ChatPiApp.directive('openModal', function () {
       element.bind("click", function (event) {
         scope.$eval(attrs.openModal); //open the modal as specified in the attribute
       });
-
     };
 });
 
@@ -108,6 +107,7 @@ ChatPiApp.controller('findPublicChannelModal', function($scope) {
       $scope.getChannels(); //retrives the list of public channels from the server
       $scope.firstOpen=false;
     }
+    $('#searchFindChannel').focus(); //autofocus on the search bar
   });
 
   $scope.getChannels=function(){
