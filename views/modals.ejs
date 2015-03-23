@@ -11,9 +11,9 @@
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
         </div>
-        <ul>
-          <li  ng-repeat="channel in publicChatRooms track by $index">
-            {{channel}}
+        <ul class='channel-list'>
+          <li class='channel-list-item' ng-repeat="channel in publicChatRooms track by $index">
+            {{channel.name}}
           </li>
         </ul>
       </div>
