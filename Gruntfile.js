@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         }
       },
       staticCSS: {
-        files: ['./public/styles/*.css'], //All css files in the styles directory
+        files: ['./public/style/*.css'], //All css files in the styles directory
         tasks: [], //will hint the files and then minify and concatinate
         options: { //Server options
           spawn: false, //Must have for reload
