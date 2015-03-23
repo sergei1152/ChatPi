@@ -9,7 +9,7 @@ module.exports.getPublicChannels = function(callback) {
       logger.error("An error occured while retrieving public channels from the database\n %j", {
         'error': error
       }, {});
-      throw err; //throwing the error
+      callback(err, null);
     }
 
     //creating custom (non-mongoose) object to store the public channels list
