@@ -6,13 +6,9 @@
           <div class="col-sm-2" id="left-pane" ng-controller='ChatRooms'>
             <div class="chat-rooms-container">
               <h3 class='chat-rooms-container-header'>Public Channels</h3>
-              <input class='search-bar' type="text" placeholder="   Filter Public Channels">
-              <ul class="chat-room-list">
-                <li class="chat-room-list-item"><a href="">Example Room 1</a></li>
-                <li class="chat-room-list-item"><a href="">Example Room 2</a></li>
-                <li class="chat-room-list-item"><a href="">Example Room 3</a></li>
-                <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
-                <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
+              <input class='search-bar' ng-model='searchChannel.name' type="text" placeholder="   Filter Public Channels">
+              <ul class="chat-room-list"  ng-repeat="channel in subscribedChannels  | filter:searchChannel track by $index">
+                <li class="chat-room-list-item"><a href="">{{channel.name}}</a></li>
               </ul>
               <a href="" open-modal="openPublicChannel()">Find a Public Channel</a>
               <br>

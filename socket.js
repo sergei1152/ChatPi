@@ -72,13 +72,14 @@ module.exports = function(http, RedisClient) {
               socket.username = result.username;
               socket.profile_picture=result.profile_picture;
               socket.authorized = true;
+              socket.newPublicChannels=[];
               //sends the user his name and username for CSS purposes only
               socket.emit("metadata", {
                 clientName: result.name,
                 clientUsername: result.username,
                 clientProfilePic: result.profile_picture,
                 clientOnlineStatus: result.onlineStatus,
-                publicChannels: result.subscibed_public_channels,
+                subscribedChannels: result.subscribed_public_channels,
                 privateGroups: result.private_groups,
                 contacts: result.contacts
               });
@@ -126,10 +127,37 @@ module.exports = function(http, RedisClient) {
     socket.on('disconnect', function() {
       onlineUsers--;
       logger.info('Online Users: ' + onlineUsers);
+      if(socket.newPublicChannels.length>0){
+        User.findOne({
+          'username': socket.username
+        }, function(err, result) {
+          //if the id was not found in the monggo database
+          if (err) {
+            logger.error("There was an error in saving the users credentials after a disconnect \n %j", {
+              "error": err
+            }, {});
+          }
+          //if the user was found in the database
+          else if (result) {
+            for(var i=0;i<socket.newPublicChannels.length;i++){
+              result.subscribed_public_channels.push(socket.newPublicChannels[i]);
+            }
+             //NOTE: validate this input
+            result.save(function(err){
+              if(err){
+                logger.error('There was an error in saving a users credentials to the database after a disconnect \n %j',{'error':err},{});
+              }
+            });
+          }
+        });
+      }
     });
-    socket.on('getPublicChannels', function() {
+    socket.on('getPublicChannels', function(data) {
       logger.debug('Retreiving list of public channels and sending to client');
       socket.emit('publicChannelsList',publicChannelList);
+    });
+    socket.on('subscribeToChannel',function(channel){
+      socket.newPublicChannels.push(channel);
     });
   });
 };

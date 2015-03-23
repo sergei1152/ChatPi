@@ -31,7 +31,10 @@ var userSchema = mongoose.Schema({
     type: String,
     default:"default.png"
   },
-  subscribed_public_channels: [String], // an array of subscribed public channels
+  subscribed_public_channels: {
+    type:[],
+    default:[]
+  },
 
   //an array of all the private groups the user is apart of. Note this is only used for client side, server side verifcation is still done
   private_groups: [String],

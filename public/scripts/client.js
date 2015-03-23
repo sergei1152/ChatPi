@@ -2,11 +2,14 @@
 var socket = io();
 var selfName = "";
 var selfUsername = "";
+var subscribedChannels=[];
 //Setting up the credentials for proper CSS Styling of messages
-socket.on("metadata", function(data) {
-    selfName = data.clientName;
-    selfUsername = data.clientUsername;
-    selfProfilePicture=data.clientProfilePic;
+socket.on("metadata", function(metadata) {
+    selfName = metadata.clientName;
+    selfUsername = metadata.clientUsername;
+    selfProfilePicture=metadata.clientProfilePic;
+    subscribedChannels=metadata.subscribedChannels;
+    console.log(metadata.subscribedChannels);
 });
 
 var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives']);
@@ -90,6 +93,7 @@ ChatPiApp.directive('openModal', function () {
 });
 
 ChatPiApp.controller('ChatRooms', function($scope) {
+  $scope.subscribedChannels=subscribedChannels;
   //opens up the find public channels modal
   $scope.openPublicChannel=function(){
     $('#findChannelsModal').modal('show');
@@ -121,6 +125,12 @@ ChatPiApp.controller('findPublicChannelModal', function($scope) {
       $('#find-channel-spinner').css('display','none'); //stops showing the little spinner
       $scope.$apply(); //updates the list
     });
+  };
+  //if the user wants to subscribe to a channel
+  $scope.subscribeChannel=function(index){
+    subscribedChannels.push($scope.publicChatRooms[index]); //adds the channel locally
+    console.log(subscribedChannels);
+    socket.emit('subscribeToChannel',$scope.publicChatRooms[index]); //adds the channel on the server side
   };
 });
 
