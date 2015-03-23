@@ -96,33 +96,30 @@ ChatPiApp.controller('ChatRooms', function($scope) {
     $('#findChannelsModal').modal('show');
   };
 });
+
+//controller for the find public channels modal
 ChatPiApp.controller('findPublicChannelModal', function($scope) {
-  $scope.publicChatRooms={
-    name: String,
-    description: String,
-    id: String
-  };
-  $scope.open=false;
-  $scope.firstOpen=true;
+  $scope.firstOpen=true; //for first retrieval of data
+  $scope.publicChatRooms=null;
+
   //when the modal is open event handler
   $('#findChannelsModal').on('shown.bs.modal', function () {
     if($scope.firstOpen){
-      $scope.getChannels();
+      $scope.getChannels(); //retrives the list of public channels from the server
       $scope.firstOpen=false;
     }
-    $scope.open=true;
-  });
-  //when the modal is hidden
-  $('#findChannelsModal').on('hidden.bs.modal', function () {
-    $scope.open=false;
   });
 
   $scope.getChannels=function(){
-    socket.emit('getPublicChannels','');
-    socket.on('publicChannelsList',function(data){
-      console.log(data);
+    $scope.publicChatRooms=null;
+    $('#find-channel-spinner').css('display','block'); //shows the little spinner
+
+    socket.emit('getPublicChannels',''); //asks the server for the list of public channels
+
+    socket.on('publicChannelsList',function(data){ //when the server sends back the list
       $scope.publicChatRooms=data;
-      $scope.$apply();
+      $('#find-channel-spinner').css('display','none'); //stops showing the little spinner
+      $scope.$apply(); //updates the list
     });
   };
 });

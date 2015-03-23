@@ -7,19 +7,23 @@
       </div>
       <div class="modal-body" >
       <input class='search-bar' type="text" ng-model='filter' placeholder="   Search for your public channel">
-        <div class="spinner">
+        <div class="spinner" id='find-channel-spinner'>
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
         </div>
         <ul class='channel-list'>
           <li class='channel-list-item' ng-repeat="channel in publicChatRooms track by $index">
-            {{channel.name}}
+            <div class='wrapper'>
+            <h4>{{channel.name}}</h4>
+            <p>{{channel.description}}</p>
+            </div>
+            <span class='glyphicon glyphicon-plus add-channel'></span>
           </li>
         </ul>
       </div>
       <div class="modal-footer">
+        <button ng-click='getChannels()' type="button" class="btn btn-primary "> <span class='glyphicon glyphicon-refresh'>  </span>  Refresh</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Subscribe +</button>
       </div>
     </div>
   </div>

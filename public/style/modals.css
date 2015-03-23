@@ -15,8 +15,35 @@
 }
 
 .channel-list{
+	margin-top:12px;
 	overflow:auto;
 	list-style-type:none;
+	max-height:320px;
+	padding-right:24px;
+}
+.channel-list .wrapper{
+display:inline-block;
 }
 .channel-list-item{
+	display:flex;
+	align-items:baseline;
+	justify-content:space-between;
+	width: 100%;
+	border:1px solid #cbcbcb;
+	padding:12px;
+}
+.channel-list-item h4{
+	display:inline-block;
+}
+.channel-list-item p{
+	clear:both;
+	display:inline-block;
+}
+.add-channel{
+	float:right;
+	color:#7f7c7d;
+}
+.add-channel:hover{
+	cursor:pointer;
+	color:#0da8e9;
 }
