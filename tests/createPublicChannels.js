@@ -12,7 +12,8 @@ mongoose.connection.on('connected', function() {
   for (var i = 0; i < numChannels; i++) {
     var channel = new PublicChannel({
       chat_history: [],
-      name: 'test'
+      name: 'test'+i,
+      description:'This is a test description'
     });
     channel.save(function(err) {
       if (err) {
