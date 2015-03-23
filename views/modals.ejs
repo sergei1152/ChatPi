@@ -1,4 +1,4 @@
-<div class="modal fade" id="findChannelsModal" tabindex="-1" role="dialog" aria-labelledby="findPublicChannel" aria-hidden="true">
+<div class="modal fade"  ng-controller="findPublicChannelModal" id="findChannelsModal" tabindex="-1" role="dialog" aria-labelledby="findPublicChannel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,6 +11,11 @@
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
         </div>
+        <ul>
+          <li  ng-repeat="channel in publicChatRooms track by $index">
+            {{channel}}
+          </li>
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

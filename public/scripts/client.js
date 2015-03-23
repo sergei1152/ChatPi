@@ -80,24 +80,7 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate) {
       $scope.$apply();
     },60000);
 });
-ChatPiApp.controller('ChatRooms', function($scope) {
-  var publicChannels={
-    show:false, //wether the user is currently viewing the modal
-    firstShow: true, //wether this is the first time the modal is being shown(so retrieve data)
-    getChannelList: function(){
-      socket.emit('getChannels',null);
-    }
-  };
 
-  //shows the modal
-  $scope.openPublicChannel=function(){
-    $('#findChannelsModal').modal('show');
-    if(publicChannel.firstShow){
-      publicChannel.getChannelList();
-    }
-
-  };
-});
 ChatPiApp.directive('openModal', function () {
     return function (scope, element, attrs) {
       element.bind("click", function (event) {
@@ -106,6 +89,44 @@ ChatPiApp.directive('openModal', function () {
 
     };
 });
+
+ChatPiApp.controller('ChatRooms', function($scope) {
+  //opens up the find public channels modal
+  $scope.openPublicChannel=function(){
+    $('#findChannelsModal').modal('show');
+  };
+});
+ChatPiApp.controller('findPublicChannelModal', function($scope) {
+  $scope.publicChatRooms={
+    name: String,
+    description: String,
+    id: String
+  };
+  $scope.open=false;
+  $scope.firstOpen=true;
+  //when the modal is open event handler
+  $('#findChannelsModal').on('shown.bs.modal', function () {
+    if($scope.firstOpen){
+      $scope.getChannels();
+      $scope.firstOpen=false;
+    }
+    $scope.open=true;
+  });
+  //when the modal is hidden
+  $('#findChannelsModal').on('hidden.bs.modal', function () {
+    $scope.open=false;
+  });
+
+  $scope.getChannels=function(){
+    socket.emit('getPublicChannels','');
+    socket.on('publicChannelsList',function(data){
+      console.log(data);
+      $scope.publicChatRooms=data;
+      $scope.$apply();
+    });
+  };
+});
+
 socket.on('disconnect', function() {
     console.log("disconnected");
 });
