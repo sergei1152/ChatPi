@@ -104,6 +104,9 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
     message_history: [],
     new_message: ""
   };
+  $scope.getCurrentRoom = function(){
+    return joinedChatRooms.getCurrentRoom();
+  };
   $scope.send = function() {
     var cleanMessage = $scope.conversation.new_message.replace(/\s/g, '');
     if (cleanMessage !== "") { //checking for empty strings
