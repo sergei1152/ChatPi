@@ -3,16 +3,21 @@ var socket = io();
 var selfName = "";
 var selfUsername = "";
 var subscribedChannels=[];
-//Setting up the credentials for proper CSS Styling of messages
-socket.on("metadata", function(metadata) {
-    selfName = metadata.clientName;
-    selfUsername = metadata.clientUsername;
-    selfProfilePicture=metadata.clientProfilePic;
-    selfSubscribedChannels=metadata.subscribedChannels;
-    console.log(metadata.subscribedChannels);
-});
+
 
 var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives']);
+
+ChatPiApp.run(function(subscribedChannels){
+  //Setting up the credentials for proper CSS Styling of messages
+  socket.on("metadata", function(metadata) {
+      selfName = metadata.clientName;
+      selfUsername = metadata.clientUsername;
+      selfProfilePicture=metadata.clientProfilePic;
+      subscribedChannels.setChannels(metadata.subscribedChannels);
+      console.log(metadata.subscribedChannels);
+      console.log(subscribedChannels.getChannels());
+  });
+});
 
 ChatPiApp.factory("Message", function() {
     var Message = function(contents, type) {
@@ -33,23 +38,14 @@ ChatPiApp.service("subscribedChannels", function() {
     this.addChannel=function(channel){
       subscribedChannels.push(channel);
     };
-    this.updateChannels=function(channels){
+    this.setChannels=function(channels){
       subscribedChannels=channels;
     };
     this.getChannels = function() {
         return subscribedChannels;
     };
 });
-//service that returns the current date in minutes to be used in message dates
-ChatPiApp.service("socket", function() {
-    var subscribedChannels=[];
-    this.updateChannels=function(channels){
-      subscribedChannels=channels;
-    };
-    this.getChannels = function() {
-        return subscribedChannels;
-    };
-});
+
 //filter that parses the differnce between dates to a human readable format (eg. 5 minutes ago, less than a minute ago)
 //note that the current date must be passed in from the filter so as for the
 //$digest cycle to recognize a change in the time and refresh the filtered dates
@@ -116,7 +112,9 @@ ChatPiApp.directive('openModal', function () {
 });
 
 ChatPiApp.controller('ChatRooms', function($scope,subscribedChannels) {
-  $scope.subscribedChannels=subscribedChannels.getChannels();
+  $scope.getChannels=function(){
+      return subscribedChannels.getChannels();
+  };
   //opens up the find public channels modal
   $scope.openPublicChannel=function(){
     $('#findChannelsModal').modal('show');
@@ -152,7 +150,7 @@ ChatPiApp.controller('findPublicChannelModal', function($scope,subscribedChannel
   //if the user wants to subscribe to a channel
   $scope.subscribeChannel=function(index){
     subscribedChannels.addChannel($scope.publicChatRooms[index]); //adds the channel locally
-    console.log(subscribedChannels);
+    console.log(subscribedChannels.getChannels());
     socket.emit('subscribeToChannel',$scope.publicChatRooms[index]); //adds the channel on the server side
   };
 });
