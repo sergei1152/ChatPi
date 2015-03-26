@@ -126,12 +126,13 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
             $scope.channelNameAvailability = "Checking availability...";
 
             socket.on('PublicChannelNameStatus', function(taken) {
+                console.log(taken);
                 if (taken) {
-                    $scope.apply(function() {
+                    $scope.$apply(function() {
                         $scope.channelNameAvailability = "Name already taken...";
                     });
                 } else {
-                    $scope.apply(function() {
+                    $scope.$apply(function() {
                         $scope.channelNameAvailability = "Good!";
                     });
                 }

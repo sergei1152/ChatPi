@@ -166,5 +166,22 @@ module.exports = function(http, RedisClient) {
     socket.on('subscribeToChannel',function(channel){
       socket.newPublicChannels.push(channel);
     });
+    function checkDuplicatePublicChannelName(channel,publicChannelList){ //TODO: Use async for this stuff
+      for(var i=0;i<publicChannelList.length;i++){
+        if(channel.name.toLowerCase()===publicChannelList[i].name.toLowerCase()){
+          return true;
+        }
+      }
+      return false;
+    }
+    socket.on('CreatePublicChannel',function(channel){
+      if(!checkDuplicatePublicChannelName(channel,publicChannelList)){
+        console.log('No duplicated found');
+      }
+    });
+    //checks that database to see whether a name with the channel exists
+    socket.on('checkPublicChannelName',function(channelName){
+      socket.emit("PublicChannelNameStatus",checkDuplicatePublicChannelName(channelName,publicChannelList));
+    });
   });
 };
