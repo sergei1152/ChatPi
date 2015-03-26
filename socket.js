@@ -120,7 +120,8 @@ module.exports = function(http, RedisClient) {
         newMessage.dateSentInMinutes = Math.ceil(newMessage.dateSent.getTime() / 1000 / 60);
         newMessage.senderProfilePicture=socket.profile_picture;
         //will send to the buffer in this line, before setting the profile picture
-        io.emit('message', newMessage);
+        io.sockets.in(data.destination.id).emit('message',newMessage);
+        logger.debug('Sending message to '+data.destination.id);
       }
     });
     //executes when a user disconnects
@@ -155,6 +156,10 @@ module.exports = function(http, RedisClient) {
     socket.on('getPublicChannels', function(data) {
       logger.debug('Retreiving list of public channels and sending to client');
       socket.emit('publicChannelsList',publicChannelList);
+    });
+    socket.on('joinRoom', function(data) {
+      socket.join(data.id);
+      logger.debug('Socket joined channel \n %j',{room:data},{});
     });
     socket.on('subscribeToChannel',function(channel){
       socket.newPublicChannels.push(channel);
