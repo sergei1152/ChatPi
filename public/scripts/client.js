@@ -13,7 +13,6 @@ ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the b
   });
   socket.on('disconnect', function() {
     console.warn('You were disconnected from the server');
-    alert('You have been disconnected from the server');
   });
   socket.on("error", function(msg) {
     console.error("An error occured with the connection to the chat server \n" + msg);
