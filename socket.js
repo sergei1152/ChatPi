@@ -153,12 +153,14 @@ module.exports = function(http, RedisClient) {
         });
       }
     });
-    socket.on('getPublicChannels', function(data) {
-      logger.debug('Retreiving list of public channels and sending to client');
+    socket.on('getPublicChannelsList', function(data) {
+      logger.debug('Retrieving list of public channels and sending to client \n %j',{username:socket.username},{});
       socket.emit('publicChannelsList',publicChannelList);
     });
-    socket.on('joinRoom', function(data) {
-      socket.join(data.id);
+    socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
+      if(data){
+        socket.join(data.id);
+      }
       logger.debug('Socket joined channel \n %j',{room:data},{});
     });
     socket.on('subscribeToChannel',function(channel){
