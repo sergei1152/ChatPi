@@ -2,6 +2,8 @@
 bower_components
 bower_components/
 
+#Webstorm configuration folder
+.idea
 #redis stuff
 *.rdb
 
