@@ -8,7 +8,7 @@ socket.on("metadata", function(metadata) {
     selfName = metadata.clientName;
     selfUsername = metadata.clientUsername;
     selfProfilePicture=metadata.clientProfilePic;
-    subscribedChannels=metadata.subscribedChannels;
+    selfSubscribedChannels=metadata.subscribedChannels;
     console.log(metadata.subscribedChannels);
 });
 
@@ -25,6 +25,29 @@ ChatPiApp.factory("Message", function() {
 ChatPiApp.service("getDate", function() {
     this.currentDateInMinutes = function() {
         return Math.ceil(Date.now() / 1000 / 60); //return the current minutes
+    };
+});
+//service that returns the current date in minutes to be used in message dates
+ChatPiApp.service("subscribedChannels", function() {
+    var subscribedChannels=[];
+    this.addChannel=function(channel){
+      subscribedChannels.push(channel);
+    };
+    this.updateChannels=function(channels){
+      subscribedChannels=channels;
+    };
+    this.getChannels = function() {
+        return subscribedChannels;
+    };
+});
+//service that returns the current date in minutes to be used in message dates
+ChatPiApp.service("socket", function() {
+    var subscribedChannels=[];
+    this.updateChannels=function(channels){
+      subscribedChannels=channels;
+    };
+    this.getChannels = function() {
+        return subscribedChannels;
     };
 });
 //filter that parses the differnce between dates to a human readable format (eg. 5 minutes ago, less than a minute ago)
@@ -92,8 +115,8 @@ ChatPiApp.directive('openModal', function () {
     };
 });
 
-ChatPiApp.controller('ChatRooms', function($scope) {
-  $scope.subscribedChannels=subscribedChannels;
+ChatPiApp.controller('ChatRooms', function($scope,subscribedChannels) {
+  $scope.subscribedChannels=subscribedChannels.getChannels();
   //opens up the find public channels modal
   $scope.openPublicChannel=function(){
     $('#findChannelsModal').modal('show');
@@ -101,7 +124,7 @@ ChatPiApp.controller('ChatRooms', function($scope) {
 });
 
 //controller for the find public channels modal
-ChatPiApp.controller('findPublicChannelModal', function($scope) {
+ChatPiApp.controller('findPublicChannelModal', function($scope,subscribedChannels) {
   $scope.firstOpen=true; //for first retrieval of data
   $scope.publicChatRooms=null;
 
@@ -128,7 +151,7 @@ ChatPiApp.controller('findPublicChannelModal', function($scope) {
   };
   //if the user wants to subscribe to a channel
   $scope.subscribeChannel=function(index){
-    subscribedChannels.push($scope.publicChatRooms[index]); //adds the channel locally
+    subscribedChannels.addChannel($scope.publicChatRooms[index]); //adds the channel locally
     console.log(subscribedChannels);
     socket.emit('subscribeToChannel',$scope.publicChatRooms[index]); //adds the channel on the server side
   };
