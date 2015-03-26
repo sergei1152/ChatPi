@@ -7,15 +7,14 @@ var subscribedChannels=[];
 
 var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives']);
 
-ChatPiApp.run(function(subscribedChannels){
+ChatPiApp.run(function($rootScope,subscribedChannels){
   //Setting up the credentials for proper CSS Styling of messages
   socket.on("metadata", function(metadata) {
     selfName = metadata.clientName;
     selfUsername = metadata.clientUsername;
     selfProfilePicture=metadata.clientProfilePic;
     subscribedChannels.setChannels(metadata.subscribedChannels);
-    console.log(metadata.subscribedChannels);
-    console.log(subscribedChannels.getChannels());
+    $rootScope.$apply()
   });
 });
 //The Message Object
