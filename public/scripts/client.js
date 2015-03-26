@@ -77,7 +77,7 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
 ChatPiApp.directive('openModal', function () {
   return function (scope, element, attrs) {
     element.bind("click", function (event) {
-      scope.$eval(attrs.openModal); //open the modal as specified in the attribute
+      $(attrs.openModal).modal('show');
     });
   };
 });

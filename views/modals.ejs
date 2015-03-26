@@ -6,7 +6,7 @@
         <h4 class="modal-title">Find a Public Channel</h4>
       </div>
       <div class="modal-body" >
-      <input id='findPublicChannelModalSearch' class='search-bar' type="text" ng-model='findPublicChannelModalSearch.name' placeholder="   Search for your public channel">
+        <input id='findPublicChannelModalSearch' class='search-bar' type="text" ng-model='findPublicChannelModalSearch.name' placeholder="   Search for your public channel">
         <div class="spinner" id='find-channel-spinner'>
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
@@ -14,8 +14,8 @@
         <ul class='channel-list'>
           <li class='channel-list-item' ng-repeat="channel in publicChatRooms  | filter:findPublicChannelModalSearch track by $index">
             <div class='wrapper'>
-            <h4>{{channel.name}}</h4>
-            <p>{{channel.description}}</p>
+              <h4>{{channel.name}}</h4>
+              <p>{{channel.description}}</p>
             </div>
             <span ng-click='subscribeChannel($index)' class='glyphicon glyphicon-plus add-channel'></span>
           </li>
@@ -28,3 +28,31 @@
     </div>
   </div>
 </div>
+<div class="modal fade" ng-controller="createPublicChannel" id="createPublicChannelModal" role="dialog" aria-labelledby="createPublicChannelModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create a Public Channel</h4>
+      </div>
+      <div class="modal-body" >
+        <div id="createPublicChannelAlert" class="alert alert-danger" role="alert">
+          {{createChannelMessage}}
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" ng-model="newChannelName" class="form-control" placeholder="Enter Channel Name">
+            <span class="input-group-btn">
+              <button class="btn btn-default" ng-click="checkPublicChannelName()" type="button">{{channelNameAvailability}}</button>
+            </span>
+            </div><!-- /input-group -->
+          </div>
+          <textarea class="form-control"  ng-model="newChannelDescription" rows="3" style="resize:none" placeholder="Description of channel (optional)"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button  type="button"  ng-click="createPublicChannel()" class="btn btn-primary "> <span class='glyphicon glyphicon-plus'>  </span> {{channelNameCreationStatus}}</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
