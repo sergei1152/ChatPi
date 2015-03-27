@@ -7,11 +7,9 @@ var SERVER_SETTINGS = require("./config/server-config.js");
 //custom objects
 var ChatRoom = require('./models/ChatRoom.js');
 var User = require('./models/User.js');
-//var Message = require('./models/Message.js');
 var async = require('async');
 var cookie = require('cookie'); //for parsing the cookie value from received cookies
 var cookieParser = require('cookie-parser'); //used for decoding signed cookies
-//var PublicChannel=require('./models/PublicChannel.js');
 var publicChannelList;
 
 //retrieves the list of public channels from the mongodb database and loads into memory
@@ -50,47 +48,95 @@ module.exports = function(http, RedisClient) {
             sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionKey);
 
             //check the redis database for the session cookie
-            RedisClient.get("sessions:" + sessionID, function(err, reply) {
+            RedisClient.get("sessions:" + sessionID, function(err, session) {
 
                 if (err) { //if the session was not found in the database
                     logger.warn("A user tried to access the chat with a session ID that was not found in the session database \n" + err);
                     next(new Error('Authentication error'));
                 }
                 //if the session was found in the redis database
-                else if (reply) {
-                    //looks in the mongodb database for the id
-                    User.findOne({
-                        '_id': JSON.parse(reply).passport.user
-                    }, function(err, result) {
+                else if (session) {
+                  //check the redis database for the user
+                  RedisClient.get("user:" + JSON.parse(session).passport.user, function(err, user) {
+
+                    if (err) { //if the session was not found in the database
+                      logger.warn("Could not find the user in the redis database \n" + err);
+                      next(new Error('Authentication error'));
+                    }
+                    if (user) { //if the user was found in the redis database
+                      var currentUser = JSON.parse(user);
+                      logger.debug('User found in the redis database \n %j',{'user':user},{});
+                      //setting properties about the socket
+                      socket.name = user.name;
+                      socket.username = user.username;
+                      socket.profile_picture = user.profile_picture;
+                      socket.authorized = true;
+                      socket.newPublicChannels = [];
+                      //sends the user his name and username for CSS purposes only
+                      socket.emit("metadata", {
+                        clientName: user.name,
+                        clientUsername: user.username,
+                        clientProfilePic: user.profile_picture,
+                        clientOnlineStatus: user.onlineStatus,
+                        subscribed_channels: user.subscribed_public_channels,
+                        private_groups: user.private_groups,
+                        contacts: user.contacts
+                      });
+                      logger.info("User " + user.name + " successfully connected to the chat");
+                    }
+                    if (!user) { //if the user was not found in the database (ie not saved to the redis database yet, look up the mongo)
+                      //looks in the mongodb database for the id
+                      logger.debug('User was not found in the redis database...accessing mongodb');
+                      User.findOne({
+                        '_id': JSON.parse(session).passport.user
+                      }, function (err, user) {
                         //if the id was not found in the monggo database
                         if (err) {
-                            logger.error("A user tried to access the chat with an ID that is no longer in the database \n %j", {
-                                "error": err
-                            }, {});
-                            next(new Error('Authentication error'));
+                          logger.error("A user tried to access the chat with an ID that is no longer in the database \n %j", {
+                            "error": err
+                          }, {});
+                          next(new Error('Authentication error'));
                         }
                         //if the user was found in the database
-                        else if (result) {
-                            //setting properties about the socket
-                            socket.name = result.name;
-                            socket.username = result.username;
-                            socket.profile_picture = result.profile_picture;
-                            socket.authorized = true;
-                            socket.newPublicChannels = [];
-                            //sends the user his name and username for CSS purposes only
-                            socket.emit("metadata", {
-                                clientName: result.name,
-                                clientUsername: result.username,
-                                clientProfilePic: result.profile_picture,
-                                clientOnlineStatus: result.onlineStatus,
-                                subscribedChannels: result.subscribed_public_channels,
-                                privateGroups: result.private_groups,
-                                contacts: result.contacts
-                            });
-                            logger.info("User " + result.name + " successfully connected to the chat");
-                            next();
+                        else if (user) {
+                          //setting properties about the socket
+                          socket.name = user.name;
+                          socket.username = user.username;
+                          socket.profile_picture = user.profile_picture;
+                          socket.authorized = true;
+                          socket.newPublicChannels = [];
+                          //sends the user his name and username for CSS purposes only
+                          socket.emit("metadata", {
+                            clientName: user.name,
+                            clientUsername: user.username,
+                            clientProfilePic: user.profile_picture,
+                            clientOnlineStatus: user.onlineStatus,
+                            subscribed_channels: user.subscribed_public_channels,
+                            private_groups: user.private_groups,
+                            contacts: user.contacts
+                          });
+                          logger.info("User " + user.name + " successfully connected to the chat");
+
+                          //Saves the user to the redis database for faster access next time
+                          RedisClient.set('user:' + user._id, JSON.stringify({
+                            name: user.name,
+                            username: user.username,
+                            profile_picture: user.profile_picture,
+                            online_status: 'Online',
+                            subscribed_channels: user.subscribed_public_channels,
+                            private_groups: user.private_groups,
+                            contacts: user.contacts
+                          }), function (err) {
+                            if (err) {
+                              logger.error('There was an error in saving a user to the redis database \n %j', {'error': error}, {});
+                            }
+                          });
+                          RedisClient.expire('user:' + user._id, SERVER_SETTINGS.userTTL);
+                          next();
                         }
-                    });
+                      });
+                    }
+                  });
                 }
                 //if the session was not found in the redis database
                 else {

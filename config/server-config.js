@@ -3,6 +3,7 @@
 //Input your server configration here
 module.exports={
   serverPort: 80,
+  userTTL:60*60*24,//the amount of time to hold a user's session in the redis database
   eventLoopBenchmark:false, //only enable if you're benchmarking
   temporaryFilesLocation:"./tmp/", //where to store the temporary files of the server from form data. Make sure the folder exists first
   maxFileUploadSize:25000000, //the maximum size of a file a user can upload to the server
