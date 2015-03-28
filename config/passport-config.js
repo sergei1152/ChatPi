@@ -6,8 +6,8 @@ var fs = require('fs'); //for managing profile picture uploads
 var path = require('path'); //for managing profile picture uploads
 var logger = require('../logger.js'); //for pretty console outputs
 var validator = require('../static/validator.js'); //validates the forms
-
-module.exports = function(passport) {
+var saveUserRedis=require('../static/saveUserRedis.js');
+module.exports = function(passport,RedisClient) {
 
   // =========================================================================
   // passport session setup ==================================================
@@ -82,6 +82,7 @@ module.exports = function(passport) {
               });
             } else {
               newUser.profile_picture = "default.png";
+              saveUserRedis(newUser, RedisClient); //saving the user to the redis database
               return saveUser(newUser, done);
             }
           });
@@ -117,7 +118,7 @@ module.exports = function(passport) {
         if (!user.validPassword(password)) {
           return done(null, false, req.flash('loginMessage', 'Incorrect Username/Password')); // create the loginMessage and save it to session as flashdata
         }
-        // all is well, return successful user
+        saveUserRedis(user,RedisClient);
         return done(null, user);
       });
     }));

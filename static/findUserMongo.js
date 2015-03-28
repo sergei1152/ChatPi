@@ -2,6 +2,7 @@
 var logger=require('../logger.js');
 var User=require('../models/User.js');
 var saveUserSocket=require('./saveUserSocket.js');
+
 var SERVER_SETTINGS=require('../config/server-config.js');
 
 module.exports=function(RedisClient, userID, socket,next) {
@@ -15,22 +16,6 @@ module.exports=function(RedisClient, userID, socket,next) {
     //if the user was found in the database
     else if (user) {
       saveUserSocket(socket, user);
-
-      //Saves the user to the redis database for faster access next time
-      RedisClient.set('user:' + user._id, JSON.stringify({
-        name: user.name,
-        username: user.username,
-        profile_picture: user.profile_picture,
-        online_status: 'Online',
-        subscribed_channels: user.subscribed_public_channels,
-        private_groups: user.private_groups,
-        contacts: user.contacts
-      }), function (err) {
-        if (err) {
-          logger.error('There was an error in saving a user to the redis database \n',{'error': error});
-        }
-        RedisClient.expire('user:' + user._id, SERVER_SETTINGS.userTTL);
-      });
       next();
     }
     else {

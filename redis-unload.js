@@ -3,18 +3,13 @@ var async=require('async');
 var logger=require('./logger.js');
 
 function saveChannelMongo(channel,callback){
-  var tmpChannel=new PublicChannel();
-
-  tmpChannel.name=channel.name;
-  tmpChannel.description=channel.description;
-  tmpChannel.chat_history=channel.chatHistory;
-  tmpChannel.createdAt=channel.createdAt;
-
-  tmpChannel.save(function(err){
-    if (err){
-      callback(err);
+  PublicChannel.findOne({_id:channel._id},function(err,existingChannel){
+    if(err){
+      logger.error('There was an error in finding an existing channel in the mongo database');
     }
-    callback();
+    else if (existingChannel){
+        existingChannel.update(channel,callback);
+    }
   });
 }
 module.exports=function(RedisClient,callback){
@@ -29,14 +24,17 @@ module.exports=function(RedisClient,callback){
         if (err){
           logger.error('There was an error in retrieving the channels list from the redis database');
         }
-        //save all of the keys back to the mongo database
-        async.each(channels, saveChannelMongo, function(err) {
-          if (err) {
-            logger.error('An error occurred dumping a channel from mongo to redis \n', {'error': err});
-          }
-          logger.info('Successfully dumped public channels to mongodb');
-          callback(null);
-        });
+        if(channels){
+          //save all of the keys back to the mongo database
+          async.each(channels, saveChannelMongo, function(err) {
+            if (err) {
+              logger.error('An error occurred dumping a channel from mongo to redis \n', {'error': err});
+            }
+            logger.info('Successfully dumped public channels to mongodb');
+            callback(null);
+          });
+        }
+        callback(null);
       });
     }
   });

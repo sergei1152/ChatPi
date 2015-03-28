@@ -31,10 +31,9 @@ async.series([
     }
   ]);
 
-
 //======Configuring the Server=======
 var SERVER_SETTINGS = require("./config/server-config.js"); //custom server settings
-require('./config/passport-config.js')(passport); //configures the passport module
+require('./config/passport-config.js')(passport,RedisClient); //configures the passport module
 
 //for benchmarking the even loop and checking to see whether it's blocked
 if(SERVER_SETTINGS.eventLoopBenchmark) require("./tests/bench_event_loop.js")();
