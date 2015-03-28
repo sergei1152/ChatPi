@@ -5,7 +5,7 @@ var logger=require('./logger.js'); //for pretty console outputs
 var async=require('async');
 
 function loadPublicChannel(RedisClient,item,callback){
-  RedisClient.set('channel:'+item._id,item,function(err){
+  RedisClient.set('channel:'+item._id,JSON.stringify(item),function(err){
     if(err) {
       callback(err);
     }
