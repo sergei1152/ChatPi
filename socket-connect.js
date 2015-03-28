@@ -65,24 +65,24 @@ module.exports = function(http, RedisClient) {
                     }
                     if (user) { //if the user was found in the redis database
                       var currentUser = JSON.parse(user);
-                      logger.debug('User found in the redis database \n %j',{'user':user},{});
+                      logger.debug('User found in the redis database \n',{user:currentUser});
                       //setting properties about the socket
-                      socket.name = user.name;
-                      socket.username = user.username;
-                      socket.profile_picture = user.profile_picture;
+                      socket.name = currentUser.name;
+                      socket.username = currentUser.username;
+                      socket.profile_picture = currentUser.profile_picture;
                       socket.authorized = true;
                       socket.newPublicChannels = [];
                       //sends the user his name and username for CSS purposes only
                       socket.emit("metadata", {
-                        clientName: user.name,
-                        clientUsername: user.username,
-                        clientProfilePic: user.profile_picture,
-                        clientOnlineStatus: user.onlineStatus,
-                        subscribed_channels: user.subscribed_public_channels,
-                        private_groups: user.private_groups,
-                        contacts: user.contacts
+                        clientName: currentUser.name,
+                        clientUsername: currentUser.username,
+                        clientProfilePic: currentUser.profile_picture,
+                        clientOnlineStatus: currentUser.onlineStatus,
+                        subscribed_channels: currentUser.subscribed_public_channels,
+                        private_groups: currentUser.private_groups,
+                        contacts: currentUser.contacts
                       });
-                      logger.info("User " + user.name + " successfully connected to the chat");
+                      logger.info("User " + currentUser.name + " successfully connected to the chat");
                     }
                     if (!user) { //if the user was not found in the database (ie not saved to the redis database yet, look up the mongo)
                       //looks in the mongodb database for the id
