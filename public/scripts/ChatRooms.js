@@ -2,20 +2,21 @@ var ChatRooms = angular.module('ChatRooms', ['Validator']);
 
 //to keep track of the users subscribed channels
 ChatRooms.service("subscribedChannels", function() {
-    var subscribedChannels = [];
+    this.subscribedChannels = [];
     this.addChannel = function(channel) {
-        subscribedChannels.push(channel);
+        this.subscribedChannels.push(channel);
     };
     this.setChannels = function(channels) {
-        subscribedChannels = channels;
+        this.subscribedChannels = channels;
     };
     this.getChannels = function() {
-        return subscribedChannels;
+        return this.subscribedChannels;
     };
     //checks the array to see if a channel id is in the array
     this.findChannel = function(channel) {
-        for (var i = 0; i < subscribedChannels.length; i++) {
-            if (channel.id === subscribedChannels[i].id) {
+      console.log(this.subscribedChannels);
+        for (var i = 0; i < this.subscribedChannels.length; i++) {
+            if (channel._id === this.subscribedChannels[i]._id) {
                 return true;
             }
         }
@@ -32,7 +33,7 @@ ChatRooms.service("joinedChatRooms", function() {
     };
     this.getCurrentRoom = function() {
         return currentRoom;
-    }
+    };
     this.addRoom = function(room) {
         joinedChatRooms.push(room);
     };
@@ -73,15 +74,17 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
 //controller for the find public channels modal
 ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
     $scope.firstOpen = true; //for first retrieval of data
-    $scope.publicChatRooms = null; //list of all public chat rooms in the database
+    $scope.publicChatRooms = []; //list of all public chat rooms in the database
     $scope.getPublicChannelsList = function() { //retrieves the full list of public channels from the server
-        $scope.publicChatRooms = null; //resets the view to blank
+        $scope.publicChatRooms = []; //resets the view to blank
         $('#find-channel-spinner').css('display', 'block'); //shows the little spinner
         socket.emit('getPublicChannelsList', ''); //asks the server for the list of public channels
         socket.on('publicChannelsList', function(data) { //when the server sends back the list
             $scope.$apply(function() { //updates the view for the user
-                $scope.publicChatRooms = data;
-                $('#find-channel-spinner').css('display', 'none'); //stops showing the little spinner
+              for (var i=0;i<data.length;i++){
+                $scope.publicChatRooms.push(JSON.parse(data[i]));
+              }
+              $('#find-channel-spinner').css('display', 'none'); //stops showing the little spinner
             });
         });
     };

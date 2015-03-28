@@ -15,7 +15,7 @@ module.exports=function(socket,user){
     clientUsername: user.username,
     clientProfilePic: user.profile_picture,
     clientOnlineStatus: user.onlineStatus,
-    subscribedChannels: user.subscribed_public_channels,
+    subscribedChannels: user.subscribed_channels,
     privateGroups: user.private_groups,
     contacts: user.contacts
   });
