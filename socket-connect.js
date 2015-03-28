@@ -9,28 +9,10 @@ var User = require('./models/User.js');
 var async = require('async');
 var cookie = require('cookie'); //for parsing the cookie value from received cookies
 var cookieParser = require('cookie-parser'); //used for decoding signed cookies
-var publicChannelList;
 var saveUserSocket=require('./static/saveUserSocket.js');
 var saveUserMongo=require('./static/findUserMongo.js');
-//retrieves the list of public channels from the mongodb database and loads into memory
-async.series([
 
-    function(callback) {
-      require('./static/retrieve.js').getPublicChannels(callback);
-    }
-  ],
-  // callback when the retrieval from the database is finished
-  function(err, results) {
-    if (err) {
-      logger.error('An error occurred retrieving the list of public channels from the mongodb database \n %j', {
-        'error': err
-      }, {});
-      publicChannelList = null;
-    } else {
-      publicChannelList = results[0];
-    }
-  });
-
+var publicChannelList;
 module.exports = function(http, RedisClient) {
   //starting the socket server
   var io = require('socket.io')(http);
