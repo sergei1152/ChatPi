@@ -13,7 +13,7 @@ function loadPublicChannel(RedisClient,item,callback){
   });
 }
 
-module.exports=function(RedisClient){
+module.exports=function(RedisClient,callback){
   logger.info('Retrieving list of public channels from the mongo database...');
   //finds all the public channels in the mongo database
   PublicChannel.find({}, function(err, list) {
@@ -28,6 +28,7 @@ module.exports=function(RedisClient){
         logger.error('An error occurred saving a channel to the redis database \n', {'error': err});
       }
       logger.info('Successfully transferred public channels to redis');
+      callback(null);
     });
   });
 };

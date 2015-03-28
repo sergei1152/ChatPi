@@ -14,12 +14,24 @@ var morgan = require('morgan'); //for logging http request details
 var logger = require('./logger.js'); //configration for winston logger
 var fs = require('fs'); //for file system management. Used to manage the tmp directory
 var compression=require('compression'); //for compressing files before serving them
+var async=require('async');
+
 
 //======Database Settings and Configuration======
 var MongoDBConfig = require('./config/mongo-config.js')(mongoose); //configures the mongoDB database
 var RedisDBConfig = require('./config/redis-config.js'); //has the database configuration settings
 RedisDBConfig.configure(RedisClient); //configures the Redis Database
-require('./redis-load.js')(RedisClient);
+
+async.series([
+    function(callback){
+      require('./redis-unload.js')(RedisClient,callback); //unloading the redis cache
+    },
+    function(callback){
+      require('./redis-load.js')(RedisClient,callback); //loading redis cache
+    }
+  ]);
+
+
 //======Configuring the Server=======
 var SERVER_SETTINGS = require("./config/server-config.js"); //custom server settings
 require('./config/passport-config.js')(passport); //configures the passport module
