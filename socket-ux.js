@@ -5,7 +5,7 @@ var logger = require('./logger.js'); //for pretty console outputs
 var PublicChannel=require('./models/PublicChannel.js');
 var Message = require('./models/Message.js');
 
-module.exports=function(io,socket,publicChannelList){
+module.exports=function(io,socket,RedisClient){
   //When a new chat message has been received
   socket.on('message', function(data) {
     if (socket.authorized) { //makes sure that the socket handshake was successfull
@@ -24,10 +24,24 @@ module.exports=function(io,socket,publicChannelList){
     }
   });
   socket.on('getPublicChannelsList', function(data) {
-    logger.debug('Retrieving list of public channels and sending to client \n %j', {
-      username: socket.username
-    }, {});
-    socket.emit('publicChannelsList', publicChannelList);
+    logger.debug('Retrieving list of public channels and sending to client \n',{username: socket.username});
+    //get all channels keys stored in redis database
+    RedisClient.keys('channel:*',function(err,keys){
+      if (err){
+        logger.error('There was an error in retrieving the channels list from the redis database');
+      }
+      else{
+        //get all the values of those keys
+        RedisClient.mget(keys,function(err,channels){
+          if (err){
+            logger.error('There was an error in retrieving the channels list from the redis database');
+          }
+          if(channels){
+            socket.emit('publicChannelsList', channels);
+          }
+        });
+      }
+    });
   });
   socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
     if (data) {

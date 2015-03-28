@@ -76,7 +76,7 @@ module.exports = function(http, RedisClient) {
     onlineUsers++; //adding the number of users to the counter
     logger.info('Online Users: ' + onlineUsers);
 
-    require('./socket-ux.js')(io,socket,publicChannelList);
+    require('./socket-ux.js')(io,socket,RedisClient);
     //executes when a user disconnects
     socket.on('disconnect', function() {
       onlineUsers--;
