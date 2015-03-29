@@ -9,7 +9,7 @@ module.exports=function(user,RedisClient){
     username: user.username,
     profile_picture: user.profile_picture,
     online_status: 'Online',
-    subscribed_channels: user.subscribed_public_channels,
+    subscribed_public_channels: user.subscribed_public_channels,
     private_groups: user.private_groups,
     contacts: user.contacts
   }), function (err) {

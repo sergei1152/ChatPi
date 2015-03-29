@@ -1,9 +1,26 @@
 var async=require('async');
 var logger=require('../logger.js');
 
+function checkPublicChannelDuplicate(newChannel,existingChannel,callback){
+  if(newChannel._id===existingChannel._id){
+    callback('Duplicate channel');
+  }
+  else{
+    callback(null);
+  }
+}
+
 function saveUserChannel(currentUser,channel,callback){
-  currentUser.subscribed_public_channels.push(channel);
-  callback();
+  //checking to make sure that the channel doesn't already exist
+  async.each(currentUser.subscribed_public_channels, checkPublicChannelDuplicate.bind(null,channel), function(err) {
+    if (err) {
+      logger.error('An error while checking for duplicates for public channels \n', {'error': err});
+    }
+    else{
+      currentUser.subscribed_public_channels.push(channel);
+    }
+    callback();
+  });
 }
 
 module.exports=function(socket,RedisClient){
@@ -14,6 +31,7 @@ module.exports=function(socket,RedisClient){
     }
     else if (user) { //if the user was found in the redis database
       var currentUser = JSON.parse(user);
+      console.log(currentUser);
       if(socket.userChanges.newSubscriptions.length>0){
         async.each(socket.userChanges.newSubscriptions, saveUserChannel.bind(null,currentUser), function(err) {
           if (err) {
