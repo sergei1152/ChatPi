@@ -7,7 +7,9 @@ ChatRooms.service("subscribedChannels", function() {
         this.subscribedChannels.push(channel);
     };
     this.setChannels = function(channels) {
+      if(channels){
         this.subscribedChannels = channels;
+      }
     };
     this.getChannels = function() {
         return this.subscribedChannels;

@@ -4,6 +4,7 @@ var SERVER_SETTINGS=require('../config/server-config.js');
 module.exports=function(user,RedisClient){
   // all is well, save the user to redis, return successful user
   RedisClient.set('user:' + user._id, JSON.stringify({
+    id:user._id,
     name: user.name,
     username: user.username,
     profile_picture: user.profile_picture,

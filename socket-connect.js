@@ -11,6 +11,7 @@ var cookie = require('cookie'); //for parsing the cookie value from received coo
 var cookieParser = require('cookie-parser'); //used for decoding signed cookies
 var saveUserSocket=require('./static/saveUserSocket.js');
 var saveUserMongo=require('./static/findUserMongo.js');
+var saveUserChanges=require('./static/saveUserChanges.js');
 
 var publicChannelList;
 module.exports = function(http, RedisClient) {
@@ -81,33 +82,9 @@ module.exports = function(http, RedisClient) {
     socket.on('disconnect', function() {
       onlineUsers--;
       logger.info('Online Users: ' + onlineUsers);
-      if (socket.newPublicChannels.length > 0) {
-        User.findOne({
-          'username': socket.username
-        }, function(err, result) {
-          //if the id was not found in the monggo database
-          if (err) {
-            logger.error("There was an error in saving the users credentials after a disconnect \n %j", {
-              "error": err
-            }, {});
-          }
-          //if the user was found in the database
-          else if (result) {
-            for (var i = 0; i < socket.newPublicChannels.length; i++) {
-              result.subscribed_public_channels.push(socket.newPublicChannels[i]);
-            }
-            //NOTE: validate this input
-            result.save(function(err) {
-              if (err) {
-                logger.error('There was an error in saving a users credentials to the database after a disconnect \n %j', {
-                  'error': err
-                }, {});
-              }
-            });
-          }
-        });
+      if (socket.userChanges.changed === true) { //if a user made a change to the profile
+        saveUserChanges(socket,RedisClient);
       }
     });
-
   });
 };

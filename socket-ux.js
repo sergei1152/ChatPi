@@ -52,7 +52,8 @@ module.exports=function(io,socket,RedisClient){
     }, {});
   });
   socket.on('subscribeToChannel', function(channel) {
-    socket.newPublicChannels.push(channel);
+    socket.userChanges.changed=true;
+    socket.userChanges.newSubscriptions.push(channel);
   });
 
   socket.on('CreatePublicChannel', function(channel) { //TODO: MAKE THE SEARCH FUNCTION A METHOD WITH A CALLBACK
