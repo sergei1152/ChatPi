@@ -57,14 +57,8 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
     }
   };
   socket.on('message', function(msg) {
-    //checks if the sender is the user, and if so applies appropriate styling to the message
-    if (msg.senderUsername == User.selfUsername) {
-      msg.self = "self"; //corresponds to the .self class
-    } else {
-      msg.self = ""; //applies no class (default)
-    }
     $scope.$apply(
-      $scope.conversation.message_history.push(msg)
+      joinedChatRooms.addMessageHistory(msg.destination,msg)
     );
   });
 

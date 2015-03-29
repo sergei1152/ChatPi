@@ -21,6 +21,7 @@ module.exports=function(io,socket,RedisClient){
       newMessage.dateSent = Date.now();
       newMessage.dateSentInMinutes = Math.ceil(newMessage.dateSent.getTime() / 1000 / 60);
       newMessage.senderProfilePicture = socket.profile_picture;
+    newMessage.destination = data.destination._id;
       //will send to the buffer in this line, before setting the profile picture
       io.sockets.in(data.destination._id).emit('message', newMessage);
       saveMessageToRoom(newMessage,data.destination,RedisClient); //saves the new message to the chat history
@@ -49,10 +50,17 @@ module.exports=function(io,socket,RedisClient){
     });
   });
   socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
-    if (data) {
-      socket.join(data._id);
-    }
-    logger.debug('User '+socket.username+' joined channel '+data.name);
+    RedisClient.exists(data._id,function(err){
+      if(!err){
+        RedisClient.get('channel:'+data._id,function(err,channel){
+          if(!err){
+            socket.emit('roomJoined',channel);
+            socket.join(data._id);
+            logger.debug('User '+socket.username+' joined channel '+data.name);
+          }
+        });
+      }
+    });
   });
   socket.on('subscribeToChannel', function(channel) {
     socket.userChanges.changed=true;

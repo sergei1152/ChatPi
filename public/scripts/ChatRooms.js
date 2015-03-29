@@ -45,11 +45,19 @@ ChatRooms.service("joinedChatRooms", function() {
     //checks the array to see if a room id is in the array
     this.findRoom = function(id) {
         for (var i = 0; i < joinedChatRooms.length; i++) {
-            if (id === joinedChatRooms[i].id) {
-                return true;
+            if (id === joinedChatRooms[i]._id) {
+                return joinedChatRooms[i];
             }
         }
         return false;
+    };
+    //checks the array to see if a room id is in the array
+    this.addMessageHistory = function(channelID, message) {
+      for (var i = 0; i < joinedChatRooms.length; i++) {
+        if (channelID === joinedChatRooms[i]._id) {
+          joinedChatRooms[i].chat_history.push(message);
+        }
+      }
     };
 });
 
@@ -61,8 +69,14 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
     $scope.joinChatRoom = function(channel) {
         if (!joinedChatRooms.findRoom(channel.id)) { //check if the user already join the chat room
             socket.emit('joinRoom', channel); //tell the server to join the room
+            socket.on('roomJoined', function (channel) {
+              channel=JSON.parse(channel);
+              $scope.$apply(function () {
+                  joinedChatRooms.changeCurrentRoom(channel);
+                  joinedChatRooms.addRoom(channel);
+              });
+            });
         }
-        joinedChatRooms.changeCurrentRoom(channel);
     };
     //opens up the find public channels modal
     $scope.findPublicChannels = function() {

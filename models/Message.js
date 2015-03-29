@@ -9,7 +9,8 @@ var Message = mongoose.Schema({
   dateSent: Date,
   dateSentInMinutes:Number, //for sending back to the client for display purposes only
   type: String,
-  contents: String
+  contents: String,
+  destination:String
 });
 module.exports.schema = Message;
 module.exports = mongoose.model('Message', Message);

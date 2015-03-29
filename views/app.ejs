@@ -43,7 +43,7 @@
             <h1 class="room-name">{{getCurrentRoom().name}}</h1>
 
             <ul id="conversation" scroll-glue>
-                <li class="message {{message.self}}" ng-repeat="message in conversation.message_history track by $index">
+                <li class="message {{message.self}}" ng-repeat="message in getCurrentRoom().chat_history track by $index">
                     <div class="sender-avatar">
                         <img src="../resources/profiles/{{message.senderProfilePicture}}">
                     </div>
