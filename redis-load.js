@@ -3,9 +3,12 @@
 var PublicChannel = require('./models/PublicChannel.js'); //mongoose public channel model
 var logger=require('./logger.js'); //for pretty console outputs
 var async=require('async');
+var SERVER_SETTINGS=require('./config/server-config.js');
 
-function loadPublicChannel(RedisClient,item,callback){
-  RedisClient.set('channel:'+item._id,JSON.stringify(item),function(err){
+function loadPublicChannel(RedisClient,channel,callback){
+  channel.chat_history.splice(0,channel.chat_history.length-1-SERVER_SETTINGS.numMessageToStore);
+
+  RedisClient.set('channel:'+channel._id,JSON.stringify(channel),function(err){
     if(err) {
       callback(err);
     }
