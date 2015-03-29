@@ -4,10 +4,23 @@ var Message=require('./Message.js'); //the Message schema
 
 //Creating the schema for the user
 var PublicChannel = new mongoose.Schema({
-  chat_history: [Message],
-  description: String, //description of the public channel
-  createdAt: Date,
-  name: String //name of the public channel
+  name: {
+    type:String,
+    unique: true,
+    required: true
+  },
+  description:{
+    type:String,
+    default: ''
+  }, //description of the public channel
+  createdAt: {
+    type:Date,
+    default: Date.now
+  },
+  chat_history: {
+    type:[Message],
+    default:[]
+  }
 });
 
 PublicChannel.methods.addMessageHistory=function(Message) {
