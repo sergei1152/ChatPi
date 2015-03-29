@@ -116,8 +116,13 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
           socket.emit("CreatePublicChannel",{name:$scope.newChannelName,description:$scope.newChannelDescription});
           $scope.channelNameCreationStatus = "Creating Channel..";
           socket.on("ChannelCreated",function(channel){
-            subscribedChannels.addChannel(channel);
+            console.log(channel);
+            $scope.$apply(function(){
+              subscribedChannels.addChannel(channel); //subscribes to the channel client side
+              socket.emit('subscribeToChannel',channel); //subscribes to the channel server-side
+            });
             $("#createPublicChannelModal").modal('hide');
+
           });
         } 
         else {
@@ -139,7 +144,7 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
                     });
                 } else {
                     $scope.$apply(function() {
-                        $scope.channelNameAvailability = "Good!";
+                        $scope.channelNameAvailability = "Name Available!";
                     });
                 }
             });

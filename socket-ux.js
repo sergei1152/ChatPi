@@ -4,6 +4,10 @@ var logger = require('./logger.js'); //for pretty console outputs
 
 var PublicChannel=require('./models/PublicChannel.js');
 var Message = require('./models/Message.js');
+var checkPublicChannelName=require('./static/checkPublicChannelName.js');
+var createPublicChannel=require('./static/createPublicChannel.js');
+
+var async=require('async');
 
 module.exports=function(io,socket,RedisClient){
   //When a new chat message has been received
@@ -56,11 +60,37 @@ module.exports=function(io,socket,RedisClient){
     socket.userChanges.newSubscriptions.push(channel);
   });
 
-  socket.on('CreatePublicChannel', function(channel) { //TODO: MAKE THE SEARCH FUNCTION A METHOD WITH A CALLBACK
-
+  socket.on('CreatePublicChannel', function(channel) {
+    //check to make sure that the name is not taken
+    if(channel.name){
+      async.series([
+          function(callback){
+            checkPublicChannelName(channel.name,RedisClient,callback);
+          }
+        ],
+        //callback for after the function has finished
+        function(err, results){
+          if(results[0]===true) { //if name taken
+            socket.emit("PublicChannelNameStatus", results[0]);
+          }
+          else{//if the name is not taken, create the channel
+            createPublicChannel(channel,socket,RedisClient);
+          }
+        });
+    }
   });
   //checks that database to see whether a name with the channel exists
   socket.on('checkPublicChannelName', function(channelName) {
-
+    if(channelName){
+      async.series([
+          function(callback){
+            checkPublicChannelName(channelName,RedisClient,callback);
+          }
+        ],
+        //callback for after the function has finished
+        function(err, results){
+          socket.emit("PublicChannelNameStatus",results[0]);
+        });
+    }
   });
 };
