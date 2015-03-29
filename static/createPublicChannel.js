@@ -23,7 +23,7 @@ module.exports=function(channel,socket,RedisClient){
       },
       function(callback){
         //saving the brand new channel to the redis database
-        RedisClient.set('channel:'+channel._id,JSON.stringify(newChannel),function(err){
+        RedisClient.set('channel:'+newChannel._id,JSON.stringify(newChannel),function(err){
           if(err){
             logger.error('There was an error in saving a new public channel to the mongo database',{error:err});
           }

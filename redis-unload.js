@@ -3,12 +3,13 @@ var async=require('async');
 var logger=require('./logger.js');
 
 function saveChannelMongo(channel,callback){
-  PublicChannel.findOne({_id:channel._id},function(err,existingChannel){
+  var updatedChannel=JSON.parse(channel);
+  PublicChannel.findOne({_id:updatedChannel._id},function(err,existingChannel){
     if(err){
       logger.error('There was an error in finding an existing channel in the mongo database');
     }
     else if (existingChannel){
-        existingChannel.update(channel,callback);
+        existingChannel.update(updatedChannel,callback);
     }
   });
 }
@@ -22,7 +23,8 @@ module.exports=function(RedisClient,callback){
       //get all the values of those keys
       RedisClient.mget(keys,function(err,channels){
         if (err){
-          logger.error('There was an error in retrieving the channels list from the redis database');
+          logger.warn('Cannot dump public channels to mongo as no keys were found in the redis database');
+          callback(null);
         }
         if(channels){
           //save all of the keys back to the mongo database
@@ -34,7 +36,9 @@ module.exports=function(RedisClient,callback){
             callback(null);
           });
         }
-        callback(null);
+        else{
+          callback(null);
+        }
       });
     }
   });

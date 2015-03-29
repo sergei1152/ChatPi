@@ -25,13 +25,18 @@ module.exports=function(RedisClient,callback){
       logger.error("An error occurred while retrieving public channels from the mongo database\n",{'error': err});
     }
     logger.info('Retrieved list of public channels from mongo...transferring to redis');
-
-    async.each(list, loadPublicChannel.bind(null,RedisClient), function(err) {
-      if (err) {
-        logger.error('An error occurred saving a channel to the redis database \n', {'error': err});
-      }
-      logger.info('Successfully transferred public channels to redis');
+    if(list){
+      async.each(list, loadPublicChannel.bind(null,RedisClient), function(err) {
+        if (err) {
+          logger.error('An error occurred saving a channel to the redis database \n', {'error': err});
+        }
+        logger.info('Successfully transferred public channels to redis');
+        callback(null);
+      });
+    }
+    else{
+      logger.warn('No channels found in the mongo database, proceeding');
       callback(null);
-    });
+    }
   });
 };

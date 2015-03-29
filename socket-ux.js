@@ -32,12 +32,14 @@ module.exports=function(io,socket,RedisClient){
     RedisClient.keys('channel:*',function(err,keys){
       if (err){
         logger.error('There was an error in retrieving the channels list from the redis database');
+
       }
       else{
         //get all the values of those keys
         RedisClient.mget(keys,function(err,channels){
           if (err){
-            logger.error('There was an error in retrieving the channels list from the redis database');
+            logger.warn('No public channels found');
+            socket.emit('publicChannelsList', '');
           }
           if(channels){
             socket.emit('publicChannelsList', channels);
