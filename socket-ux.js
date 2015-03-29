@@ -6,7 +6,7 @@ var PublicChannel=require('./models/PublicChannel.js');
 var Message = require('./models/Message.js');
 var checkPublicChannelName=require('./static/checkPublicChannelName.js');
 var createPublicChannel=require('./static/createPublicChannel.js');
-
+var saveMessageToRoom=require('./static/saveMessageToRoom.js');
 var async=require('async');
 
 module.exports=function(io,socket,RedisClient){
@@ -23,6 +23,7 @@ module.exports=function(io,socket,RedisClient){
       newMessage.senderProfilePicture = socket.profile_picture;
       //will send to the buffer in this line, before setting the profile picture
       io.sockets.in(data.destination._id).emit('message', newMessage);
+      saveMessageToRoom(newMessage,data.destination,RedisClient); //saves the new message to the chat history
       logger.debug('Sending message to ' + data.destination._id);
   });
   socket.on('getPublicChannelsList', function(data) {
