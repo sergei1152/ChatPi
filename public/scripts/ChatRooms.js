@@ -81,7 +81,8 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
         socket.emit('getPublicChannelsList', ''); //asks the server for the list of public channels
         socket.on('publicChannelsList', function(data) { //when the server sends back the list
             $scope.$apply(function() { //updates the view for the user
-              for (var i=0;i<data.length;i++){
+              for (var i=0;i<data.
+                length;i++){
                 $scope.publicChatRooms.push(JSON.parse(data[i]));
               }
               $('#find-channel-spinner').css('display', 'none'); //stops showing the little spinner

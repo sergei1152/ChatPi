@@ -6,12 +6,13 @@ var MongoDBConfig={
   url:'mongodb://localhost:27017'
 };
 
-module.exports=function(mongoose){
+module.exports=function(mongoose,callback){
   mongoose.connect(MongoDBConfig.url); //have mongoose connect to the MongoDB database
 
   //if mongoose fails to connect to the database
   mongoose.connection.on('connected', function() {
     logger.info("Successfully connected to the mongoDB database");
+    callback();
   });
   //if mongoose is disconnected from the database
   mongoose.connection.on('disconnected', function() {

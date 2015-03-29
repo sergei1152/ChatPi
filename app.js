@@ -8,7 +8,6 @@ var passport = require('passport'); //for user authentication
 var flash = require('connect-flash'); //for sending flash messages to the user at the login and registration screen
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var RedisClient = require("redis").createClient(); //the redis client
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging http request details
 var logger = require('./logger.js'); //configration for winston logger
@@ -16,13 +15,27 @@ var fs = require('fs'); //for file system management. Used to manage the tmp dir
 var compression=require('compression'); //for compressing files before serving them
 var async=require('async');
 
-
 //======Database Settings and Configuration======
-var MongoDBConfig = require('./config/mongo-config.js')(mongoose); //configures the mongoDB database
-var RedisDBConfig = require('./config/redis-config.js'); //has the database configuration settings
-RedisDBConfig.configure(RedisClient); //configures the Redis Database
+var MongoDBConfig = require('./config/mongo-config.js');
+var RedisDBConfig = require('./config/redis-config.js');
 
+//create the redis client
+var RedisClient = require("redis").createClient(
+  RedisDBConfig.portNumber,
+  RedisDBConfig.host,
+  {
+    auth_pass:RedisDBConfig.databasePassword
+  }
+);
+
+//Database configuration and loading/unloading of buffer cache
 async.series([
+    function(callback){
+      RedisDBConfig.configure(RedisClient,callback); //configures the Redis Database
+    },
+    function(callback){
+      MongoDBConfig(mongoose,callback);//configures the mongoDB database
+    },
     function(callback){
       require('./redis-unload.js')(RedisClient,callback); //unloading the redis cache
     },
@@ -32,7 +45,7 @@ async.series([
   ]);
 
 //======Configuring the Server=======
-var SERVER_SETTINGS = require("./config/server-config.js"); //custom server settings
+var SERVER_SETTINGS=require('./config/server-config.js');
 require('./config/passport-config.js')(passport,RedisClient); //configures the passport module
 
 //for benchmarking the even loop and checking to see whether it's blocked
