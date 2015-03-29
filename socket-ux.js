@@ -49,9 +49,7 @@ module.exports=function(io,socket,RedisClient){
     if (data) {
       socket.join(data._id);
     }
-    logger.debug('Socket joined channel \n %j', {
-      room: data
-    }, {});
+    logger.debug('User '+socket.username+' joined channel '+data.name);
   });
   socket.on('subscribeToChannel', function(channel) {
     socket.userChanges.changed=true;

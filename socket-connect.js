@@ -48,7 +48,7 @@ module.exports = function(http, RedisClient) {
             }
             else if (user) { //if the user was found in the redis database
               var currentUser = JSON.parse(user);
-              logger.debug('User found in the redis database \n',{user:currentUser});
+              logger.debug('User '+currentUser.username+ 'found in the redis database');
               saveUserSocket(socket,currentUser);
               next();
             }
