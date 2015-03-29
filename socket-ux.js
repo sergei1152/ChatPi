@@ -22,8 +22,8 @@ module.exports=function(io,socket,RedisClient){
       newMessage.dateSentInMinutes = Math.ceil(newMessage.dateSent.getTime() / 1000 / 60);
       newMessage.senderProfilePicture = socket.profile_picture;
       //will send to the buffer in this line, before setting the profile picture
-      io.sockets.in(data.destination.id).emit('message', newMessage);
-      logger.debug('Sending message to ' + data.destination.id);
+      io.sockets.in(data.destination._id).emit('message', newMessage);
+      logger.debug('Sending message to ' + data.destination._id);
   });
   socket.on('getPublicChannelsList', function(data) {
     logger.debug('Retrieving list of public channels and sending to client \n',{username: socket.username});
@@ -47,7 +47,7 @@ module.exports=function(io,socket,RedisClient){
   });
   socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
     if (data) {
-      socket.join(data.id);
+      socket.join(data._id);
     }
     logger.debug('Socket joined channel \n %j', {
       room: data
