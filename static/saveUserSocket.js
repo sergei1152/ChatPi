@@ -7,7 +7,6 @@ module.exports=function(socket,user){
   socket.name = user.name;
   socket.username = user.username;
   socket.profile_picture = user.profile_picture;
-  socket.authorized = true;
   socket.userChanges = {
     changed: false,
     newSubscriptions:[]

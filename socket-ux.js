@@ -12,7 +12,6 @@ var async=require('async');
 module.exports=function(io,socket,RedisClient){
   //When a new chat message has been received
   socket.on('message', function(data) {
-    if (socket.authorized) { //makes sure that the socket handshake was successfull
       //creating the message
       var newMessage = new Message();
       newMessage.senderUsername = socket.username;
@@ -25,7 +24,6 @@ module.exports=function(io,socket,RedisClient){
       //will send to the buffer in this line, before setting the profile picture
       io.sockets.in(data.destination.id).emit('message', newMessage);
       logger.debug('Sending message to ' + data.destination.id);
-    }
   });
   socket.on('getPublicChannelsList', function(data) {
     logger.debug('Retrieving list of public channels and sending to client \n',{username: socket.username});
