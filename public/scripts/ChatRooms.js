@@ -29,7 +29,9 @@ ChatRooms.service("subscribedChannels", function() {
 //to keep track of the users joined chat rooms
 ChatRooms.service("joinedChatRooms", function() {
   var joinedChatRooms = [];
-  var currentRoom;
+  var currentRoom={
+    name:"Welcome to ChatPi. Please select a channel to begin"
+  };
   this.changeCurrentRoom = function(room) {
     currentRoom = room;
   };

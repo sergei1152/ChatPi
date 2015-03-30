@@ -53,8 +53,10 @@ body {
 #middle-pane {
     height: 100%;
     width:100%;
-    display:inline-block;
+    display:flex;
+    flex-direction:column;
     padding-bottom: 32px;
+    padding-left:12px;
 }
 .chat-rooms-container {
     text-align:center;
@@ -74,7 +76,7 @@ body {
 }
 .chat-room-list-item a {
     color: #414141;
-    padding: 6px 0 6px 12px;
+    padding: 6px 0 6px 6px;
     display: inline-block;
     width: 100%;
     height: 100%;
@@ -85,20 +87,17 @@ body {
     text-decoration: none;
     background-color: #d9d9d9;
 }
-
-#right-pane {
-    border: 1px solid black;
-    height: 100%;
-}
-
-.row {
-    height: 100%;
+.room-name{
+    font-weight:bold;
+    color:#FFFFFF;
+    text-shadow: 1px 1px 3px #000000;
+    margin-left:64px;
 }
 #conversation {
     margin: 0 0 24px 0;
     padding: 0 12px 0 12px;
     overflow: auto;
-    height: 90%;
+    height: 80%;
 }
 .message {
     margin-top: 12px;
