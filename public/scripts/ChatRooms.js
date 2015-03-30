@@ -1,7 +1,7 @@
 var ChatRooms = angular.module('ChatRooms', ['Validator','User']);
 
 //to keep track of the users subscribed channels
-ChatRooms.service("subscribedChannels", function() {
+ChatRooms.service("subscribedChannels", function(User) {
   this.subscribedChannels = [];
   this.addChannel = function(channel) {
     this.subscribedChannels.push(channel);
@@ -33,6 +33,11 @@ ChatRooms.service("joinedChatRooms", function(User) {
     name:"Welcome to ChatPi. Please select a channel to begin"
   };
   this.changeCurrentRoom = function(room) {
+    for(var i=0;i<room.chat_history.length;i++){
+      if(room.chat_history[i].senderUsername===User.selfUsername){
+        room.chat_history[i].self='self'
+      }
+    }
     currentRoom = room;
   };
   this.getCurrentRoom = function() {
@@ -57,6 +62,9 @@ ChatRooms.service("joinedChatRooms", function(User) {
   this.addMessageHistory = function(channelID, message) {
     for (var i = 0; i < joinedChatRooms.length; i++) {
       if (channelID === joinedChatRooms[i]._id) {
+        if(message.senderUsername===User.selfUsername){
+          message.self='self'
+        }
         joinedChatRooms[i].chat_history.push(message);
       }
     }
@@ -74,8 +82,8 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
       socket.on('roomJoined', function (channel) {
         channel=JSON.parse(channel);
         $scope.$apply(function () {
-          joinedChatRooms.changeCurrentRoom(channel);
           joinedChatRooms.addRoom(channel);
+          joinedChatRooms.changeCurrentRoom(channel);
         });
       });
     }
