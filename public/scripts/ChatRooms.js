@@ -16,7 +16,6 @@ ChatRooms.service("subscribedChannels", function(User) {
   };
   //checks the array to see if a channel id is in the array
   this.findChannel = function(channel) {
-    console.log(this.subscribedChannels);
     for (var i = 0; i < this.subscribedChannels.length; i++) {
       if (channel._id === this.subscribedChannels[i]._id) {
         return true;
@@ -108,11 +107,17 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
     $scope.publicChatRooms = []; //resets the view to blank
     $('#find-channel-spinner').css('display', 'block'); //shows the little spinner
     socket.emit('getPublicChannelsList', ''); //asks the server for the list of public channels
-    socket.on('publicChannelsList', function(data) { //when the server sends back the list
+    socket.on('publicChannelsList', function(channelList) { //when the server sends back the list
       $scope.$apply(function() { //updates the view for the user
-        for (var i=0;i<data.
-          length;i++){
-          $scope.publicChatRooms.push(JSON.parse(data[i]));
+        for (var i=0;i<channelList.length;i++){
+          var newChannel=JSON.parse(channelList[i]);
+          if(subscribedChannels.findChannel(newChannel)){
+            newChannel.subscribeStatus='glyphicon-ok';
+          }
+          else{
+            newChannel.subscribeStatus='glyphicon-plus';
+          }
+          $scope.publicChatRooms.push(newChannel);
         }
         $('#find-channel-spinner').css('display', 'none'); //stops showing the little spinner
       });
@@ -130,6 +135,7 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
   $scope.subscribeChannel = function(index) { //the index from the ng-repeat
     if (!subscribedChannels.findChannel($scope.publicChatRooms[index])) { //if the user is not already subscribed to a channel
       subscribedChannels.addChannel($scope.publicChatRooms[index]); //adds the channel locally
+      $scope.publicChatRooms[index].subscribeStatus='glyphicon-ok';
       socket.emit('subscribeToChannel', $scope.publicChatRooms[index]); //adds the channel on the server side
     }
   };
