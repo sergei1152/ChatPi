@@ -118,7 +118,11 @@ module.exports = function(passport,RedisClient) {
         if (!user.validPassword(password)) {
           return done(null, false, req.flash('loginMessage', 'Incorrect Username/Password')); // create the loginMessage and save it to session as flashdata
         }
-        saveUserRedis(user,RedisClient);
+        RedisClient.exists('user:'+user._id,function(err,exists){
+          if(!exists){
+            saveUserRedis(user,RedisClient);
+          }
+        });
         return done(null, user);
       });
     }));
