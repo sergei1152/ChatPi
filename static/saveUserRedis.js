@@ -17,5 +17,6 @@ module.exports=function(user,RedisClient){
       logger.error('There was an error in saving a user to the redis database \n',{'error': error});
     }
     RedisClient.expire('user:' + user._id, SERVER_SETTINGS.userTTL);
+    console.log('saved user');
   });
 };

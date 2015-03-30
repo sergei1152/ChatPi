@@ -2,7 +2,7 @@
 var logger=require('../logger.js');
 var User=require('../models/User.js');
 var saveUserSocket=require('./saveUserSocket.js');
-
+var saveUserRedis=require('./saveUserRedis.js');
 var SERVER_SETTINGS=require('../config/server-config.js');
 
 module.exports=function(RedisClient, userID, socket,next) {
@@ -16,6 +16,7 @@ module.exports=function(RedisClient, userID, socket,next) {
     //if the user was found in the database
     else if (user) {
       saveUserSocket(socket, user);
+      saveUserRedis(user,RedisClient);
       next();
     }
     else {
