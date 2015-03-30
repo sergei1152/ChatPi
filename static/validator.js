@@ -1,9 +1,9 @@
 //Does validation for the login and register form
 var validatePicture=require('./pictureValidator.js');
 
-var regUsername=/^[a-z0-9_-]{4,16}$/; //must contain at least 4 characters up to 16, can contain numbers, letters, and _ and -
+var regUsername=/^[a-zA-Z0-9_-]{4,16}$/; //must contain at least 4 characters up to 16, can contain numbers, letters, and _ and -
 var regPassword=/^[a-z0-9A-Z!$%^&+=*()@#_-]{8,128}$/;//password must be at least 8 characters long up to 128 and can have special characters
-var regName=/^[a-z ]+$/i; //only letter characters allowed
+var regName=/^[a-zA-Z ]+$/i; //only letter characters allowed
 module.exports=function(req,type){
 
   if(type=="login"){
