@@ -3,10 +3,19 @@
   <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src=/socket.io/socket.io.js></script>
   <script src="../bower_components/angular-scroll-glue/src/scrollglue.js"></script>
+  <script src="../bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="../scripts/UX.js"></script>
   <script src="../scripts/MessageDate.js"></script>
   <script src="../scripts/ChatRooms.js"></script>
   <script src="../scripts/Validator.js"></script>
   <script src="../scripts/client.js"></script>
+  <script>
+      (function($){
+          $(window).load(function(){
+              $("#conversation").mCustomScrollbar();
+              $(".chat-room-list").mCustomScrollbar();
+          });
+      })(jQuery);
+  </script>
 </body>
 </html>

@@ -1,174 +1,170 @@
 html {
-  background: url('../images/background.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  height: 100%;
-  min-width: 100%;
-  max-height: 100%;
-  max-width: 100%;
+    background: url('../images/background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    height: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 body {
-  background-color: transparent;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  height: 100%;
-  min-height: 100%;
-  min-width: 100%;
-  max-height: 100%;
-  max-width: 100%;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    height: 100%;
+    min-height: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 .navbar {
-  margin-bottom: 0;
-  border-radius: 0px;
-  opacity: 0.5;
-  text-align: center;
+    margin-bottom: 0;
+    /*border-radius: 0px;*/
+    /*opacity: 0.5;*/
+    /*text-align: center;*/
 }
 .navbar-brand {
-  display: inline-block;
-  color: white !important;
-  font-weight: bold;
-  font-size: 26px;
+    display:inline-block;
+    font-size:32px;
+    font-weight:bold;
 }
-#container-middle-pane {
-  height: calc( 100% - 55px);
-  width: 100%;
-  padding: 0;
+.wrapper{
+    display:flex;
+    width: 100%;
+    height:calc(100% - 51px)
 }
 #left-pane {
-  border: 1px solid black;
-  height: 100%;
-  padding: 0 24px 0 24px;
+    display:inline-block;
+    max-width:350px;
+    height: 100%;
+    padding: 0 24px 0 24px;
+    float:left;
+    background-color:rgba(255,255,255,1);
+    -webkit-box-shadow: 1px 0px 16px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 0px 16px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 0px 16px 0px rgba(50, 50, 50, 0.75);
+}
+#middle-pane {
+    height: 100%;
+    width:100%;
+    display:inline-block;
+    padding-bottom: 32px;
 }
 .chat-rooms-container {
-  text-align:center;
-  height: 30%;
-}
-.chat-rooms-container-header {
-  color: #aaaaaa;
-  text-shadow: 1px 1px #686868;
-}
-.chat-rooms-container .search-bar {
-  opacity: 0.5;
+    text-align:center;
+    height: calc(100% - 51px);
 }
 .chat-room-list {
-  text-align: left;
-  max-height: 70%;
-  margin: 12px 0 12px 0;
-  padding: 0;
-  overflow: auto;
-  list-style-type: none;
+    text-align: left;
+    max-height: 70%;
+    margin: 12px 0 12px 0;
+    padding: 0;
+    overflow: auto;
+    list-style-type: none;
 }
 .chat-room-list-item {
-  display: block;
-  margin: 0;
-  list-style-type: none;
+    display: block;
+    margin: 0;
 }
 .chat-room-list-item a {
-  text-shadow: 1px 1px #000000;
-  color: #b3b2b2;
-  padding: 6px 0 6px 12px;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
+    color: #414141;
+    padding: 6px 0 6px 12px;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
 }
 .chat-room-list-item a:hover {
-  text-shadow: none;
-  text-decoration: none;
-  background-color: #d9d9d9;
-  opacity: 0.5;
-  color: #636363;
+    text-shadow: none;
+    text-decoration: none;
+    background-color: #d9d9d9;
 }
 
 #right-pane {
-  border: 1px solid black;
-  height: 100%;
+    border: 1px solid black;
+    height: 100%;
 }
-#middle-pane {
-  border: 1px solid black;
-  height: 100%;
-  padding-bottom: 72px;
-}
+
 .row {
-  height: 100%;
+    height: 100%;
 }
 #conversation {
-  margin: 0 0 24px 0;
-  padding: 0 12px 0 12px;
-  overflow: auto;
-  height: 90%;
+    margin: 0 0 24px 0;
+    padding: 0 12px 0 12px;
+    overflow: auto;
+    height: 90%;
 }
 .message {
-  margin-top: 12px;
-  display: flex;
-  max-width: 95%;
-  display: 2px solid white;
-  clear: both;
-  float: left;
+    margin-top: 12px;
+    display: flex;
+    max-width: 95%;
+    display: 2px solid white;
+    clear: both;
+    float: left;
 }
 .message-contents {
-  max-width: 100%;
-  height: auto;
-  font-family: Roboto, Arial;
-  border-radius: 5px;
-  margin: 0;
-  border-top-left-radius: 0;
-  padding: 12px 12px 0 12px;
-  opacity: 0.9;
-  flex-wrap: wrap;
+    max-width: 100%;
+    height: auto;
+    font-family: Roboto, Arial;
+    border-radius: 5px;
+    margin: 0;
+    border-top-left-radius: 0;
+    padding: 12px 12px 0 12px;
+    opacity: 0.9;
+    flex-wrap: wrap;
 }
 .message-date {
-  margin: 0;
-  float: right;
-  padding: 0;
-  color: #a8a8a8;
-  margin-top: 12px;
+    margin: 0;
+    float: right;
+    padding: 0;
+    color: #a8a8a8;
+    margin-top: 12px;
 }
 .sender-avatar {
-  flex-shrink: 0;
-  width: 40px !important;
+    flex-shrink: 0;
+    width: 40px !important;
 }
 .sender-avatar img {
-  width: 100%;
-  border-top-left-radius: 3px;
-  display: inline-block;
+    width: 100%;
+    border-top-left-radius: 3px;
+    display: inline-block;
 }
 /*Changes to the message style when the message is from the person him/herself*/
 
 .self {
-  flex-direction: row-reverse;
-  float: right;
-  align-items: flex-end;
+    flex-direction: row-reverse;
+    float: right;
+    align-items: flex-end;
 }
 .self .message-contents {
-  border-radius: 5px;
-  border-bottom-right-radius: 0 !important;
+    border-radius: 5px;
+    border-bottom-right-radius: 0 !important;
 }
 .self .message-date {
-  float: left;
+    float: left;
 }
 .self .sender-avatar img {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 3px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 3px;
 }
 #send-form {
-  margin-top: 24px;
-  max-width: 640px;
-  margin: auto;
+    margin-top: 24px;
+    max-width: 640px;
+    margin: auto;
 }
 #message-text-input {
-  resize: none;
-  height: 48px;
+    resize: none;
+    height: 48px;
 }
 #send-button{
-  height: 48px;
+    height: 48px;
 }
 #expand-send-button{
-  height: 48px;
+    height: 48px;
 }

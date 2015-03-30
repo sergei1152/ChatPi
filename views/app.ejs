@@ -1,78 +1,50 @@
 <%- include header %>
 <%- include modals %>
 <%- include navbar %>
-<div class="container-fluid" id="container-middle-pane" >
-    <div class="row">
-        <div class="col-sm-2" id="left-pane" ng-controller='ChatRooms'>
-            <div class="chat-rooms-container">
-                <h3 class='#chat-rooms-container-header'>Public Channels</h3>
-                <input class='search-bar' ng-model='searchChannel.name' type="text" placeholder="   Filter Public Channels">
-                <ul class="chat-room-list"  >
-                    <li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>
-                </ul>
-                <a href="" open-modal="#findPublicChannelModal">Find a Public Channel</a>
-                <br>
-                <a href=""  open-modal="#createPublicChannelModal">Create a Public Channel</a>
-            </div>
-            <div class="chat-rooms-container">
-                <h3 class='chat-rooms-container-header'>Private Groups</h3>
-                <input class='search-bar' type="text" placeholder="   Filter Private Groups">
-                <ul class="chat-room-list">
-                    <li class="chat-room-list-item"><a href="">Example Room 1</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 2</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 3</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
-                </ul>
-                <a href="" >+ Create a Private Group</a>
-            </div>
-            <div class="chat-rooms-container">
-                <h3 class='chat-rooms-container-header'>Contacts</h3>
-                <input class='search-bar' type="text" placeholder="   Filter Contacts">
-                <ul class="chat-room-list">
-                    <li class="chat-room-list-item"><a href="">Example Room 1</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 2</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 3</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 4</a></li>
-                    <li class="chat-room-list-item"><a href="">Example Room 5</a></li>
-                </ul>
-                <a href="">+ Add a New Contact</a>
-            </div>
-        </div>
-        <div class="col-sm-8" id="middle-pane" ng-controller="Conversation">
-            <h1 class="room-name">{{getCurrentRoom().name}}</h1>
+<div class="wrapper">
+<div id="left-pane" ng-controller='ChatRooms'>
+    <div class="chat-rooms-container">
+        <h3 class='#chat-rooms-container-header'>Public Channels</h3>
+        <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Public Channels">
+        <ul class="chat-room-list"  >
+            <li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>
+        </ul>
+        <a href="" open-modal="#findPublicChannelModal">Find a Public Channel</a>
+        <br>
+        <a href=""  open-modal="#createPublicChannelModal">Create a Public Channel</a>
+    </div>
+</div>
+<div id="middle-pane" ng-controller="Conversation">
+    <h1 class="room-name">{{getCurrentRoom().name}}</h1>
 
-            <ul id="conversation" scroll-glue>
-                <li class="message {{message.self}}" ng-repeat="message in getCurrentRoom().chat_history track by $index">
-                    <div class="sender-avatar">
-                        <img src="../resources/profiles/{{message.senderProfilePicture}}">
-                    </div>
+    <ul id="conversation" scroll-glue>
+        <li class="message {{message.self}}" ng-repeat="message in getCurrentRoom().chat_history track by $index">
+            <div class="sender-avatar">
+                <img src="../resources/profiles/{{message.senderProfilePicture}}">
+            </div>
                 <pre class="message-contents">{{message.contents}}
                   <time class="message-date" datetime={{message.date}}>{{message.senderName}} • {{message.dateSentInMinutes|dateParser:getDateInMinutes()}}</time>
                 </pre>
-                </li>
-            </ul>
-            <form id="send-form" novalidate>
-                <div class="input-group dropup">
-                    <textarea  ng-enter="send()" ng-model="conversation.new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
-                    <div class="input-group-btn">
-                        <button id="send-button" ng-click="send()" class="btn btn-default">Send</button>
-                        <button id="expand-send-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right " role="menu">
-                            <li><a href="#">Send a File</a>
-                            <li><a href="#">Send a Text Snippet</a>
-                            </li>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </form>
+        </li>
+    </ul>
+    <form id="send-form" novalidate>
+        <div class="input-group dropup">
+            <textarea  ng-enter="send()" ng-model="conversation.new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
+            <div class="input-group-btn">
+                <button id="send-button" ng-click="send()" class="btn btn-default">Send</button>
+                <button id="expand-send-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right " role="menu">
+                    <li><a href="#">Send a File</a>
+                    <li><a href="#">Send a Text Snippet</a>
+                    </li>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-sm-2" id="right-pane">
-        </div>
-    </div>
+    </form>
+</div>
 </div>
 <%- include footer %>
