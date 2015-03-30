@@ -1,4 +1,4 @@
-var ChatRooms = angular.module('ChatRooms', ['Validator']);
+var ChatRooms = angular.module('ChatRooms', ['Validator','User']);
 
 //to keep track of the users subscribed channels
 ChatRooms.service("subscribedChannels", function() {
@@ -27,7 +27,7 @@ ChatRooms.service("subscribedChannels", function() {
 });
 
 //to keep track of the users joined chat rooms
-ChatRooms.service("joinedChatRooms", function() {
+ChatRooms.service("joinedChatRooms", function(User) {
   var joinedChatRooms = [];
   var currentRoom={
     name:"Welcome to ChatPi. Please select a channel to begin"

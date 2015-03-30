@@ -19,14 +19,6 @@ ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the b
     console.error("An error occured with the connection to the chat server \n" + msg);
   });
 });
-
-//service that returns the current date in minutes to be used in message dates
-ChatPiApp.service("User", function() {
-  this.selfName='';
-  this.selfUsername='';
-  this.selfProfilePicture='';
-});
-
 //The Message Object
 ChatPiApp.factory("Message", function() {
   var Message = function(contents, type, destination) {
