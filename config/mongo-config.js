@@ -3,7 +3,7 @@ var logger=require('../logger.js');
 
 //Edit this line for custom mongoDB server options
 var MongoDBConfig={
-  url:'mongodb://localhost:27017'
+  url:'mongodb://127.0.0.1:27017'
 };
 
 module.exports=function(mongoose,callback){

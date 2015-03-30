@@ -9,13 +9,20 @@
     display:inline-block;
 }
 .channel-list-item{
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-ms-flexbox;
 	display:flex;
-	align-items:baseline;
-	justify-content:space-between;
+	-webkit-box-align:baseline;
+	-webkit-align-items:baseline;
+	    -ms-flex-align:baseline;
+	        align-items:baseline;
+	-webkit-box-pack:justify;
+	-webkit-justify-content:space-between;
+	    -ms-flex-pack:justify;
+	        justify-content:space-between;
 	width: 100%;
 	padding:12px;
-    -webkit-box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    0px 1px 1px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 1px 1px 0px rgba(50, 50, 50, 0.75);
 }
 .channel-list-item h4{

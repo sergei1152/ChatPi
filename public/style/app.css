@@ -1,8 +1,5 @@
 html {
     background: url('../images/background.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -35,6 +32,9 @@ body {
     font-weight:bold;
 }
 .wrapper{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
     display:flex;
     width: 100%;
     height:calc(100% - 51px)
@@ -46,15 +46,20 @@ body {
     padding: 0 24px 0 24px;
     float:left;
     background-color:rgba(255,255,255,1);
-    -webkit-box-shadow: 1px 0px 16px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    1px 0px 16px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         1px 0px 16px 0px rgba(50, 50, 50, 0.75);
 }
 #middle-pane {
     height: 100%;
     width:100%;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
     display:flex;
-    flex-direction:column;
+    -webkit-box-orient:vertical;
+    -webkit-box-direction:normal;
+    -webkit-flex-direction:column;
+        -ms-flex-direction:column;
+            flex-direction:column;
     padding-bottom: 32px;
     padding-left:12px;
 }
@@ -101,6 +106,9 @@ body {
 }
 .message {
     margin-top: 12px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     max-width: 95%;
     display: 2px solid white;
@@ -116,7 +124,10 @@ body {
     border-top-left-radius: 0;
     padding: 12px 12px 0 12px;
     opacity: 0.9;
-    flex-wrap: wrap;
+    filter: alpha(opacity=90);
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
 }
 .message-date {
     margin: 0;
@@ -126,7 +137,9 @@ body {
     margin-top: 12px;
 }
 .sender-avatar {
-    flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+            flex-shrink: 0;
     width: 40px !important;
 }
 .sender-avatar img {
@@ -137,9 +150,16 @@ body {
 /*Changes to the message style when the message is from the person him/herself*/
 
 .self {
-    flex-direction: row-reverse;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: row-reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
     float: right;
-    align-items: flex-end;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end;
 }
 .self .message-contents {
     border-radius: 5px;
