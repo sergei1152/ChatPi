@@ -9,7 +9,6 @@ ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the b
     User.selfUsername = metadata.clientUsername;
     User.selfProfilePicture=metadata.clientProfilePic;
     subscribedChannels.setChannels(metadata.subscribedChannels);
-    console.log(metadata.subscribedChannels);
     $rootScope.$apply(); //updating the scope with the received subscribed public channels
   });
   socket.on('disconnect', function() {
