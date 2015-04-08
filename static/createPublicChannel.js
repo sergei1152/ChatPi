@@ -10,28 +10,11 @@ module.exports=function(channel,socket,RedisClient){
     name:channel.name,
     description: channel.description
   });
-  async.series([
-      function(callback){
-        //saving the new channel to the mongodb database
-        newChannel.save(function(err){
-          if(err){
-            logger.error('There was an error in saving a new public channel to the mongo database',{error:err});
-          }
-          callback(null);
-        });
-
-      },
-      function(callback){
-        //saving the brand new channel to the redis database
-        RedisClient.set('channel:'+newChannel._id,JSON.stringify(newChannel),function(err){
-          if(err){
-            logger.error('There was an error in saving a new public channel to the mongo database',{error:err});
-          }
-          callback(null);
-        });
-      }
-    ],
-    function(err, results){
-      socket.emit("ChannelCreated",newChannel);
-    });
+  //saving the brand new channel to the redis database
+  RedisClient.set('channel:'+newChannel._id,JSON.stringify(newChannel),function(err){
+    if(err){
+      logger.error('There was an error in saving a new public channel to the mongo database',{error:err});
+    }
+    socket.emit("ChannelCreated",newChannel);
+  });
 };
