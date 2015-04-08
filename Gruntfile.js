@@ -66,5 +66,6 @@ module.exports = function(grunt) {
       client: ['./public/scripts/*.js']
     }
   });
-  grunt.registerTask('default', ['express:dev', 'open:dev', 'watch']);
+  grunt.registerTask('chrome',['express:dev', 'open:dev', 'watch']);
+  grunt.registerTask('default', ['express:dev','watch']);
 };
