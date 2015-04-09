@@ -8,6 +8,7 @@ var checkPublicChannelName=require('./static/checkPublicChannelName.js');
 var createPublicChannel=require('./static/createPublicChannel.js');
 var saveMessageToRoom=require('./static/saveMessageToRoom.js');
 var async=require('async');
+var getPublicChannels=require('./static/getPublicChannels.js');
 
 module.exports=function(io,socket,RedisClient){
   //When a new chat message has been received
@@ -27,23 +28,11 @@ module.exports=function(io,socket,RedisClient){
     saveMessageToRoom(newMessage,data.destination,RedisClient); //saves the new message to the chat history
     logger.debug('Sending message to ' + data.destination._id);
   });
+  
   socket.on('getPublicChannelsList', function(data) {
-    RedisClient.HGETALL('channellist',function(err,channellist){
-      if (err){
-        logger.error('There was an error in retrieving the channels list from the redis database \n',{error:err},{});
-      }
-      else{
-        if (!channellist){
-          logger.debug('A user tried to retrieve the public channels list, however none were found');
-          socket.emit('publicChannelsList', '');
-        }
-        if(channellist){
-          logger.debug('Retrieving list of public channels and sending to client \n',{username: socket.username});
-          socket.emit('publicChannelsList', channellist);
-        }
-      }
-    });
+    getPublicChannels(RedisClient, socket); 
   });
+
   socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
     RedisClient.exists(data._id,function(err){
       if(!err){
