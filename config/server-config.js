@@ -2,7 +2,7 @@
 
 //Input your server configration here
 module.exports={
-  serverPort: 80,
+  serverPort: 3000,
   userTTL:60*60*24,//the amount of time to hold a user's session in the redis database
   numMessageToStore:25, //the number of messages to store per chat room in the redis cache on server start
   eventLoopBenchmark:false, //only enable if you're benchmarking
