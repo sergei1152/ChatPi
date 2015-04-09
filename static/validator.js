@@ -52,7 +52,7 @@ module.exports.validateRegistration=function(req){
 
 module.exports.validatePublicChannel=function(channel){
   if (channel.name){
-    if (channal.name.toString().match(regChannel)){
+    if (channel.name.toString().match(regChannel)){
       return true;
     }
     logger.debug("A user tried to create a new channel however validation for the channel name failed");

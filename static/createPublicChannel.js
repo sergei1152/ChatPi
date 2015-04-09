@@ -1,20 +1,29 @@
 var PublicChannel=require('../models/PublicChannel.js');
 var logger=require('../logger.js');
 var async=require('async');
+var validator=require('./validator.js');
 
 module.exports=function(channel,socket,RedisClient){
-  if(!channel.description){
-    channel.description='';
-  }
-  var newChannel=new PublicChannel({
-    name:channel.name,
-    description: channel.description
-  });
-  //saving the brand new channel to the redis database
-  RedisClient.set('channel:'+newChannel._id,JSON.stringify(newChannel),function(err){
-    if(err){
-      logger.error('There was an error in saving a new public channel to the mongo database',{error:err});
+  if (validator.validatePublicChannel(channel)){
+    if(!channel.description){
+      channel.description='';
     }
-    socket.emit("ChannelCreated",newChannel);
-  });
+    var newChannel=new PublicChannel({
+      name:channel.name,
+      description: channel.description
+    });
+    //Saves the channel to the redis database, if the field  does not exist yet
+    RedisClient.HSETNX("channellist",newChannel.name,JSON.stringify(newChannel),function(err,saved){
+      if(err){
+        logger.error('There was an error in saving a new public channel to the Redis database',{error:err});
+      }
+      if (saved){
+        logger.info("A user created a new public channel. Name: %s",channel.name);
+        socket.emit("ChannelCreated",newChannel);
+      }
+      else{
+        logger.debug("A user tried to create a channel that already exists in the redis database");
+      }
+    });
+  }
 };
