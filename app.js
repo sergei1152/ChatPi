@@ -19,34 +19,45 @@ var async=require('async');
 var MongoDBConfig = require('./config/mongo-config.js');
 var RedisDBConfig = require('./config/redis-config.js');
 
-//create the redis client
-var RedisClient = require("redis").createClient(
-  RedisDBConfig.portNumber,
-  RedisDBConfig.host,
-  {
-    auth_pass:RedisDBConfig.databasePassword
-  }
-);
+//settings up the various redis clients
+var RedisClientMainDB;
+var RedisClientChannelMessagesDB;
+var RedisClientGroupMessageDB;
+var RedisClientUserDB;
 
-//Database configuration and loading/unloading of buffer cache
+//Database configuration and loading/unloading of the redis database to the mongo database
 async.series([
-    function(callback){
-      RedisDBConfig.configure(RedisClient,callback); //configures the Redis Database
-    },
-    function(callback){
-      MongoDBConfig(mongoose,callback);//configures the mongoDB database
-    },
-    function(callback){
-      require('./redis-unload.js')(RedisClient,callback); //unloading the redis cache
-    },
-    function(callback){
-      require('./redis-load.js')(RedisClient,callback); //loading redis cache
+  function(callback){
+     RedisClientMainDB=RedisDBConfig.createClient("mainDB",callback);
+  },
+  function(callback) {
+     RedisClientChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB",callback);
+  },
+  function(callback){
+    RedisClientGroupMessageDB=RedisDBConfig.createClient("groupMessagesDB",callback);
+  },
+  function(callback){
+     RedisClientUserDB=RedisDBConfig.createClient("userDB",callback);
+  },
+  function(callback){
+    MongoDBConfig(mongoose,callback);//configures the mongoDB database
+  },
+  function(callback){
+    require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis cache
+  },
+  function(callback){
+    require('./redis-load.js')(RedisClientMainDB,callback); //loading redis cache
+  }],
+  //after unloading has finished
+  function(err,result){
+    if(err){
+      logger.error("An error occurred with configuring/unloading of the databases \n"+err);
     }
-  ]);
+  });
 
 //======Configuring the Server=======
 var SERVER_SETTINGS=require('./config/server-config.js');
-require('./config/passport-config.js')(passport,RedisClient); //configures the passport module
+require('./config/passport-config.js')(passport,RedisClientMainDB); //configures the passport module
 
 //for benchmarking the even loop and checking to see whether it's blocked
 if(SERVER_SETTINGS.eventLoopBenchmark) require("./tests/bench_event_loop.js")();
@@ -110,7 +121,7 @@ app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes/routes.js')(app, passport); //configuring routes
-require("./socket-connect.js")(http, RedisClient); //configuring socket.io
+require("./socket-connect.js")(http, RedisClientMainDB); //configuring socket.io
 
 // catch 404 and render 404 page
 app.use(function(req, res, next) {
