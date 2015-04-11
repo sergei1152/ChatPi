@@ -56,7 +56,8 @@ async.series([
   });
 
 //======Configuring the Server=======
-var SERVER_SETTINGS=require('./config/server-config.js');
+var SERVER_SETTINGS=require('./config/server-config.js'); //custom server settings
+
 require('./config/passport-config.js')(passport,RedisClientUserDB); //configures the passport module
 
 //setting the port number for the server to use
@@ -82,10 +83,10 @@ if(SERVER_SETTINGS.logRequests){
 //compresses all requests before sending them
 app.use(compression());
 
-//Setting the public folder to server static content(images, javacsript, stylesheets)
+//Setting the public folder to server static content(images, javascript, stylesheets)
 app.use(express.static(__dirname + "/public", {
   index:false, //disable directory indexing
-  maxAge: 86400000 //caches content for 1 day
+  maxAge: SERVER_SETTINGS.userCacheTTL //how long to cache the content on client side (1 day)
 }));
 
 //for parsing cookies. Allows http cookies only
@@ -97,20 +98,20 @@ app.use(cookieParser(SERVER_SETTINGS.sessionKey, {
 app.use(session({
   store: new RedisStore({
     host: RedisDBConfig.host,
-    port: RedisDBConfig.portNumber,
-    db: RedisDBConfig.databaseNumber,
-    prefix: "sessions:",
+    port: RedisDBConfig.sessionDB.port,
+    db: RedisDBConfig.sessionDB.dbnumber,
+    prefix: "sessions:", //ie all keys will have the prefix 'sessions:' in them
     pass: RedisDBConfig.databasePassword,
-    ttl: 86400 //time to live for the session in seconds (1 day)
+    ttl: SERVER_SETTINGS.sessionTTL //time to live for the session in seconds (1 day)
   }),
-  unset: "destroy", //delete the session from the database when it is unset
+  unset: "destroy", //delete the session from the database when it is unset (ie after a logout)
   name: SERVER_SETTINGS.sessionIDName,
-  secret: SERVER_SETTINGS.sessionKey,
+  secret: SERVER_SETTINGS.sessionSecretKey, //used to sign and unsign the cookies
   cookie: {
-    maxAge: 86400000 //for 1 day
+    maxAge: SERVER_SETTINGS.cookieTTL //how long the client will keep the cookie before it expires
   },
-  saveUninitialized: false,
-  resave: false
+  saveUninitialized: false, //do not save uninitialized (new but not modified) sessions to the database (so we don't get empty session keys in the db)
+  resave: false //do not resave the session if it was unmodified
 }));
 
 app.use(passport.initialize()); //initializing passport

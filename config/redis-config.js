@@ -21,6 +21,10 @@ var redisDatabaseConfig = {
   userDB: {//used only to store users
     dbnumber:3,
     port:6379
+  },
+  sessionDB: {//used only to store session data
+    dbnumber:4,
+    port:6379
   }
 };
 
