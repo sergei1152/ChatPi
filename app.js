@@ -43,10 +43,10 @@ async.series([
     MongoDBConfig(mongoose,callback);//configures the mongoDB database
   },
   function(callback){
-    require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis cache
+    //require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis cache
   },
   function(callback){
-    require('./redis-load.js')(RedisClientMainDB,callback); //loading redis cache
+    //require('./redis-load.js')(RedisClientMainDB,callback); //loading redis cache
   }],
   //after unloading has finished
   function(err,result){
@@ -57,10 +57,7 @@ async.series([
 
 //======Configuring the Server=======
 var SERVER_SETTINGS=require('./config/server-config.js');
-require('./config/passport-config.js')(passport,RedisClientMainDB); //configures the passport module
-
-//for benchmarking the even loop and checking to see whether it's blocked
-if(SERVER_SETTINGS.eventLoopBenchmark) require("./tests/bench_event_loop.js")();
+require('./config/passport-config.js')(passport,RedisClientUserDB); //configures the passport module
 
 //setting the port number for the server to use
 app.set('port', SERVER_SETTINGS.serverPort);
