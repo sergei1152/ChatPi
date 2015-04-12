@@ -27,15 +27,13 @@ module.exports = function(passport,RedisClient) {
     });
   });
 
-  //passport strategy for local signups
-  passport.use('signup', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true // allows us to pass back the entire request to the callback
+  //passport strategy for registration
+  passport.use('register', new LocalStrategy({
+    usernameField: 'username', //the name of the username field in the POST request
+    passwordField: 'password', //the name of the password field in the POST request
+    passReqToCallback: true // allows us to pass back the entire request to the callback function (below)
   },
   function(req, username, password, done) {
-    // asynchronous
-    // User.findOne wont fire unless data is sent back
     process.nextTick(function() {
       //validating all the fields, including the profile picture (if exists)
       if (validator.validateRegistration(req)){

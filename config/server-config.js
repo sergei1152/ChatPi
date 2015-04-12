@@ -1,6 +1,6 @@
 //this file contains the most important server configuration options
 
-//Input your server configration here
+//Input your server configuration here
 module.exports={
   serverPort: 3000,
   userTTL:60*60*24,//the amount of time to hold a user's session in the redis database
@@ -8,7 +8,7 @@ module.exports={
   eventLoopBenchmark:false, //only enable if you're benchmarking
   temporaryFilesLocation:"./tmp/", //where to store the temporary files of the server from form data. Make sure the folder exists first
   maxFileUploadSize:25000000, //the maximum size of a file a user can upload to the server
-  maxFileUploadNumber:1,//the maxmimum number of files a user can upload from a form
+  maxFileUploadNumber:1,//the maximum number of files a user can upload from a form
   sessionSecretKey: "secret key", //you can change this to whatever you like, as long as it's a long sentence
   sessionIDName:"connectSID",
   supportedProfileImageTypes:['jpeg','jpg','png'],

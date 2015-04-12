@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/register/', multer,  passport.authenticate('signup', {
+  app.post('/register/', multer,  passport.authenticate('register', {
     successRedirect: '/app/', // redirect to the app page
     failureRedirect: '/register/', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
