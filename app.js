@@ -3,14 +3,13 @@ require('look').start();
 var express = require('express');
 var app = express(); //the instance of express
 var http = require('http').Server(app);
-var mongoose = require('mongoose'); //for interacting with the mongodatabase
 var passport = require('passport'); //for user authentication
 var flash = require('connect-flash'); //for sending flash messages to the user at the login and registration screen
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session); //used to store session data in the redis database
 var morgan = require('morgan'); //for logging http request details
-var logger = require('./logger.js'); //configration for winston logger
+var logger = require('./logger.js'); //configuration for winston logger
 var fs = require('fs'); //for file system management. Used to manage the tmp directory
 var compression=require('compression'); //for compressing files before serving them
 var async=require('async');
@@ -40,13 +39,13 @@ async.series([
      RedisClientUserDB=RedisDBConfig.createClient("userDB",callback);
   },
   function(callback){
-    MongoDBConfig(mongoose,callback);//configures the mongoDB database
+    MongoDBConfig(callback);//configures the mongoDB database
   },
   function(callback){
-    //require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis cache
+    //require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis database to the mongo database
   },
   function(callback){
-    //require('./redis-load.js')(RedisClientMainDB,callback); //loading redis cache
+    //require('./redis-load.js')(RedisClientMainDB,callback); //loading the mongodb database to the redis database
   }],
   //after unloading has finished
   function(err,result){
@@ -61,7 +60,7 @@ var SERVER_SETTINGS=require('./config/server-config.js'); //custom server settin
 require('./config/passport-config.js')(passport,RedisClientUserDB); //configures the passport module
 
 //setting the port number for the server to use
-app.set('port', SERVER_SETTINGS.serverPort);
+app.set('port', process.env.port || SERVER_SETTINGS.serverPort);
 
 //settings the views directory for the templating engine
 app.set('views', __dirname + '/views');
