@@ -4,13 +4,14 @@ var mongoose = require('mongoose'); //for interacting with the mongo database
 
 //Edit this line for custom mongoDB server options
 var MongoDBConfig={
-  url:'mongodb://127.0.0.1',
-  port:27017
+  url:'127.0.0.1',
+  port:27017,
+  databaseName: "ChatPi"
 };
 
 //will configure and connect to the mongodb database
 module.exports=function(callback){
-  mongoose.connect(MongoDBConfig.url+":"+MongoDBConfig.port); //have mongoose connect to the MongoDB database
+  mongoose.connect("mongodb://"+MongoDBConfig.url+":"+MongoDBConfig.port+"/"+MongoDBConfig.databaseName); //have mongoose connect to the MongoDB database
 
   //when mongoose connects to the database
   mongoose.connection.on('connected', function() {
