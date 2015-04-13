@@ -18,46 +18,11 @@ var async=require('async');
 var MongoDBConfig = require('./config/mongo-config.js');
 var RedisDBConfig = require('./config/redis-config.js');
 
-//settings up the various redis clients
-//var RedisClientMainDB;
-//var RedisClientChannelMessagesDB;
-//var RedisClientGroupMessageDB;
-//var RedisClientUserDB;
 RedisClientMainDB=RedisDBConfig.createClient("mainDB");
 RedisClientChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB");
 RedisClientGroupMessageDB=RedisDBConfig.createClient("groupMessagesDB");
 RedisClientUserDB=RedisDBConfig.createClient("userDB");
-MongoDBConfig();//configures the mongoDB database
-//Database configuration and loading/unloading of the redis database to the mongo database
-//async.series([
-//  function(callback){
-//     RedisClientMainDB=RedisDBConfig.createClient("mainDB",callback);
-//  },
-//  function(callback) {
-//     RedisClientChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB",callback);
-//  },
-//  function(callback){
-//    RedisClientGroupMessageDB=RedisDBConfig.createClient("groupMessagesDB",callback);
-//  },
-//  function(callback){
-//     RedisClientUserDB=RedisDBConfig.createClient("userDB",callback);
-//    console.log(RedisClientUserDB);
-//  },
-//  function(callback){
-//    MongoDBConfig(callback);//configures the mongoDB database
-//  },
-//  function(callback){
-//    //require('./redis-unload.js')(RedisClientMainDB,callback); //unloading the redis database to the mongo database
-//  },
-//  function(callback){
-//    //require('./redis-load.js')(RedisClientMainDB,callback); //loading the mongodb database to the redis database
-//  }],
-//  //after unloading has finished
-//  function(err,result){
-//    if(err){
-//      logger.error("An error occurred with configuring/unloading of the databases \n"+err);
-//    }
-//  });
+MongoDBConfig();
 
 //======Configuring the Server=======
 var SERVER_SETTINGS=require('./config/server-config.js'); //custom server settings
