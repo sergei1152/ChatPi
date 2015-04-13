@@ -22,6 +22,8 @@ RedisClientMainDB=RedisDBConfig.createClient("mainDB");
 RedisClientChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB");
 RedisClientGroupMessageDB=RedisDBConfig.createClient("groupMessagesDB");
 RedisClientUserDB=RedisDBConfig.createClient("userDB");
+RedisClientSessionDB=RedisDBConfig.createClient("sessionDB");
+
 MongoDBConfig();
 
 //======Configuring the Server=======
@@ -88,7 +90,7 @@ app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes/routes.js')(app, passport); //configuring routes
-require("./socket-connect.js")(http, RedisClientMainDB); //configuring socket.io
+require("./socket-connect.js")(http, RedisClientSessionDB,RedisClientUserDB); //configuring socket.io
 
 // catch 404 and render 404 page
 app.use(function(req, res, next) {

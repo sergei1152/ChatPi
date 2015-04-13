@@ -14,7 +14,7 @@ var saveUserMongo=require('./static/findUserMongo.js');
 var saveUserChanges=require('./static/saveUserChanges.js');
 
 var publicChannelList;
-module.exports = function(http, RedisClient) {
+module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
   //starting the socket server
   var io = require('socket.io')(http);
 
@@ -31,22 +31,22 @@ module.exports = function(http, RedisClient) {
       sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionSecretKey);
 
       //check the redis database for the session cookie
-      RedisClient.get("sessions:" + sessionID, function(err, session) {
+      RedisClientSessionDB.get("sessions:" + sessionID, function(err, session) {
 
         if (err) { //if the session was not found in the database
           logger.error("An error occurred accessing the redis database for sessions \n", {error: err});
           next(new Error('Authentication error'));
         }
-        else if (session && JSON.parse(session).passport.user) {//if the session was found in the redis database
+        else if (session && JSON.parse(session).passport.user) {//if the session was found in the redis database, and the session is initialized
           var userID=JSON.parse(session).passport.user;
           //check the redis database for the user with the id
-          RedisClient.get("user:" + userID, function(err, user) {
+          RedisClientUserDB.HGETALL("user:" + userID, function(err, result) {
 
             if (err) { //if some kind of error occurred, look in the mongo database instead
-              logger.error("There was an error in looking up a user in the redis database...using mongo instead \n",{error:err});
+              logger.error("Redis: There was an error in looking up a user in the redis database...using mongo instead \n",{error:err});
               saveUserMongo(RedisClient,userID,socket,next);
             }
-            else if (user) { //if the user was found in the redis database
+            else if (result[0]) { //if the user was found in the redis database
               var currentUser = JSON.parse(user);
               logger.debug('User '+currentUser.username+ 'found in the redis database');
               saveUserSocket(socket,currentUser);
