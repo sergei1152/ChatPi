@@ -16,7 +16,7 @@ module.exports=function(callback){
   //when mongoose connects to the database
   mongoose.connection.on('connected', function() {
     logger.info("Successfully connected to the mongoDB database");
-    callback();
+    //callback();
   });
   //if mongoose is disconnected from the database
   mongoose.connection.on('disconnected', function() {

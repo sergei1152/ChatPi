@@ -26,7 +26,7 @@ var userSchema = mongoose.Schema({
   },
   onlineStatus: {
     type:String,
-    default:'offline'
+    default:'Online'
   },
   profile_picture: {
     type: String,
@@ -41,20 +41,23 @@ var userSchema = mongoose.Schema({
   private_groups: [String],
   contacts: [String] //a string of usernames
 });
-
-// hash the password before the user is saved
-userSchema.pre('save', function(next) {
-  var user = this;
-  // hash the password only if the password has been changed or user is new
-  if (!user.isModified('password')) return next();
-  bcrypt.hash(user.password, null, null, function(err, hash) {
-    if (err) return next(err);
-
-    // change the password to the hashed version
-    user.password = hash;
-    next();
-  });
-});
+//generates a salted hashed version of the password
+userSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+//// hash the password before the user is saved
+//userSchema.pre('save', function(next) {
+//  var user = this;
+//  // hash the password only if the password has been changed or user is new
+//  if (!user.isModified('password')) return next();
+//  bcrypt.hash(user.password, null, null, function(err, hash) {
+//    if (err) return next(err);
+//
+//    // change the password to the hashed version
+//    user.password = hash;
+//    next();
+//  });
+//});
 
 //checks if the password is valid
 userSchema.methods.validPassword = function(password) {

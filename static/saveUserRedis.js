@@ -1,22 +1,26 @@
+//Saves the user mongoose model to the redis database. Used in the registration and login process.
 var logger=require('../logger.js');
 var SERVER_SETTINGS=require('../config/server-config.js');
 
-module.exports=function(user,RedisClient){
-  // all is well, save the user to redis, return successful user
-  RedisClient.set('user:' + user._id, JSON.stringify({
-    id:user._id,
-    name: user.name,
-    username: user.username,
-    profile_picture: user.profile_picture,
-    online_status: 'Online',
-    subscribed_public_channels: user.subscribed_public_channels,
-    private_groups: user.private_groups,
-    contacts: user.contacts
-  }), function (err) {
+module.exports=function(user,RedisClientUserDB){
+  var newUser=[
+    'user:'+user.username,
+    '_id', user._id,
+    'username', user.username,
+    'password', user.password,
+    'name',user.name,
+    'profile_picture',user.profile_picture,
+    'online_status', user.online_status,
+    'subscribed_public_channels',user.subscribed_public_channels,
+    'private_groups',user.private_groups,
+    'contacts',user.contacts
+  ];
+  RedisClientUserDB.HMSET(newUser, function (err) {
     if (err) {
-      logger.error('There was an error in saving a user to the redis database \n',{'error': error});
+      logger.error('There was an error in saving a user to the redis database after a registration/login \n',{'error': error});
     }
-    RedisClient.expire('user:' + user._id, SERVER_SETTINGS.userTTL);
-    console.log('saved user');
+    else{
+      RedisClientUserDB.expire('user:' + user._id, SERVER_SETTINGS.userTTL);
+    }
   });
 };

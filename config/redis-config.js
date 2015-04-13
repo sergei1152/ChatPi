@@ -32,7 +32,7 @@ var logger = require("../logger.js"); //for pretty console log outputs
 var redis=require('redis'); //node-redis module used for interacting with the redis server
 
 //creates the client based on the settings above
-redisDatabaseConfig.createClient=function(type,callback){
+redisDatabaseConfig.createClient=function(type){
   var RedisClient= redis.createClient(
     this[type].port,
     this.host,
@@ -46,11 +46,11 @@ redisDatabaseConfig.createClient=function(type,callback){
     logger.info("Connected to redis database #" + dbnumber);
   });
   RedisClient.on("connect", function(err) {
-    callback(null);
+    //callback(null);
   });
   RedisClient.on("error", function(err) {
     logger.error("An error occurred with the redis client\n"+err);
-    callback(err);
+    //callback(err);
   });
   return RedisClient;
 };

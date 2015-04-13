@@ -28,7 +28,7 @@ module.exports = function(http, RedisClient) {
     //if the session id cookie exists
     if (sessionID) {
       //decodes the signed sessionID cookie
-      sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionKey);
+      sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionSecretKey);
 
       //check the redis database for the session cookie
       RedisClient.get("sessions:" + sessionID, function(err, session) {
