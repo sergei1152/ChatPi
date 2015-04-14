@@ -95,7 +95,7 @@ module.exports = function(http, RedisClient) {
     socket.on('disconnect', function() {
       onlineUsers--;
       logger.info('Online Users: ' + onlineUsers);
-      if (socket.userChanges.changed === true) { //if a user made a change to the profile
+      if (socket.user_changes.changed === true) { //if a user made a change to the profile
         saveUserChanges(socket,RedisClient.UserDB);
       }
     });
