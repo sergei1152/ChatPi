@@ -17,19 +17,19 @@ var async=require('async');
 //======Database Settings and Configuration======
 var MongoDBConfig = require('./config/mongo-config.js');
 var RedisDBConfig = require('./config/redis-config.js');
-
-RedisClientMainDB=RedisDBConfig.createClient("mainDB");
-RedisClientChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB");
-RedisClientGroupMessageDB=RedisDBConfig.createClient("groupMessagesDB");
-RedisClientUserDB=RedisDBConfig.createClient("userDB");
-RedisClientSessionDB=RedisDBConfig.createClient("sessionDB");
+var RedisClient={};
+RedisClient.MainDB=RedisDBConfig.createClient("mainDB");
+RedisClient.ChannelMessagesDB=RedisDBConfig.createClient("channelMessagesDB");
+RedisClient.GroupMessageDB=RedisDBConfig.createClient("groupMessagesDB");
+RedisClient.UserDB=RedisDBConfig.createClient("userDB");
+RedisClient.SessionDB=RedisDBConfig.createClient("sessionDB");
 
 MongoDBConfig();
 
 //======Configuring the Server=======
 var SERVER_SETTINGS=require('./config/server-config.js'); //custom server settings
 
-require('./config/passport-config.js')(passport,RedisClientUserDB); //configures the passport module
+require('./config/passport-config.js')(passport,RedisClient.UserDB); //configures the passport module
 
 //setting the port number for the server to use
 app.set('port', process.env.port || SERVER_SETTINGS.serverPort);
@@ -90,7 +90,7 @@ app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes/routes.js')(app, passport); //configuring routes
-require("./socket-connect.js")(http, RedisClientSessionDB,RedisClientUserDB); //configuring socket.io
+require("./socket-connect.js")(http, RedisClient); //configuring socket.io
 
 // catch 404 and render 404 page
 app.use(function(req, res, next) {

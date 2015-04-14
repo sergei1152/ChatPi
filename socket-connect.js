@@ -10,7 +10,7 @@ var saveUserSocket=require('./static/saveUserSocket');
 var getUserMongo=require('./static/getUserMongo');
 var saveUserChanges=require('./static/saveUserChanges');
 
-module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
+module.exports = function(http, RedisClient) {
   //starting the socket server
   var io = require('socket.io')(http);
 
@@ -27,7 +27,7 @@ module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
       sessionID = cookieParser.signedCookie(sessionID, SERVER_SETTINGS.sessionSecretKey);
 
       //check the redis database for the session cookie
-      RedisClientSessionDB.get("sessions:" + sessionID, function(err, session) {
+      RedisClient.SessionDB.get("sessions:" + sessionID, function(err, session) {
 
         if (err) { //if an error occurred retrieving the session from the db
           logger.error("Redis: An error occurred accessing the redis database to retrieve a session \n", {error: err});
@@ -47,10 +47,10 @@ module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
             'private_groups',
             'contacts'
           ];
-          RedisClientUserDB.HMGET(query, function(err, result) {
+          RedisClient.UserDB.HMGET(query, function(err, result) {
             if (err) { //if some kind of error occurred, look in the mongo database instead
               logger.error("Redis: There was an error in looking up a user in the redis database...using mongodb instead \n",{error:err});
-              getUserMongo(RedisClientUserDB,username,socket,next);
+              getUserMongo(RedisClient.UserDB,username,socket,next);
             }
             else if (result[0]) { //if the user was found in the redis database
               var currentUser = {
@@ -69,18 +69,18 @@ module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
             }
             else if (!user) { //if the user was not found in the database (ie not saved to the redis database yet, look up the mongodb)
               logger.debug('Redis: User was not found in the redis database...using mongodb instead');
-              getUserMongo(RedisClientUserDB,username,socket,next);
+              getUserMongo(RedisClient.UserDB,username,socket,next);
             }
           });
         }
         else {//if the session was not found in the redis database
-          logger.warn("A user tried to join the chat with a session that was not found in the redis database. Denying access to the socket server...");
+          logger.warn("Redis: A user tried to join the chat with a session that was not found in the redis database. Denying access to the socket server...");
           next(new Error('Authentication error'));
         }
       });
     }
     else {//if the user did not send back any session cookies
-      logger.warn("A user tried to join the chatroom without any cookies set. Denying access to the socket server...");
+      logger.warn("Redis: A user tried to join the chatroom without any cookies set. Denying access to the socket server...");
       next(new Error('Authentication error'));
     }
   });
@@ -90,13 +90,13 @@ module.exports = function(http, RedisClientSessionDB,RedisClientUserDB) {
     onlineUsers++; //adding the number of users to the counter
     logger.info('Online Users: ' + onlineUsers);
 
-    require('./socket-ux.js')(io,socket,RedisClientUserDB);
+    require('./socket-ux.js')(io,socket,RedisClient);
     //executes when a user disconnects
     socket.on('disconnect', function() {
       onlineUsers--;
       logger.info('Online Users: ' + onlineUsers);
       if (socket.userChanges.changed === true) { //if a user made a change to the profile
-        saveUserChanges(socket,RedisClientUserDB);
+        saveUserChanges(socket,RedisClient.UserDB);
       }
     });
   });
