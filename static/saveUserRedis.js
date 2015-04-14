@@ -1,11 +1,11 @@
-//Saves the user mongoose model to the redis database. Used in the registration and login process.
+//Saves the user mongoose model to the redis database. Used in the registration and login process, and in the socket handshake process
 var logger=require('../logger.js');
 var SERVER_SETTINGS=require('../config/server-config.js');
 
 module.exports=function(user,RedisClientUserDB){
   var newUser=[
-    'user:'+user.username,
-    '_id', user._id,
+    'user:'+user.username, //the key name
+    '_id', user._id, //field:value pairs
     'username', user.username,
     'password', user.password,
     'name',user.name,
