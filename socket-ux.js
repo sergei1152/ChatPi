@@ -25,7 +25,7 @@ module.exports=function(io,socket,RedisClient){
     newMessage.destination = data.destination._id;
     //will send to the buffer in this line, before setting the profile picture
     io.sockets.in(data.destination._id).emit('message', newMessage);
-    saveMessageToRoom(newMessage,data.destination,RedisClient); //saves the new message to the chat history
+    saveMessageToRoom(newMessage,data.destination,RedisClient.ChannelMessagesDB); //saves the new message to the chat history
     logger.debug('Sending message to ' + data.destination._id);
   });
   
@@ -34,15 +34,17 @@ module.exports=function(io,socket,RedisClient){
   });
 
   socket.on('joinRoom', function(data) { //TODO Room id and authorization validation
-    RedisClient.exists(data._id,function(err){
+    RedisClient.MainDB.HGET('channellist',data.name,function(err,result){
       if(!err){
-        RedisClient.get('channel:'+data._id,function(err,channel){
-          if(!err){
-            socket.emit('roomJoined',channel);
-            socket.join(data._id);
-            logger.debug('User '+socket.username+' joined channel '+data.name);
-          }
-        });
+        if(result[0]){ //if the channel was found
+          var channel={ //TODO CHANGE THIS TO NOT INCLUDE THE CHAT HISTORY ITEM
+            _id: result[0],
+            description:result[3],
+            name: result[4]
+          };
+          socket.emit('roomJoined',channel);
+          socket.join(channel._id);
+        }
       }
     });
   });
