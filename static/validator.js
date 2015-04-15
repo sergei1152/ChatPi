@@ -50,9 +50,9 @@ module.exports.validateRegistration=function(req){
   return false;
 };
 
-module.exports.validatePublicChannel=function(channel){
-  if (channel.name){
-    if (channel.name.toString().match(regChannel)){
+module.exports.validatePublicChannelName=function(channelName){
+  if (channelName){
+    if (channelName.toString().match(regChannel)){
       return true;
     }
     logger.debug("A user tried to create a new channel however validation for the channel name failed");

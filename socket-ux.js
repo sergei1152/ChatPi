@@ -1,15 +1,15 @@
 //This module has everything to do with the socket.io stuff with the regular usage
 
-var logger = require('./logger.js'); //for pretty console outputs
+var logger = require('./logger'); //for pretty console outputs
 
-var PublicChannel=require('./models/PublicChannel.js');
-var Message = require('./models/Message.js');
-var checkPublicChannelName=require('./static/checkPublicChannelName.js');
-var createPublicChannel=require('./static/createPublicChannel.js');
-var saveMessageToRoom=require('./static/saveMessageToRoom.js');
+var PublicChannel=require('./models/PublicChannel');
+var Message = require('./models/Message');
+var checkPublicChannelName=require('./static/checkPublicChannelName');
+var createPublicChannel=require('./static/createPublicChannel');
+var saveMessageToRoom=require('./static/saveMessageToRoom');
 var async=require('async');
-var getPublicChannels=require('./static/getPublicChannels.js');
-
+var getPublicChannels=require('./static/getPublicChannels');
+var validator=require('./static/validator');
 module.exports=function(io,socket,RedisClient){
   //When a new chat message has been received
   socket.on('message', function(data) {
@@ -56,13 +56,13 @@ module.exports=function(io,socket,RedisClient){
   });
   //checks that database to see whether a name with the channel exists
   socket.on('checkPublicChannelName', function(channelName) {
-    if(channelName){
+    if(validator.validatePublicChannelName(channelName)){
       async.series([
           function(callback){
-            checkPublicChannelName(channelName,RedisClient,callback);
+            checkPublicChannelName(channelName,RedisClient.MainDB,callback);
           }
         ],
-        //callback for after the function has finished
+        //callback for after the result is retrieved
         function(err, results){
           socket.emit("PublicChannelNameStatus",results[0]);
         });
