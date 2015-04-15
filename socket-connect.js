@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser'); //used for decoding signed cookies
 
 var saveUserSocket=require('./static/saveUserSocket');
 var getUserMongo=require('./static/getUserMongo');
-var saveUserChanges=require('./static/saveUserChanges');
+var saveUserChangesRedis=require('./static/saveUserChangesRedis');
 
 module.exports = function(http, RedisClient) {
   //starting the socket server
@@ -96,7 +96,7 @@ module.exports = function(http, RedisClient) {
       onlineUsers--;
       logger.info('Online Users: ' + onlineUsers);
       if (socket.user_changes.changed === true) { //if a user made a change to the profile
-        saveUserChanges(socket,RedisClient.UserDB);
+        saveUserChangesRedis(socket,RedisClient.UserDB);
       }
     });
   });
