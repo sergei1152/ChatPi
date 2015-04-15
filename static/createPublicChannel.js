@@ -3,7 +3,7 @@ var logger=require('../logger.js');
 var async=require('async');
 var validator=require('./validator.js');
 
-module.exports=function(channel,socket,RedisClient){
+module.exports=function(channel,socket,RedisClientMainDB){
   if (validator.validatePublicChannel(channel)){
     if(!channel.description){
       channel.description='';
@@ -13,12 +13,12 @@ module.exports=function(channel,socket,RedisClient){
       description: channel.description
     });
     //Saves the channel to the redis database, if the field  does not exist yet
-    RedisClient.HSETNX("channellist",newChannel.name,JSON.stringify(newChannel),function(err,saved){
+    RedisClientMainDB.HSETNX("channellist",newChannel.name,JSON.stringify(newChannel),function(err,saved){
       if(err){
         logger.error('There was an error in saving a new public channel to the Redis database',{error:err});
       }
       if (saved){
-        logger.info("A user created a new public channel. Name: %s",channel.name);
+        logger.info("A user created a new public channel.",{newchannelname:channel.name,username:socket.username});
         socket.emit("ChannelCreated",newChannel);
       }
       else{

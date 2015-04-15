@@ -47,12 +47,12 @@ module.exports=function(io,socket,RedisClient){
     });
   });
   socket.on('subscribeToChannel', function(channel) {
-    socket.userChanges.changed=true;
-    socket.userChanges.newSubscriptions.push(channel);
+    socket.user_changes.changed=true;
+    socket.user_changes.new_subscriptions.push(channel);
   });
 
   socket.on('CreatePublicChannel', function(channel) {
-    createPublicChannel(channel,socket,RedisClient);
+    createPublicChannel(channel,socket,RedisClient.MainDB);
   });
   //checks that database to see whether a name with the channel exists
   socket.on('checkPublicChannelName', function(channelName) {
