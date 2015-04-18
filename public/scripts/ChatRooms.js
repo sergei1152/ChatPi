@@ -79,7 +79,6 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
     if (!joinedChatRooms.findRoom(channel.id)) { //check if the user already join the chat room
       socket.emit('joinRoom', channel); //tell the server to join the room
       socket.on('roomJoined', function (channel) {
-        channel=JSON.parse(channel);
         $scope.$apply(function () {
           joinedChatRooms.addRoom(channel);
           joinedChatRooms.changeCurrentRoom(channel);
