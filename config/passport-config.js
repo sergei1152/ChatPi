@@ -5,8 +5,8 @@ var User = require('../models/User');
 var fs = require('fs'); //for managing profile picture uploads
 var path = require('path'); //for managing profile picture uploads
 var logger = require('../logger'); //for pretty console outputs
-var validator = require('../static/validator'); //validates the input forms
-var saveUserRedis=require('../static/saveUserRedis'); //saves the new user object to the database
+var validator = require('../lib/validator'); //validates the input forms
+var saveUserRedis=require('../lib/connection/saveUserRedis'); //saves the new user object to the database
 var bcrypt = require('bcrypt-nodejs');
 module.exports = function(passport,RedisClientUserDB) {
   // =========================================================================

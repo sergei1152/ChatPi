@@ -54,7 +54,7 @@ if(SERVER_SETTINGS.logRequests){
 //compresses all requests before sending them
 app.use(compression());
 
-//Setting the public folder to server static content(images, javascript, stylesheets)
+//Setting the public folder to server lib content(images, javascript, stylesheets)
 app.use(express.static(__dirname + "/public", {
   index:false, //disable directory indexing
   maxAge: SERVER_SETTINGS.userCacheTTL //how long to cache the content on client side (1 day)
@@ -90,7 +90,7 @@ app.use(passport.session()); // for persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes/routes.js')(app, passport); //configuring routes
-require("./socket-connect.js")(http, RedisClient); //configuring socket.io
+require("./lib/connection/socket-connect.js")(http, RedisClient); //configuring socket.io
 
 // catch 404 and render 404 page
 app.use(function(req, res, next) {

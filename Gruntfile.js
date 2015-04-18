@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     watch: {
       //will watch for any server side javascript file changes
       express: {
-        files: ['./*.js', './routes/*.js', './models/*.js', './config/*.js', './static/*.js'], //Files to be watched
+        files: ['./*.js', './routes/*.js', './models/*.js', './config/*.js', './lib/*.js'], //Files to be watched
         tasks: ['jshint:server', 'express:dev'], //(Re)start the server
         options: { //Server options
           spawn: false //Must have for reload
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         reporter: require('jshint-stylish') // use jshint-stylish to make our errors look and read good
       },
       // when this task is run, lint the Gruntfile and all js files in project root
-      server: ['./*.js', './routes/*.js', './models/*.js', './config/*.js', './static/*.js'],
+      server: ['./*.js', './routes/*.js', './models/*.js', './config/*.js', './lib/*.js'],
       client: ['./public/scripts/*.js']
     }
   });
