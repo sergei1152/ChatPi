@@ -34,7 +34,7 @@ ChatRooms.service("joinedChatRooms", function(User) {
   this.changeCurrentRoom = function(room) {
     for(var i=0;i<room.chat_history.length;i++){
       if(room.chat_history[i].senderUsername===User.selfUsername){
-        room.chat_history[i].self='self'
+        room.chat_history[i].self='self';
       }
     }
     currentRoom = room;
@@ -62,7 +62,7 @@ ChatRooms.service("joinedChatRooms", function(User) {
     for (var i = 0; i < joinedChatRooms.length; i++) {
       if (channelID === joinedChatRooms[i]._id) {
         if(message.senderUsername===User.selfUsername){
-          message.self='self'
+          message.self='self';
         }
         joinedChatRooms[i].chat_history.push(message);
       }
@@ -188,8 +188,8 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
       $('#createPublicChannelAlert').css('display', 'block');
     }
   };
-  $scope.newChannelName;
-  $scope.newChannelDescription;
+  $scope.newChannelName="";
+  $scope.newChannelDescription="";
   $scope.createChannelMessage = '';
   $scope.channelNameAvailability = "Check Availability";
   $scope.channelNameCreationStatus = "Create Channel";

@@ -4,11 +4,11 @@ Validator.service('validateName', function() {
     return function(name) {
         if (name) {
             var clean = name.replace(/\s/g, '');
-            if (clean != '' && clean != null && name.match(nameReg)) {
+            if (clean !== '' && clean !== null && name.match(nameReg)) {
                 return true;
             }
             return false;
         }
         return false;
-    }
+    };
 });
