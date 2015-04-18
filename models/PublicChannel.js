@@ -21,6 +21,7 @@ var PublicChannel = new mongoose.Schema({
     type:Date,
     default: Date.now
   },
+  type:'channel',
   chat_history: {
     type:[MessageSchema],
     default:[]

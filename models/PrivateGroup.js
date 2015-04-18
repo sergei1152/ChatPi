@@ -21,6 +21,7 @@ var PrivateGroup = new mongoose.Schema({
     type:[MessageSchema],
     default:[]
   },
+  type: "group",
   authorized_users: {
     type: [String],
     default: []
