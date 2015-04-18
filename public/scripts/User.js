@@ -2,7 +2,7 @@
 var User=angular.module('User',[]);
 //service that returns the current date in minutes to be used in message dates
 User.service("User", function() {
-  this.selfName='';
-  this.selfUsername='';
-  this.selfProfilePicture='';
+  this.name='';
+  this.username='';
+  this.profile_picture='';
 });
