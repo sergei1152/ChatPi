@@ -84,7 +84,7 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
           parsed_chat_history.push(JSON.parse(channel.chat_history[i]));
         }
         channel.chat_history=parsed_chat_history;
-        console.log(channel.chat_history);
+        console.log(channel);
         $scope.$apply(function () {
           joinedChatRooms.addRoom(channel);
           joinedChatRooms.changeCurrentRoom(channel);

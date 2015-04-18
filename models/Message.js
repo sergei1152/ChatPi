@@ -6,11 +6,17 @@ var Message = mongoose.Schema({
   senderUsername: String,
   senderName: String, //should get rid of this as soon will no longer be necessary
   senderProfilePicture: String,
-  dateSent: Date,
-  dateSentInMinutes:Number, //for sending back to the client for display purposes only
+  dateSent: {
+    type: Date,
+    default: Date.now()
+  },
+  dateSentInMinutes:{
+    type:Number,
+    default: Math.ceil(new Date().getTime() / 1000 / 60)
+  },
   type: String,
   contents: String,
-  destination:String
+  destination:{}
 });
 module.exports.schema = Message;
 module.exports = mongoose.model('Message', Message);
