@@ -151,7 +151,11 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
 
   $scope.createPublicChannel = function() {
     if (validateName($scope.newChannelName)) {
-      socket.emit("CreatePublicChannel",{name:$scope.newChannelName,description:$scope.newChannelDescription});
+      socket.emit("createPublicChannel",{
+        name:$scope.newChannelName,
+        description:$scope.newChannelDescription
+      });
+
       $scope.channelNameCreationStatus = "Creating Channel..";
       socket.on("ChannelCreated",function(channel){
         $scope.$apply(function(){
@@ -176,16 +180,9 @@ ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels,
       $scope.channelNameAvailability = "Checking availability...";
 
       socket.on('PublicChannelNameStatus', function(taken) {
-        console.log(taken);
-        if (taken) {
           $scope.$apply(function() {
-            $scope.channelNameAvailability = "Name already taken...";
+            $scope.channelNameAvailability = taken;
           });
-        } else {
-          $scope.$apply(function() {
-            $scope.channelNameAvailability = "Name Available!";
-          });
-        }
       });
     } else {
       $scope.createChannelMessage = 'Name must be between 4 and 16 characters long and have no special characters';
