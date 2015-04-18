@@ -4,11 +4,12 @@ var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives','UX','MessageDat
 
 ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the beginning after all the services are loaded
   //Receiving user metadata from the server
-  socket.on("metadata", function(metadata) {
-    User.selfName = metadata.clientName;
-    User.selfUsername = metadata.clientUsername;
-    User.selfProfilePicture=metadata.clientProfilePic;
-    subscribedChannels.setChannels(metadata.subscribedChannels);
+  socket.on("metadata", function(metadata){
+  console.log(metadata);
+    User.name = metadata.name;
+    User.username = metadata.username;
+    User.profile_picture=metadata.profile_picture;
+    subscribedChannels.setChannels(metadata.subscribed_channels);
     $rootScope.$apply(); //updating the scope with the received subscribed public channels
   });
   socket.on('disconnect', function() {
