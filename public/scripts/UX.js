@@ -15,3 +15,40 @@ UX.directive('ngEnter', function () {
     });
   };
 });
+
+//Toggles the left and right panes for better exprience on mobiles that can't view everything all at once.
+var leftPane=true;
+$("#left-pane-toggle").click(function(){
+  if(leftPane){
+    $("#left-pane").css("display","none");
+    $("#left-pane-toggle span").removeClass("glyphicon-chevron-left");
+    $("#left-pane-toggle span").addClass("glyphicon-chevron-right");
+    $("#left-pane-toggle").css("background-color","transparent");
+    leftPane=false;
+  }
+  else{
+    $("#left-pane").css("display","inline-block");
+    $("#left-pane-toggle span").removeClass("glyphicon-chevron-right");
+    $("#left-pane-toggle span").addClass("glyphicon-chevron-left");
+    $("#left-pane-toggle").css("background-color","rgba(255,255,255,1)");
+    leftPane=true;
+  }
+});
+
+var rightPane=false;
+$("#right-pane-toggle").click(function(){
+  if(rightPane){
+    $("#right-pane").css("display","none");
+    $("#right-pane-toggle span").removeClass("glyphicon-chevron-right");
+    $("#right-pane-toggle span").addClass("glyphicon-chevron-left");
+    $("#right-pane-toggle").css("background-color","transparent");
+    rightPane=false;
+  }
+  else{
+    $("#right-pane").css("display","inline-block");
+    $("#right-pane-toggle span").removeClass("glyphicon-chevron-left");
+    $("#right-pane-toggle span").addClass("glyphicon-chevron-right");
+    $("#right-pane-toggle").css("background-color","rgba(255,255,255,1)");
+    rightPane=true;
+  }
+});

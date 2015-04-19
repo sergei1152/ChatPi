@@ -138,16 +138,26 @@ body {
     display:-ms-flexbox;
     display:flex;
     width: 100%;
-    height:calc(100% - 51px)
+    height:calc(100% - 55px)
 }
 #left-pane {
     max-width:350px;
     height: 100%;
     padding: 0 24px 0 24px;
-    float:left;
+   float:left;
+    display:flex;
     background-color:rgba(255,255,255,1);
 }
-#toggle{
+#right-pane{
+    display:none;
+    max-width:350px;
+    height: 100%;
+    padding: 0 24px 0 24px;
+    float:left;
+    background-color:rgba(255,255,255,1);
+    box-shadow:1px 0px 16px 0px rgba(50, 50, 50, 0.75);
+}
+.toggle{
     width:40px;
     height: 100%;
     float:left;
@@ -155,14 +165,14 @@ body {
     display:flex;
     justify-content:center;
     align-items:center;
-    box-shadow:0px 0px 1px 0px rgba(50, 50, 50, 0.75);
 }
-#toggle:hover{
+.toggle:hover{
     text-decoration:none;
-    background-color:#d9d9d9;
+    background-color:rgba(255,255,255,0.5) !important;
     transition: background-color 0.5s ease;
     cursor:pointer;
 }
+
 #middle-pane {
     height: 100%;
     width:100%;
@@ -178,15 +188,7 @@ body {
     padding-bottom: 32px;
     padding-left:12px;
 }
-#right-pane{
-    display:inline-block;
-    max-width:350px;
-    height: 100%;
-    padding: 0 24px 0 24px;
-    float:left;
-    background-color:rgba(255,255,255,1);
-    box-shadow:1px 0px 16px 0px rgba(50, 50, 50, 0.75);
-}
+
 .chat-rooms-container {
     text-align:center;
     height: calc(100% - 51px);
