@@ -5,7 +5,6 @@ var ChatPiApp = angular.module('ChatPiApp', ['luegg.directives','UX','MessageDat
 ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the beginning after all the services are loaded
   //Receiving user metadata from the server
   socket.on("metadata", function(metadata){
-  console.log(metadata);
     User.name = metadata.name;
     User.username = metadata.username;
     User.profile_picture=metadata.profile_picture;
@@ -16,7 +15,7 @@ ChatPiApp.run(function($rootScope,subscribedChannels,User){ //to be run at the b
     console.warn('You were disconnected from the server');
   });
   socket.on("error", function(msg) {
-    console.error("An error occured with the connection to the chat server \n" + msg);
+    console.error("An error occurred with the connection to the chat server \n" + msg);
   });
 });
 //The Message Object
@@ -60,7 +59,17 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
     $scope.$apply();
   },60000);
 });
-
+ChatPiApp.controller('UserSettings', function($scope,User) {
+  $scope.getUsername=function(){
+    return User.username;
+  };
+  $scope.getName=function(){
+    return User.name;
+  };
+  $scope.getProfilePicture=function(){
+    return User.profile_picture;
+  }
+});
 ChatPiApp.directive('openModal', function () {
   return function (scope, element, attrs) {
     element.bind("click", function (event) {

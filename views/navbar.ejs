@@ -1,26 +1,40 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">
+
+        <div class="navbar-header pull-left">
+            <a class="navbar-brand" href="/app">
                 ChatPi
             </a>
-            <p class="navbar-text">Presented to Scotiabank</p>
         </div>
-        <div class="navbar-header">
 
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/logout/">Logout</a>
-                </li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
+        <ul class="nav pull-right test" ng-controller="UserSettings">
+            <li class="dropdown" id="online-status-menu">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><div class="online-status green" ></div></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href=""><div class="online-status green"></div>Online</a></li>
+                    <li><a href=""><div class="online-status yellow"></div>Away</a></li>
+                    <li><a href=""><div class="online-status red"></div>Do Not Disturb</a></li>
+                    <li><a href=""><div class="online-status grey"></div>Invisible</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a id="profile-info" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <div id="profile-picture">
+                        <img src="../resources/profiles/{{getProfilePicture()}}" alt=""/>
+                    </div>
+                    <div id="names-wrapper">
+                        <h5>{{getName()}}</h5>
+                        <h6>{{getUsername()}}</h6>
+                    </div>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Account Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/logout/">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>
