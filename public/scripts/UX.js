@@ -1,4 +1,4 @@
-//This module has everything to do with the filters and directives responsible for the user experience
+//This script includes both the AngularJS directives and Jquery functions used solely for the User expirience
 var UX=angular.module('UX',[]);
 
 //executes the send function when the enter button is pressed within a text area
@@ -52,3 +52,11 @@ $("#right-pane-toggle").click(function(){
     rightPane=true;
   }
 });
+
+(function($){
+  $(window).load(function(){
+    $("#conversation").mCustomScrollbar();
+    $(".chat-room-list").mCustomScrollbar();
+    $(".channel-list").mCustomScrollbar();
+  });
+})(jQuery);

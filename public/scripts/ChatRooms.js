@@ -29,7 +29,7 @@ ChatRooms.service("subscribedChannels", function(User) {
 ChatRooms.service("joinedChatRooms", function(User) {
   var joinedChatRooms = [];
   var currentRoom={
-    name:"Welcome to ChatPi. Please select a channel to begin"
+    name:"Welcome to ChatPi"
   };
   this.changeCurrentRoom = function(room) {
     for(var i=0;i<room.chat_history.length;i++){

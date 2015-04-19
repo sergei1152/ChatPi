@@ -37,7 +37,6 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
     new_message: ""
   };
   $scope.getCurrentRoom = function(){
-    $('#conversation').mCustomScrollbar("scrollTo",'bottom');
     return joinedChatRooms.getCurrentRoom();
   };
   $scope.send = function() {
