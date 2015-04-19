@@ -2,7 +2,7 @@
 <%- include modals %>
 <%- include navbar %>
 <div class="wrapper">
-<div class="pane-wrapper">
+<div class="left-pane-wrapper">
     <div id="left-pane" ng-controller='ChatRooms'>
         <div class="chat-rooms-container">
             <h3 class='#chat-rooms-container-header'>Public Channels</h3>
@@ -66,8 +66,8 @@
     </form>
 </div>
 
-<div class="pane-wrapper">
-    <a class="toggle" id="right-pane-toggle" toggle-pane="#right-pane">
+<div class="right-pane-wrapper">
+    <a class="toggle" id="right-pane-toggle">
         <span class="glyphicon glyphicon-chevron-left"></span>
     </a>
     <div id="right-pane">

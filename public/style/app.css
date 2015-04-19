@@ -155,7 +155,6 @@ body {
     padding: 0 24px 0 24px;
     float:left;
     background-color:rgba(255,255,255,1);
-    box-shadow:1px 0px 16px 0px rgba(50, 50, 50, 0.75);
 }
 .toggle{
     width:40px;
@@ -166,21 +165,33 @@ body {
     justify-content:center;
     align-items:center;
 }
+#right-pane-toggle{
+    background-color:transparent;
+}
 .toggle:hover{
     text-decoration:none;
     background-color:rgba(255,255,255,0.5) !important;
     transition: background-color 0.5s ease;
     cursor:pointer;
 }
-.pane-wrapper{
+.left-pane-wrapper{
+    height:100%;
+    display:flex;
+}
+.right-pane-wrapper{
     height:100%;
     display:flex;
 }
 @media (max-width:860px){
-    .pane-wrapper{
+    .left-pane-wrapper{
         height:calc(100% - 55px);
         position:absolute;
         z-index:999;
+    }
+    .right-pane-wrapper{
+        height:calc(100% - 55px);
+        position:absolute;
+        right:0px;
     }
 }
 #notifications-menu .dropdown-menu{
@@ -199,8 +210,7 @@ body {
     -webkit-flex-direction:column;
     -ms-flex-direction:column;
     flex-direction:column;
-    padding-bottom: 32px;
-    padding-left:12px;
+    padding: 0 12px 32px 12px;
 }
 
 .chat-rooms-container {
