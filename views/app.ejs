@@ -2,35 +2,37 @@
 <%- include modals %>
 <%- include navbar %>
 <div class="wrapper">
-<div id="left-pane" ng-controller='ChatRooms'>
-    <div class="chat-rooms-container">
-        <h3 class='#chat-rooms-container-header'>Public Channels</h3>
-        <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Public Channels">
-        <ul class="chat-room-list"  >
-            <li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>
-        </ul>
-        <a href="" open-modal="#findPublicChannelModal">Find a Public Channel</a>
-        <br>
-        <a href=""  open-modal="#createPublicChannelModal">Create a Public Channel</a>
+<div class="pane-wrapper">
+    <div id="left-pane" ng-controller='ChatRooms'>
+        <div class="chat-rooms-container">
+            <h3 class='#chat-rooms-container-header'>Public Channels</h3>
+            <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Public Channels">
+            <ul class="chat-room-list"  >
+                <li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>
+            </ul>
+            <a href="" open-modal="#findPublicChannelModal">Find a Public Channel</a>
+            <br>
+            <a href=""  open-modal="#createPublicChannelModal">Create a Public Channel</a>
 
-        <h3 class='#chat-rooms-container-header'>Private Groups</h3>
-        <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Private Groups">
-        <!--<ul class="chat-room-list"  >-->
-            <!--<li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>-->
-        <!--</ul>-->
-        <a href=""  open-modal="#createPublicChannelModal">Create a Private Group</a>
+            <h3 class='#chat-rooms-container-header'>Private Groups</h3>
+            <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Private Groups">
+            <!--<ul class="chat-room-list"  >-->
+                <!--<li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>-->
+            <!--</ul>-->
+            <a href=""  open-modal="#createPublicChannelModal">Create a Private Group</a>
 
-        <h3 class='#chat-rooms-container-header'>Contacts</h3>
-        <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Contacts">
-        <!--<ul class="chat-room-list"  >-->
-            <!--<li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>-->
-        <!--</ul>-->
-        <a href="" open-modal="#findPublicChannelModal">Add a Contact</a>
+            <h3 class='#chat-rooms-container-header'>Contacts</h3>
+            <input class="form-control" ng-model='searchChannel.name' type="text" placeholder="Filter Contacts">
+            <!--<ul class="chat-room-list"  >-->
+                <!--<li class="chat-room-list-item" ng-repeat="channel in getSubscribedChannels()  | filter:searchChannel track by $index" ng-click="joinChatRoom(channel)"><a href="">{{channel.name}}</a></li>-->
+            <!--</ul>-->
+            <a href="" open-modal="#findPublicChannelModal">Add a Contact</a>
+        </div>
     </div>
+    <a class="toggle" id="left-pane-toggle">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
 </div>
-<a class="toggle" id="left-pane-toggle">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-</a>
 <div id="middle-pane" ng-controller="Conversation">
     <h1 class="room-name">{{getCurrentRoom().name}}</h1>
 
@@ -63,12 +65,13 @@
         </div>
     </form>
 </div>
-<a class="toggle" id="right-pane-toggle">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-</a>
-<div id="right-pane">
 
-
+<div class="pane-wrapper">
+    <a class="toggle" id="right-pane-toggle" toggle-pane="#right-pane">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <div id="right-pane">
+    </div>
 </div>
 </div>
 <%- include footer %>

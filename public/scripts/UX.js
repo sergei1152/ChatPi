@@ -16,7 +16,7 @@ UX.directive('ngEnter', function () {
   };
 });
 
-//Toggles the left and right panes for better exprience on mobiles that can't view everything all at once.
+//Toggles the left and right panes for better experience on mobiles that can't view everything all at once.
 var leftPane=true;
 $("#left-pane-toggle").click(function(){
   if(leftPane){

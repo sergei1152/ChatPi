@@ -138,7 +138,7 @@ body {
     display:-ms-flexbox;
     display:flex;
     width: 100%;
-    height:calc(100% - 55px)
+    height:calc(100% - 55px);
 }
 #left-pane {
     max-width:350px;
@@ -172,7 +172,21 @@ body {
     transition: background-color 0.5s ease;
     cursor:pointer;
 }
-
+.pane-wrapper{
+    height:100%;
+    display:flex;
+}
+@media (max-width:860px){
+    .pane-wrapper{
+        height:calc(100% - 55px);
+        position:absolute;
+        z-index:999;
+    }
+}
+#notifications-menu .dropdown-menu{
+    left:-120px;
+    text-align: center;
+}
 #middle-pane {
     height: 100%;
     width:100%;
