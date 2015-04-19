@@ -55,8 +55,14 @@ $("#right-pane-toggle").click(function(){
 
 (function($){
   $(window).load(function(){
-    $("#conversation").mCustomScrollbar();
-    $(".chat-room-list").mCustomScrollbar();
-    $(".channel-list").mCustomScrollbar();
+    $("#conversation").mCustomScrollbar({
+      scrollInertia:0
+    });
+    $(".chat-room-list").mCustomScrollbar({
+      scrollInertia:0
+    });
+    $(".channel-list").mCustomScrollbar({
+      scrollInertia:0
+    });
   });
 })(jQuery);
