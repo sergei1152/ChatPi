@@ -72,14 +72,14 @@ $("#right-pane-toggle").click(function(){
 //Custom scrollbar Stuff
 (function($){
   $(window).load(function(){
-    $("#conversation").mCustomScrollbar({
-      scrollInertia:0
-    });
+    //$("#conversation").mCustomScrollbar({
+    //  scrollInertia:0
+    //});
     $(".chat-room-list").mCustomScrollbar({
-      scrollInertia:0
+
     });
     $(".channel-list").mCustomScrollbar({
-      scrollInertia:0
+
     });
   });
 })(jQuery);
