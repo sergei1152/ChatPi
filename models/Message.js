@@ -11,8 +11,7 @@ var Message = mongoose.Schema({
     default: Date.now()
   },
   dateSentInMinutes:{
-    type:Number,
-    default: Math.ceil(Date.now() / 1000 / 60)
+    type:Number
   },
   type: String,
   contents: String,
