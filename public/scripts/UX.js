@@ -49,6 +49,7 @@ $("#right-pane-toggle").click(function(){
     $("#right-pane-toggle span").removeClass("glyphicon-chevron-left");
     $("#right-pane-toggle span").addClass("glyphicon-chevron-right");
     $("#right-pane-toggle").css("background-color","rgba(255,255,255,1)");
+    $("#right-pane-toggle").css("z-index","0");
     rightPane=true;
   }
 });
