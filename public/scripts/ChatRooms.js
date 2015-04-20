@@ -36,9 +36,7 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
         });
       }
       else { //if the user had already joined the room
-        $scope.$apply(function () {
           joinedChatRooms.changeCurrentRoom(room);
-        });
       }
     }
   };
@@ -53,15 +51,22 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
 });
 
 //controller for the find public channels modal
+//TODO MODULARIZE THIS FUNCITON
 ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
-  $scope.firstOpen = true; //for first retrieval of data
-  $scope.publicChatRooms = []; //list of all public chat rooms in the database
-  $scope.getPublicChannelsList = function() { //retrieves the full list of public channels from the server
-    $scope.publicChatRooms = []; //resets the view to blank
+  $scope.firstOpen = true;
+  $scope.publicChannelsList = [];
+
+  $scope.getPublicChannelsList = function() {
+    $scope.publicChannelsList = [];
     $('#find-channel-spinner').css('display', 'block'); //shows the little spinner
-    socket.emit('getPublicChannelsList', ''); //asks the server for the list of public channels
-    socket.on('publicChannelsList', function(channelList) { //when the server sends back the list
-      $scope.$apply(function() { //updates the view for the user
+
+    socket.emit('getPublicChannelsList', '');
+
+    socket.on('publicChannelsList', function(channelList) {
+      $scope.publicChannelsList = []; //TODO THIS EVENT IS FIRED TWICE FOR SOME REASON
+      $scope.$apply(function() {
+        /*goes through every entry and if already subscribed shows the checkmark
+        to the user indicating that the channel has already been subscribed to */
         for (var i=0;i<channelList.length;i++){
           var newChannel=JSON.parse(channelList[i]);
           if(subscribedChannels.findChannel(newChannel)){
@@ -70,12 +75,24 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
           else{
             newChannel.subscribeStatus='glyphicon-plus';
           }
-          $scope.publicChatRooms.push(newChannel);
+          $scope.publicChannelsList.push(newChannel);
         }
         $('#find-channel-spinner').css('display', 'none'); //stops showing the little spinner
       });
     });
   };
+
+  //when the user subscribes to a channel
+  //TODO Subscriptions should be a 2 way callback thing
+  $scope.subscribeChannel = function(index) { //the index from the ng-repeat
+    if (!subscribedChannels.findChannel($scope.publicChannelsList[index])) { //if the user is not already subscribed to a channel
+      subscribedChannels.addChannel($scope.publicChannelsList[index]); //adds the channel locally
+      $scope.publicChannelsList[index].subscribeStatus='glyphicon-ok'; //gives it the checkmark
+      socket.emit('subscribeToChannel', $scope.publicChannelsList[index]); //adds the channel on the server side
+    }
+  };
+
+  //TODO CALL THIS WITH A DIRECTIVE RATHER THAN JQUERY
   $('#findPublicChannelModal').on('shown.bs.modal', function() { //modal open event handler
     if ($scope.firstOpen) { //if this is the first time the modal is opened
       $scope.getPublicChannelsList(); //retrieves the list of public channels from the server
@@ -84,17 +101,10 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
     $('#findPublicChannelModalSearch').focus(); //auto focus on the search bar
   });
 
-  //when the user subscribes to a channel
-  $scope.subscribeChannel = function(index) { //the index from the ng-repeat
-    if (!subscribedChannels.findChannel($scope.publicChatRooms[index])) { //if the user is not already subscribed to a channel
-      subscribedChannels.addChannel($scope.publicChatRooms[index]); //adds the channel locally
-      $scope.publicChatRooms[index].subscribeStatus='glyphicon-ok';
-      socket.emit('subscribeToChannel', $scope.publicChatRooms[index]); //adds the channel on the server side
-    }
-  };
 });
 //controller for the find public channels modal
-ChatRooms.controller('createPublicChannel', function($scope, subscribedChannels, validateName) {
+//TODO MODULARIZE THIS FUNCTION
+ChatRooms.controller('createPublicChannel', function($scope, validateName) {
   $('#createPublicChannelAlert').css('display', 'none'); //hides the alert
 
   $scope.createPublicChannel = function() {

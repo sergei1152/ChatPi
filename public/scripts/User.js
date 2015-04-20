@@ -5,7 +5,7 @@ User.service("User", function() {
   this.name='';
   this.username='';
   this.profile_picture='';
-  this.subscribed_public_channels={};
+  this.subscribed_public_channels=[];
   this.contacts={};
   this.private_groups={};
   this.notifications={};

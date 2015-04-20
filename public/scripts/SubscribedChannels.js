@@ -1,26 +1,23 @@
+//handles public channels subscriptions
 var SubscribedChannels = angular.module('SubscribedChannels', ['User']);
 
-//to keep track of the users subscribed channels
 SubscribedChannels.service("subscribedChannels", function(User) {
-  this.subscribedChannels = [];
-  this.addChannel = function(channel) {
-    this.subscribedChannels.push(channel);
-  };
-  this.setChannels = function(channels) {
-    if(channels){
-      this.subscribedChannels = JSON.parse(channels);
+
+  //Looks through all subscriptions and tries to find a matching one
+  //Used to make sure the user doesn't add the same subscription twice
+  this.findChannel=function(channel){
+    if(!User.subscribed_public_channels){
+      return false;
     }
-  };
-  this.getChannels = function() {
-    return this.subscribedChannels;
-  };
-  //checks the array to see if a channel id is in the array
-  this.findChannel = function(channel) {
-    for (var i = 0; i < this.subscribedChannels.length; i++) {
-      if (channel._id === this.subscribedChannels[i]._id) {
-        return true;
+    for(var i=0;i<User.subscribed_public_channels.length;i++){
+      if(channel.name===User.subscribed_public_channels[i].name){
+        return User.subscribed_public_channels[i];
       }
     }
     return false;
+  };
+
+  this.addChannel=function(channel){
+    User.subscribed_public_channels.push(channel);
   };
 });

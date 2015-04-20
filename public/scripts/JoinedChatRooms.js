@@ -1,47 +1,64 @@
 var JoinedChatRooms = angular.module('JoinedChatRooms', ['User']);
 
 //to keep track of the users joined chat rooms
-JoinedChatRooms.service("joinedChatRooms", function(User) {
-  var joinedChatRooms = [];
+JoinedChatRooms.service("joinedChatRooms", function() {
+  var joinedPrivateGroups = [];
+  var joinedChannels=[];
   var currentRoom={
     name:"Welcome to ChatPi"
   };
+
   this.changeCurrentRoom = function(room) {
-    //for prettier CSS styling
-    for(var i=0;i<room.chat_history.length;i++){
-      if(room.chat_history[i].senderUsername===User.selfUsername){
-        room.chat_history[i].self='self';
-      }
-    }
     currentRoom = room;
   };
+
   this.getCurrentRoom = function() {
     return currentRoom;
   };
-  this.addRoom = function(room) {
-    joinedChatRooms.push(room);
+
+  this.addChannel = function(channel) {
+    joinedChannels.push(channel);
   };
-  this.getRooms = function() {
-    return joinedChatRooms;
+
+  this.addGroup = function(group) {
+    joinedPrivateGroups.push(group);
   };
-  //checks the array to see if a room id is in the array
-  this.findRoom = function(id) {
-    for (var i = 0; i < joinedChatRooms.length; i++) {
-      if (id === joinedChatRooms[i]._id) {
-        return joinedChatRooms[i];
+
+  //searches for joined private groups, and returns it if found
+  this.findGroup = function(group) {
+    for (var i = 0; i < joinedPrivateGroups.length; i++) {
+      if (group._id === joinedPrivateGroups[i]._id) {
+        return joinedPrivateGroups[i];
       }
     }
     return false;
   };
-  //checks the array to see if a room id is in the array
-  this.addMessageHistory = function(channelID, message) {
-    for (var i = 0; i < joinedChatRooms.length; i++) {
-      if (channelID === joinedChatRooms[i]._id) {
-        if(message.senderUsername===User.selfUsername){
-          message.self='self';
-        }
-        joinedChatRooms[i].chat_history.push(message);
+
+  //searches for a joined public channel, and returns it if found
+  this.findChannel = function(channel) {
+    for (var i = 0; i < joinedChannels.length; i++) {
+      if (channel.name === joinedChannels[i].name) {
+        return joinedChannels[i];
       }
+    }
+    return false;
+  };
+
+  //adds a message to the rooms chat history
+  this.addMessage = function(message) {
+    var room=message.destination;
+
+    if(room.type==='channel'){
+      if(message.senderUsername===User.username){
+        message.self='self';
+      }
+      this.findChannel(room).chat_history.push(message);
+    }
+    else if(room.type==='group'){
+      if(message.senderUsername===User.username){
+        message.self='self';
+      }
+      this.findGroup(room).chat_history.push(message);
     }
   };
 });

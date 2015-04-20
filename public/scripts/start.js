@@ -60,7 +60,7 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
   socket.on('message', function(msg) {
     //adding the message to the chat history of the room
     $scope.$apply(
-      joinedChatRooms.addMessageHistory(msg,msg.destination)
+      joinedChatRooms.addMessage(msg)
     );
   });
 

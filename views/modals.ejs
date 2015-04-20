@@ -12,7 +12,7 @@
           <div class="double-bounce2"></div>
         </div>
         <ul class='channel-list'>
-          <li class='channel-list-item' ng-repeat="channel in publicChatRooms  | filter:findPublicChannelModalSearch track by $index">
+          <li class='channel-list-item' ng-repeat="channel in publicChannelsList  | filter:findPublicChannelModalSearch track by $index">
             <div class='wrapper'>
               <h4>{{channel.name}}</h4>
               <p>{{channel.description}}</p>
@@ -22,7 +22,7 @@
         </ul>
       </div>
       <div class="modal-footer">
-        <button ng-click='getChannels()' type="button" class="btn btn-primary "> <span class='glyphicon glyphicon-refresh'>  </span>  Refresh</button>
+        <button ng-click='getPublicChannelsList()' type="button" class="btn btn-primary "> <span class='glyphicon glyphicon-refresh'>  </span>  Refresh</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
