@@ -247,6 +247,7 @@ body {
     color:#FFFFFF;
     text-shadow: 1px 1px 3px #000000;
 }
+
 #conversation {
     padding: 0 12px 0 12px;
     overflow: auto;
@@ -334,5 +335,8 @@ body {
 }
 #expand-send-button{
     height: 48px;
+}
+#send-button-wrapper{
+    z-index:2;
 }
 

@@ -24,6 +24,8 @@ $("#left-pane-toggle").click(function(){
     $("#left-pane-toggle span").removeClass("glyphicon-chevron-left");
     $("#left-pane-toggle span").addClass("glyphicon-chevron-right");
     $("#left-pane-toggle").css("background-color","transparent");
+    $("#left-pane-toggle").css("z-index","1");
+    $("#left-pane").css("z-index","1");
     leftPane=false;
   }
   else{
@@ -49,7 +51,9 @@ $("#right-pane-toggle").click(function(){
     $("#right-pane-toggle span").removeClass("glyphicon-chevron-left");
     $("#right-pane-toggle span").addClass("glyphicon-chevron-right");
     $("#right-pane-toggle").css("background-color","rgba(255,255,255,1)");
-    $("#right-pane-toggle").css("z-index","0");
+    $("#right-pane-toggle").css("z-index","3");
+    $("#right-pane").css("z-index","3");
+
     rightPane=true;
   }
 });
