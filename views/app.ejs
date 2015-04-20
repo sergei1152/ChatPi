@@ -48,7 +48,7 @@
     </ul>
     <form id="send-form" novalidate>
         <div class="input-group dropup">
-            <textarea  ng-enter="send()" ng-model="conversation.new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
+            <textarea  ng-enter="send()" ng-model="new_message" autocomplete="off" type="text" id="message-text-input" class="form-control" aria-label="Type your Message Here" placeholder="Type your Message Here" required autofocus></textarea>
             <div class="input-group-btn" id="send-button-wrapper">
                 <button id="send-button" ng-click="send()" class="btn btn-default">Send</button>
                 <button id="expand-send-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

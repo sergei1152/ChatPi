@@ -47,7 +47,6 @@ JoinedChatRooms.service("joinedChatRooms", function() {
   //adds a message to the rooms chat history
   this.addMessage = function(message) {
     var room=message.destination;
-
     if(room.type==='channel'){
       if(message.senderUsername===User.username){
         message.self='self';

@@ -36,7 +36,7 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
         });
       }
       else { //if the user had already joined the room
-          joinedChatRooms.changeCurrentRoom(room);
+          joinedChatRooms.changeCurrentRoom(joinedChatRooms.findChannel(room));
       }
     }
   };
@@ -104,7 +104,7 @@ ChatRooms.controller('findPublicChannel', function($scope, subscribedChannels) {
 });
 //controller for the find public channels modal
 //TODO MODULARIZE THIS FUNCTION
-ChatRooms.controller('createPublicChannel', function($scope, validateName) {
+ChatRooms.controller('createPublicChannel', function($scope, validateName,subscribedChannels) {
   $('#createPublicChannelAlert').css('display', 'none'); //hides the alert
 
   $scope.createPublicChannel = function() {

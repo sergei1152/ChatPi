@@ -37,7 +37,7 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
   $scope.new_message=""; //the message the user will send
 
   $scope.send = function() {
-    var cleanMessage = $scope.conversation.new_message.replace(/\s/g, '');
+    var cleanMessage = $scope.new_message.replace(/\s/g, '');
 
     //make sure the message is not empty and a chatroom has been joined
     if (cleanMessage !== "" && joinedChatRooms.getCurrentRoom()) {
@@ -52,7 +52,7 @@ ChatPiApp.controller('Conversation', function($scope, Message, getDate,joinedCha
       );
 
       socket.emit('message', message); //sends the message contents to the server
-      $scope.conversation.new_message = ""; //clears the input area
+      $scope.new_message = ""; //clears the input area
     }
   };
 
