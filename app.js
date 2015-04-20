@@ -32,7 +32,7 @@ var SERVER_SETTINGS=require('./config/server-config.js'); //custom server settin
 require('./config/passport-config.js')(passport,RedisClient.UserDB); //configures the passport module
 
 //setting the port number for the server to use
-app.set('port', process.env.port || SERVER_SETTINGS.serverPort);
+app.set('port', process.env.PORT || SERVER_SETTINGS.serverPort);
 
 //settings the views directory for the templating engine
 app.set('views', __dirname + '/views');
