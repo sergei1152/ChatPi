@@ -1,100 +1,46 @@
-var ChatRooms = angular.module('ChatRooms', ['Validator','User']);
-
-//to keep track of the users subscribed channels
-ChatRooms.service("subscribedChannels", function(User) {
-  this.subscribedChannels = [];
-  this.addChannel = function(channel) {
-    this.subscribedChannels.push(channel);
-  };
-  this.setChannels = function(channels) {
-    if(channels){
-      this.subscribedChannels = JSON.parse(channels);
-    }
-  };
-  this.getChannels = function() {
-    return this.subscribedChannels;
-  };
-  //checks the array to see if a channel id is in the array
-  this.findChannel = function(channel) {
-    for (var i = 0; i < this.subscribedChannels.length; i++) {
-      if (channel._id === this.subscribedChannels[i]._id) {
-        return true;
-      }
-    }
-    return false;
-  };
-});
-
-//to keep track of the users joined chat rooms
-ChatRooms.service("joinedChatRooms", function(User) {
-  var joinedChatRooms = [];
-  var currentRoom={
-    name:"Welcome to ChatPi"
-  };
-  this.changeCurrentRoom = function(room) {
-    for(var i=0;i<room.chat_history.length;i++){
-      if(room.chat_history[i].senderUsername===User.selfUsername){
-        room.chat_history[i].self='self';
-      }
-    }
-    currentRoom = room;
-  };
-  this.getCurrentRoom = function() {
-    return currentRoom;
-  };
-  this.addRoom = function(room) {
-    joinedChatRooms.push(room);
-  };
-  this.getRooms = function() {
-    return joinedChatRooms;
-  };
-  //checks the array to see if a room id is in the array
-  this.findRoom = function(id) {
-    for (var i = 0; i < joinedChatRooms.length; i++) {
-      if (id === joinedChatRooms[i]._id) {
-        return joinedChatRooms[i];
-      }
-    }
-    return false;
-  };
-  //checks the array to see if a room id is in the array
-  this.addMessageHistory = function(channelID, message) {
-    for (var i = 0; i < joinedChatRooms.length; i++) {
-      if (channelID === joinedChatRooms[i]._id) {
-        if(message.senderUsername===User.selfUsername){
-          message.self='self';
-        }
-        joinedChatRooms[i].chat_history.push(message);
-      }
-    }
-  };
-});
+var ChatRooms = angular.module('ChatRooms', ['Validator','User','JoinedChatRooms','SubscribedChannels']);
 
 //the chatrooms controller that manages everything on the left pane of the application
-ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedChatRooms) {
+ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedChatRooms, User) {
+  //for populating the public channels list on the left pane
   $scope.getSubscribedChannels = function() {
-    return subscribedChannels.getChannels();
+    return User.subscribed_public_channels;
   };
-  $scope.joinChatRoom = function(channel) {
-    if (!joinedChatRooms.findRoom(channel.id)) { //check if the user already join the chat room
-      socket.emit('joinRoom', channel); //tell the server to join the room
-      socket.on('roomJoined', function (channel) {
-        var parsed_chat_history=[];
-        for(var i=channel.chat_history.length-1;i>=0;i--){
-          parsed_chat_history.push(JSON.parse(channel.chat_history[i]));
-        }
-        channel.chat_history=parsed_chat_history;
-        $scope.$apply(function () {
-          joinedChatRooms.addRoom(channel);
-          joinedChatRooms.changeCurrentRoom(channel);
+
+  $scope.joinChatRoom = function(room) {
+    if(room.type==='channel') { //if the user selected to join a public channel
+      if (!joinedChatRooms.findChannel(room)) { //check if the user already join the chat room
+        socket.emit('joinRoom', room); //ask the server to join the channel
+
+        //after the channel metadata has been retrieved
+        socket.on('roomJoined', function (channel) {
+          //inverting the order of the chat history (latest->oldest to oldest->latest)
+          if (channel.chat_history) {
+            var parsed_chat_history = [];
+            for (var i = channel.chat_history.length - 1; i >= 0; i--) {
+              parsed_chat_history.push(JSON.parse(channel.chat_history[i]));
+            }
+            channel.chat_history = parsed_chat_history;
+          }
+          else {
+            channel.chat_history = [];
+          }
+          //changing the current room
+          $scope.$apply(function () {
+            joinedChatRooms.addChannel(channel);
+            joinedChatRooms.changeCurrentRoom(channel);
+          });
         });
-      });
-    }
-    else{
-      joinedChatRooms.changeCurrentRoom(channel);
+      }
+      else { //if the user had already joined the room
+        $scope.$apply(function () {
+          joinedChatRooms.changeCurrentRoom(room);
+        });
+      }
     }
   };
-  //opens up the find public channels modal
+
+  //opens up the find and create public channels modals
   $scope.findPublicChannels = function() {
     $('#findPublicChannelModal').modal('show');
   };

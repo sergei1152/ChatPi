@@ -1,8 +1,12 @@
-//This module has everything to do with the filters and directives responsible for the user experience
+//The user module that carries the current user's properties
 var User=angular.module('User',[]);
-//service that returns the current date in minutes to be used in message dates
+
 User.service("User", function() {
   this.name='';
   this.username='';
   this.profile_picture='';
+  this.subscribed_public_channels={};
+  this.contacts={};
+  this.private_groups={};
+  this.notifications={};
 });
