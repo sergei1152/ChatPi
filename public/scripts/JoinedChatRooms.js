@@ -1,7 +1,7 @@
 var JoinedChatRooms = angular.module('JoinedChatRooms', ['User']);
 
 //to keep track of the users joined chat rooms
-JoinedChatRooms.service("joinedChatRooms", function() {
+JoinedChatRooms.service("joinedChatRooms", function(User) {
   var joinedPrivateGroups = [];
   var joinedChannels=[];
   var currentRoom={
@@ -50,6 +50,7 @@ JoinedChatRooms.service("joinedChatRooms", function() {
     if(room.type==='channel'){
       if(message.senderUsername===User.username){
         message.self='self';
+
       }
       this.findChannel(room).chat_history.push(message);
     }

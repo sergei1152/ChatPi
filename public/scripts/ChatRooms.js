@@ -18,10 +18,12 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
           if (channel.chat_history) {
             var parsed_chat_history = [];
             for (var i = channel.chat_history.length - 1; i >= 0; i--) {
-              if(channel.chat_history[i].senderUsername===User.selfUsername){
+              channel.chat_history[i]=JSON.parse(channel.chat_history[i]);
+
+              if(channel.chat_history[i].senderUsername===User.username){
                 channel.chat_history[i].self='self';
               }
-              parsed_chat_history.push(JSON.parse(channel.chat_history[i]));
+              parsed_chat_history.push(channel.chat_history[i]);
             }
             channel.chat_history = parsed_chat_history;
           }
