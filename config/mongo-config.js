@@ -6,12 +6,20 @@ var mongoose = require('mongoose'); //for interacting with the mongo database
 var MongoDBConfig={
   url:'127.0.0.1',
   port:27017,
-  databaseName: "ChatPi"
+  databaseName: "ChatPi",
+  databaseUsername: "",
+  databasePassword: ""
 };
 
 //will configure and connect to the mongodb database
 module.exports=function(callback){
-  mongoose.connect("mongodb://"+MongoDBConfig.url+":"+MongoDBConfig.port+"/"+MongoDBConfig.databaseName); //have mongoose connect to the MongoDB database
+  if(MongoDBConfig.databaseUsername==='' || MongoDBConfig.databaseUsername===null){
+    mongoose.connect("mongodb://"+MongoDBConfig.url+":"+MongoDBConfig.port+"/"+MongoDBConfig.databaseName);
+  }
+  else{
+    mongoose.connect("mongodb://"+MongoDBConfig.databaseUsername+":"+MongoDBConfig.databasePassword+"@"+MongoDBConfig.url+":"+MongoDBConfig.port+"/"+MongoDBConfig.databaseName);
+  }
+
 
   //when mongoose connects to the database
   mongoose.connection.on('connected', function() {
