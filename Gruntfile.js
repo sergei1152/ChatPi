@@ -64,8 +64,27 @@ module.exports = function(grunt) {
       // when this task is run, lint the Gruntfile and all js files in project root
       server: ['./*.js', './routes/*.js', './models/*.js', './config/*.js', './lib/*.js'],
       client: ['./public/scripts/*.js']
+    },
+
+    browserify: {
+      dist: {
+        files: {
+          './public/scripts/dist/main.js': ['./public/scripts/dist/compile.js']
+        }
+      }
+    },
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['./public/scripts/*.js'],
+        dest: './public/scripts/dist/main.js'
+      }
     }
   });
-  grunt.registerTask('chrome',['express:dev', 'open:dev', 'watch']);
+  grunt.registerTask('concat',['concat:dist']);
+  grunt.registerTask('browserify',['browserify:dist']);
+  grunt.registerTask('open',['express:dev', 'open:dev', 'watch']);
   grunt.registerTask('default', ['express:dev','watch']);
 };
