@@ -16,6 +16,17 @@ UX.directive('ngEnter', function () {
   };
 });
 
+//handles opening modals when clicking on an element
+//usage open-modal="#idOfModal" will open the modal
+UX.directive('openModal', function () {
+  return function (scope, element, attrs) {
+    element.bind("click", function (event) {
+      $(attrs.openModal).modal('show');
+    });
+  };
+});
+
+
 //Toggles the left and right panes for better experience on mobiles that can't view everything all at once.
 var leftPane=true;
 $("#left-pane-toggle").click(function(){
@@ -58,6 +69,7 @@ $("#right-pane-toggle").click(function(){
   }
 });
 
+//Custom scrollbar Stuff
 (function($){
   $(window).load(function(){
     $("#conversation").mCustomScrollbar({
