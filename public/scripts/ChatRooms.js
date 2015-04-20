@@ -14,10 +14,13 @@ ChatRooms.controller('ChatRooms', function($scope, subscribedChannels, joinedCha
 
         //after the channel metadata has been retrieved
         socket.on('roomJoined', function (channel) {
-          //inverting the order of the chat history (latest->oldest to oldest->latest)
+          //inverting the order of the chat history (latest->oldest to oldest->latest), and checking if the sender is the current user
           if (channel.chat_history) {
             var parsed_chat_history = [];
             for (var i = channel.chat_history.length - 1; i >= 0; i--) {
+              if(channel.chat_history[i].senderUsername===User.selfUsername){
+                channel.chat_history[i].self='self';
+              }
               parsed_chat_history.push(JSON.parse(channel.chat_history[i]));
             }
             channel.chat_history = parsed_chat_history;
