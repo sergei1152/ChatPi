@@ -18,7 +18,7 @@
     "ejs": "2.2.x",
     "express": "4.11.x",
     "express-session": "1.10.x",
-    "mongoose": "3.8.x",
+    "mongoose": "5.7.x",
     "morgan": "1.5.x",
     "multer": "0.1.x",
     "passport": "0.2.x",
